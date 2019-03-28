@@ -3,7 +3,8 @@
     "docs:dev": "vuepress dev",
     "docs:build": "vuepress build"
   },
-  "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.44"
+  "dependencies": {
+    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.44",
+    "vuepress-plugin-flowchart": "^1.4.3"
   }
 }

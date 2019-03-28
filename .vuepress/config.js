@@ -1,11 +1,12 @@
 module.exports = {
-  title: 'Sudals\'s gram',
+  title: '🌟 Sudals\'s gram',
   description: '정리공간',
   markdown: {
     lineNumbers: false
   },
   plugins: [
-    '@vuepress/back-to-top'
+    '@vuepress/back-to-top',
+    'flowchart'
   ],
   themeConfig: {
     nav: [
