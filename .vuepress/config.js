@@ -20,6 +20,11 @@ module.exports = {
         '',
         '/about/install',
         '/about/syntax'
+      ], 
+      '/general/': [
+        '', 
+        '/general/architecture/',
+        '/general/data-structure/'
       ]
     }
   }
