@@ -1,7 +1,3 @@
----
-sidebar: 'auto'
----
-
 # Syntax
 
 ## 문자열 꾸미기 (Text Decorator)
@@ -99,3 +95,35 @@ const a;
 const b;
 const c;
 ```
+
+### 커스텀 블럭 (Tip/Warning/Danger)
+
+**Input**
+
+```
+::: tip
+This is a tip
+:::
+
+::: warning
+This is a warning
+:::
+
+::: danger
+This is a dangerous warning
+:::
+```
+
+**Output**
+
+::: tip
+This is a tip
+:::
+
+::: warning
+This is a warning
+:::
+
+::: danger
+This is a dangerous warning
+:::
