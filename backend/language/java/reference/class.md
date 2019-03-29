@@ -1,5 +1,45 @@
 # Class
 
+## Immutable
+
+생성후 변경 불가능한 객체로서 대표적으로 _`String`_, _`Boolean`_, _`Integer`_, _`Float`_, _`Long`_ 등등이 있다.
+
+> HEAP 영역에서의 값이 바뀌는건 아니다.
+
+불편클래스의 예시는 아래가 대표적이다.
+
+### String / StringBuffer / StringBuilder 의 사용
+
+문자열을 더하는 식에는 `string` 보다는 `stringBuffer` 나 `stringBuilder` 을 사용해야 한다.
+
+`string` 은 새로운 값을 할당할 때마다 새로 생성되기 때문 \(클래스의 메모리 참조 주소가 바뀜\)
+
+`stringBuffer` 나 `stringBuilder` 는 값을 메모리에 append 하는 방식으로 클래스를 별도로 생성하지 않는다.
+
+`stringBuilder` 는 변경 가능한 문자열로 synchronization 이 적용되지 않는다.
+
+`stringBuffer` 는 _**멀티쓰레드 환경에서 안정적**_ 이다.
+
+#### try-finally 보다는 try-with-resources 를 사용 (Java 7)
+
+향샹된 예외처리문으로 입출력 처리시 예외가 발생하면 JVM 이 자동으로 `close` 메소드를 호출하여 자원을 반납시켜 줍니다.
+
+이때 `try()` 구문안에는 `AutoCloseable` 인터페이스를 구현한 객체여야 한다.
+
+```java
+public class MyResource implements AutoCloseable {
+  public void close() throws Exception {
+    System.out.println("Closeing!");
+  }
+}
+```
+
+```java
+try (MyResource res = new MyResource()){
+  // use the code
+}
+```
+
 ## AutoCloseable
 
 파일 또는 소켓 핸들 등의 자원들을 종료할 때까지 보관하는 객체이다.  
@@ -25,26 +65,4 @@ try (MyResource res = new MyResource()){
 
 :::tip 참고자료
 <https://hyoj.github.io/blog/java/basic/java7-autocloseable.html#method-summary>
-:::
-
-## Immutable
-
-생성후 변경 불가능한 객체로서 대표적으로 _`String`_, _`Boolean`_, _`Integer`_, _`Float`_, _`Long`_ 등등이 있다.
-
-> HEAP 영역에서의 값이 바뀌는건 아니다.
-
-### String vs StringBuffer 비교
-
-String 은 Immutable 이고 StringBuffer 는 아니다.
-이는 객체를 새로 생성할 필요가 없는 StringBuffer 가 더 빠르다는 이야기이다.
-
-```java
-StringBuffer b = new StringBuffer();
-StringBuffer a = b.append("test");
-
-System.out.println(a == b);     // true
-```
-
-:::tip 참고자료
-<https://hashcode.co.kr/questions/727/자바에서-immutable이-뭔가요>
 :::

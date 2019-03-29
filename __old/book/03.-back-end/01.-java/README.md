@@ -1,6 +1,6 @@
-# TIP
+# 01. Java
 
-자잘한 팁
+Java 언어의 전반적인 이야기를 다룹니다.
 
 ## Log4j
 
@@ -51,6 +51,5 @@
 [%d{HH:mm:ss}] %-5p %C{1}.%M(%F:%L) - %m%n
 ```
 
-:::tip 참고자료
-<http://tcpschool.com/java/intro>
-:::
+> ### 참고자료
+> <http://tcpschool.com/java/intro>

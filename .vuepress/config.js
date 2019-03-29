@@ -34,6 +34,8 @@ module.exports = {
             text: 'Network', 
             items: [
               { text: 'HTTP', link: '/backend/network/http/' },
+              { text: 'Security', link: '/backend/network/security' },
+              { text: 'Etc', link: '/backend/network/etc' }
             ]
           }, 
           {
@@ -43,6 +45,7 @@ module.exports = {
               { text: 'MSSQL', link: '/backend/database/mssql/' },
               { text: 'MySQL', link: '/backend/database/mysql/' },
               { text: 'Redis', link: '/backend/database/redis/' },
+              { text: 'Etc', link: '/backend/database/etc' }
             ]
           }, 
           {
@@ -113,8 +116,28 @@ module.exports = {
             '/backend/language/java/design-pattern/template-method'
           ]
         },
-        '/backend/language/java/tip'
+        {
+          title: 'Tip', 
+          children: [
+            '/backend/language/java/tip/log4j',
+            '/backend/language/java/tip/anti',
+          ]
+        },
       ],
+      '/backend/server/linux/': [
+        '', 
+        '/backend/server/linux/shell-script'
+      ],
+      '/backend/server/nginx/': [
+        '', 
+        '/backend/server/nginx/install'
+      ], 
+      '/backend/network/http/': [
+        '',
+        '/backend/network/http/http2.0',
+        '/backend/network/http/rest',
+        '/backend/network/http/servlet'
+      ]
     }
   }
 };
