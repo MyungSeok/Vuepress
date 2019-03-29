@@ -5,9 +5,9 @@
 
 npm install && vuepress build
 
-git checkout gh-pages
+git checkout master
 
-git pull origin gh-pages --rebase
+git pull origin master --rebase
 
 cp -R .vuepress/dist/* .
 
@@ -15,6 +15,6 @@ git add .
 
 git commit -a -m 'Publish Docs'
 
-git push origin gh-pages
+git push origin master
 
-git checkout master
+git checkout draft
