@@ -58,14 +58,16 @@ module.exports = {
             text: 'DevOps', 
             items: [
               { text: 'Docker', link: '/backend/devops/docker/' },
-              { text: 'Kubernetes', link: '/backend/devops/kubernetes/' },
-              { text: 'Git', link: '/backend/devops/git/' },
+              { text: 'Kubernetes', link: '/backend/devops/kubernetes' },
+              { text: 'Git', link: '/backend/devops/git' },
+              { text: 'Etc', link: '/backend/devops/etc' }
             ]
           }, 
           {
             text: 'Big Data',
             items: [
-              { text: 'Big Data', link: '/backend/bigdata/' },
+              { text: 'DW', link: '/backend/bigdata/dw' },
+              { text: 'Analytics', link: '/backend/bigdata/analytics' }
             ]
           }, 
         ]
@@ -137,6 +139,10 @@ module.exports = {
         '/backend/network/http/http2.0',
         '/backend/network/http/rest',
         '/backend/network/http/servlet'
+      ],
+      '/backend/devops/docker/': [
+        '', 
+        '/backend/devops/docker/cli'
       ]
     }
   }
