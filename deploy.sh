@@ -3,19 +3,15 @@
 # abort on errors
 # set -e
 
+npm install && vuepress build
+
 git checkout gh-pages
 
-git pull
-
-git checkout .
-
-# npm install
-npm install
-
-# build
-npm run docs:build
+git pull origin gh-pages --rebase
 
 cp -R ./vuepress/dist/* .
+
+git add .
 
 git commit -a -m 'Publish Docs'
 

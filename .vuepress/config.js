@@ -1,6 +1,7 @@
 module.exports = {
   title: '🌟 Sudal\'s gram',
   description: '정리공간',
+  base: '/VuePress/',
   markdown: {
     lineNumbers: false
   },

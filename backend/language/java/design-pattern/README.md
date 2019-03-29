@@ -4,7 +4,7 @@
 
 Java 에서 대표적으로 사용되는 Design Pattern 은 크게 3가지의 범주로 나뉜다.
 
-!["Java Design Pattern Map"](/img/A015.png)
+!["Java Design Pattern Map"](/VuePress/img/A015.png)
 
 ## 생성관련 패턴
 
