@@ -86,15 +86,20 @@ module.exports = {
         {
           title: 'General',
           children: [
+            '/backend/language/java/general/jpa',
+            '/backend/language/java/general/jvm',
+            '/backend/language/java/general/ejb',
             '/backend/language/java/general/oop',
-            '/backend/language/java/general/solid'
+            '/backend/language/java/general/solid',
           ]
         },
         {
           title: 'Design Pattern', 
           children: [
             '/backend/language/java/design-pattern/',
-            '/backend/language/java/design-pattern/strategy'
+            '/backend/language/java/design-pattern/strategy',
+            '/backend/language/java/design-pattern/factory-method',
+            '/backend/language/java/design-pattern/template-method'
           ]
         },
         '/backend/language/java/tip'

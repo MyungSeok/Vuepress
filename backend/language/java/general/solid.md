@@ -105,10 +105,12 @@ OCP (Open Close Principle : 개방 폐쇠의 법칙) 과 밀접한 연관이 있
 
 다음 예는 이를 설명하기 위한 가장 유명한 예 이다.
 
-```mermaid
-graph LR
-  A["Rectangle"] --> B["Square"]
-```
+@flowstart
+stage1=>operation: Rectangle
+stage2=>operation: Square
+
+stage1->stage2
+@flowend
 
 최초에 기반타입을 담당할 `Rectagle` 클래스를 선언한다.
 
