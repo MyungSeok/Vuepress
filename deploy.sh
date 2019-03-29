@@ -9,7 +9,7 @@ git checkout gh-pages
 
 git pull origin gh-pages --rebase
 
-cp -R ./vuepress/dist/* .
+cp -R .vuepress/dist/* .
 
 git add .
 
