@@ -5,7 +5,6 @@ module.exports = {
   markdown: {
     lineNumbers: false
   },
-  base: '/VuePress',
   plugins: [
     '@vuepress/back-to-top',
     'flowchart'
