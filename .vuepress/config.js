@@ -87,10 +87,21 @@ module.exports = {
           title: 'General',
           children: [
             '/backend/language/java/general/jpa',
-            '/backend/language/java/general/jvm',
             '/backend/language/java/general/ejb',
+            '/backend/language/java/general/jvm',
+            '/backend/language/java/general/gc',
             '/backend/language/java/general/oop',
             '/backend/language/java/general/solid',
+          ]
+        },
+        {
+          title: 'Reference Docs',
+          children: [
+            '/backend/language/java/reference/class',
+            '/backend/language/java/reference/collection',
+            '/backend/language/java/reference/functional',
+            '/backend/language/java/reference/method',
+            '/backend/language/java/reference/thread',
           ]
         },
         {

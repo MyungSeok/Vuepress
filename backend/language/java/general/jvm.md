@@ -28,7 +28,7 @@ Java 로 작성한 코드는 _**Class Loader 가 컴파일된 Java Byte Code 를
 4. JVM 은 클래스 파일의 바이너리 코드를 해석하여 프로그램을 실행
 5. 수행 결과가 컴퓨터에 반영
 
-## Class Loader (클래스 로더)
+## Class Loader
 
 자바는 Runtime 시에 Class 를 로드하고 링크하는 Dynamic Loading 특징이 있다.
 
@@ -45,7 +45,7 @@ Class Loader 에서는 비록 FQCN 이 같더라도 Namespace 가 다르면 다�
 
 _**Class Loader**_ 의 대표적인 역활은 사용자가 작성한 Java Byte Code 를 JVM 메모리상에 올려주는 역활을 한다.
 
-### 클래스 로더 특징
+### 특징
 
 클래스 로더는 다음과 같은 특징이 있다.
 
@@ -62,7 +62,7 @@ _**Class Loader**_ 의 대표적인 역활은 사용자가 작성한 Java Byte C
 * Cannot unload Classes (언로드 불가)
   * 클래스 로더는 Unload 기능을 하지 않는다. (Unload 는 GC 자동으로 함)
 
-### 클래스 로더 요청 처리
+### 요청 처리
 
 Class Loader 가 Class Load 를 요청 받으면, 아래 순서대로 검색을 한다.
 
@@ -82,7 +82,7 @@ Bootstrap Class Loader 까지 확인해도 없으면 요청 받은 클래스 로
 <https://m.blog.naver.com/PostView.nhn?blogId=choigohot&logNo=40192701035&proxyReferer=https%3A%2F%2Fwww.google.com%2F>
 :::
 
-## Runtime Data Areas (런타임 데이터 영역)
+## Runtime Data Areas
 
 `Class Loader` 에서 로드해준 데이터를 보관하여 애플리케이션을 수행한다.  
 이 수행 작업시에 사용되는 저장 및 참조로 하는 메모리 영역이다.
@@ -145,7 +145,7 @@ Bootstrap Class Loader 까지 확인해도 없으면 요청 받은 클래스 로
 <https://medium.com/@lazysoul/jvm-이란-c142b01571f2>
 :::
 
-## Excution Engine (실행 엔진)
+## Excution Engine
 
 _**Class Loader**_ 를 통하여 JVM 메모리상에 배치되어 있는 바이트 코드를 _**Excution Engine**_ 에 의해 실행된다.
 
@@ -172,13 +172,13 @@ _**Excution Engine**_ 는 이와 같이 바이트 코드가 실제로 JVM 내부
 
 `Native Code` 를 실행하는 것이 명령어 단위로 `Interpreting` 하는것보다 빠르며, `Native Code` 는 내부 캐시에 보관하기 때문에 한번 `Compile` 한 코드는 계속 빠르게 수행
 
-![JIT Compile](/img/A045.png)
+![JIT Compile](/img/A050.png)
 
 JIT Compile 과정은 `Byte Code` 를 Interpreting 하는것보다 많은 비용이 발생하여, 만약 한번만 실행되는 코드라면 `Compile` 하지 않고 Interpreting 하는것이 훨씬 유리하다.
 
 내부적으로 해당 Method 가 얼마나 자주 수행되고 체크하여 일정 정도의 수준이 넘을때만 `Compile` 수행
 
-## finalize()
+## finalize Method
 
 객체가 소멸될때 호출되는 메소드  
 일반적으로 GC 에서 객체 메모리를 해지할때 호출되므로 사용이 권장 되지 않는다.
