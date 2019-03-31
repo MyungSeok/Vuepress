@@ -1,1 +1,0 @@
-# 비지니스 인텔리전스 (BI : Business Intelligence)

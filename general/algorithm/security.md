@@ -22,12 +22,13 @@
 |단점|암호키를 전달하는 과정에서 노출 우려가 있다|대칭키에 비해 느리다|
 |예|DES, AES|RSA|
 
-> ### 참고자료
-> <https://sungjk.github.io/2016/09/30/Security.html>  
-> <https://javaplant.tistory.com/26>  
-> <http://rigvedawiki.net/w/암호%20알고리즘>  
-> <https://o-m-i.tistory.com/209>  
-> <https://jusungpark.tistory.com/34>
+:::tip 참고자료
+<https://sungjk.github.io/2016/09/30/Security.html>  
+<https://javaplant.tistory.com/26>  
+<http://rigvedawiki.net/w/암호%20알고리즘>  
+<https://o-m-i.tistory.com/209>  
+<https://jusungpark.tistory.com/34>
+:::
 
 ## SHA-256
 
@@ -78,6 +79,7 @@ public class SHA256Password {
 
 해시값의 보안성을 높이기 위하여 값을 암호화 할때 Salt 값을 넣어 해싱을 함으로써 공격의 효율을 크게 저하 시키는 방법도 유효하다.
 
-> ### 참고자료
-> <https://yoo-hyeok.tistory.com/41>  
-> <https://jusungpark.tistory.com/35>
+:::tip 참고자료
+<https://yoo-hyeok.tistory.com/41>  
+<https://jusungpark.tistory.com/35>
+:::

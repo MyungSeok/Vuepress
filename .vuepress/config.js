@@ -12,7 +12,7 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: 'About', link: '/about/'},
-      { text: 'General', link: '/general/' },
+      { text: 'General', link: '/general/'},
       { text: 'Front End', link: '/frontend/' },
       { text: 'Back End', 
         items: [
@@ -82,7 +82,14 @@ module.exports = {
       '/general/': [
         '', 
         '/general/architecture/',
-        '/general/data-structure/'
+        '/general/data-structure/',
+        {
+          title: 'Algorithm', 
+          children: [
+            '/general/algorithm/security',
+            '/general/algorithm/sort'
+          ]
+        }
       ], 
       '/frontend/': [
 
