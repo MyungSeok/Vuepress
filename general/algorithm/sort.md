@@ -14,6 +14,10 @@ stage5=>operation: 버블 (Bubble)
 stage1(right)->stage2(right)->stage3(right)->stage4(right)->stage5
 @flowend
 
+## Big-O 표기법
+
+시간 복잡도 및 공간복잡도를 수치화하여 표기하며 메모리 및 성능을 기준으로 평균적인 시간 복잡도를 나타낸것으로 최선 및 최악의 수를 표현한다.
+
 ## 퀵 정렬 (Quick Sort)
 
 정렬 알고리즘중에서 가장 빠른 정렬이다.  
@@ -39,8 +43,6 @@ stage1(right)->stage2(right)->stage3(right)->stage4(right)->stage5
 ### 특이사항
 
 * _**별도의 저장 공간이 필요**_ 하다.
-
-### Example
 
 **Case 1 : JS - ES5**
 
