@@ -52,6 +52,8 @@ module.exports = {
             text: 'Framework', 
             items: [
               { text: 'Spring', link: '/backend/framework/spring/' },
+              { text: 'Hibernate', link: '/backend/framework/hibernate' },
+              { text: 'Etc', link: '/backend/framework/etc' }
             ]
           }, 
           {
@@ -82,14 +84,31 @@ module.exports = {
       '/general/': [
         '', 
         '/general/architecture/',
-        '/general/data-structure/',
+        {
+          title: 'Data Structure',
+          children: [
+            '/general/data-structure/',
+            '/general/data-structure/data-type',
+            '/general/data-structure/stack',
+            '/general/data-structure/tree',
+            '/general/data-structure/queue'
+          ]
+        },
         {
           title: 'Algorithm', 
           children: [
             '/general/algorithm/security',
             '/general/algorithm/sort'
           ]
-        }
+        },
+        {
+          title: 'Interview', 
+          children: [
+            '/general/interview/frontend',
+            '/general/interview/backend',
+          ]
+        }, 
+        '/general/tips'
       ], 
       '/frontend/': [
 
@@ -146,6 +165,21 @@ module.exports = {
         '/backend/network/http/http2.0',
         '/backend/network/http/rest',
         '/backend/network/http/servlet'
+      ],
+      '/backend/framework/spring/': [
+        '',
+        {
+          title: 'Fundamental',
+          children: [
+            '/backend/framework/spring/fundamental/aop',
+            '/backend/framework/spring/fundamental/ioc',
+            '/backend/framework/spring/fundamental/bean',
+            '/backend/framework/spring/fundamental/dispatcherServlet'
+          ]
+        },
+        '/backend/framework/spring/boot',
+        '/backend/framework/spring/batch',
+        '/backend/framework/spring/security'
       ],
       '/backend/devops/docker/': [
         '', 

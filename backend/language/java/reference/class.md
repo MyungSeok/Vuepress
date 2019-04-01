@@ -20,11 +20,14 @@
 
 `stringBuffer` 는 _**멀티쓰레드 환경에서 안정적**_ 이다.
 
-#### try-finally 보다는 try-with-resources 를 사용 (Java 7)
+## AutoCloseable
 
-향샹된 예외처리문으로 입출력 처리시 예외가 발생하면 JVM 이 자동으로 `close` 메소드를 호출하여 자원을 반납시켜 줍니다.
+파일 또는 소켓 핸들 등의 자원들을 종료할 때까지 보관하는 객체이다.  
+AutoCloseable 객체의 `close` 메소드는 `try-with-resources` 블럭을 종료할 때 자동으로 호출 된다.
 
-이때 `try()` 구문안에는 `AutoCloseable` 인터페이스를 구현한 객체여야 한다.
+이 구조는 리소스의 고갈 및 다른 예외들까지 발생할 수 있는 에러들의 해소를 즉각적으로 보장한다.
+
+`try-with-resource` 구문과 같이 사용한다.
 
 ```java
 public class MyResource implements AutoCloseable {
@@ -40,14 +43,11 @@ try (MyResource res = new MyResource()){
 }
 ```
 
-## AutoCloseable
+### try-finally 보다는 try-with-resources 를 사용 (Java 7)
 
-파일 또는 소켓 핸들 등의 자원들을 종료할 때까지 보관하는 객체이다.  
-AutoCloseable 객체의 `close` 메소드는 `try-with-resources` 블럭을 종료할 때 자동으로 호출 된다.
+향샹된 예외처리문으로 입출력 처리시 예외가 발생하면 JVM 이 자동으로 `close` 메소드를 호출하여 자원을 반납시켜 줍니다.
 
-이 구조는 리소스의 고갈 및 다른 예외들까지 발생할 수 있는 에러들의 해소를 즉각적으로 보장한다.
-
-`try-with-resource` 구문과 같이 사용한다.
+이때 `try()` 구문안에는 `AutoCloseable` 인터페이스를 구현한 객체여야 한다.
 
 ```java
 public class MyResource implements AutoCloseable {
