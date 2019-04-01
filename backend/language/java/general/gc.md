@@ -107,8 +107,9 @@ Java GC 는 위에서 말한 근거를 바탕으로 다음 5가지의 Reachabili
 
 ![Softly Reachable](/img/A048.png)
 
-> ### 참고자료
-> <https://d2.naver.com/helloworld/329631>
+:::tip 참고자료
+<https://d2.naver.com/helloworld/329631>
+:::
 
 ## 영역 구성
 

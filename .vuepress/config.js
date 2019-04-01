@@ -13,7 +13,43 @@ module.exports = {
     nav: [
       { text: 'About', link: '/about/'},
       { text: 'General', link: '/general/'},
-      { text: 'Front End', link: '/frontend/' },
+      { text: 'Front End', 
+        items: [
+          { text: 'HTML', 
+            items: [
+              { text: 'General', 'link': '/frontend/html/general' },
+              { text: 'Performance', 'link': '/frontend/html/performance' },
+              { text: 'Canvas', 'link': '/frontend/html/canvas' }
+            ]
+          },
+          { text: 'CSS', 
+            items: [
+              { text: 'Tips', 'link': '' }
+            ]
+          },
+          { text: 'Javascript', 
+            items: [
+              { text: 'General', 'link': '/frontend/javascript/general/' },
+              { text: 'Reference', 'link': '/frontend/javascript/reference/' },
+              { text: 'Performance', 'link': '/frontend/javascript/performance/' }
+            ]
+          },
+          { text: 'Framework', 
+            items: [
+              { text: 'Node', 'link': '/frontend/framework/node/' },
+              { text: 'React', 'link': '/frontend/framework/react/' },
+              { text: 'Vue', 'link': '/frontend/framework/vue/' },
+              { text: 'Angular', 'link': '/frontend/framework/angular' }
+            ]
+          },
+          { text: 'Library', 
+            items: [
+              { text: 'jQuery', 'link': '/frontend/javascript/library/jquery' },
+              { text: 'D3', 'link': '/frontend/javascript/library/d3' }
+            ]
+          }
+        ]
+      },
       { text: 'Back End', 
         items: [
           {
@@ -110,9 +146,64 @@ module.exports = {
         }, 
         '/general/tips'
       ], 
-      '/frontend/': [
-
+      '/frontend/javascript/general/': [
+        '', 
+        '/frontend/javascript/general/design-pattern'
       ], 
+      '/frontend/javascript/reference/': [
+        {
+          title: 'WEB API', 
+          children: [
+            '/frontend/javascript/reference/web-api/dom',
+            '/frontend/javascript/reference/web-api/element',
+            '/frontend/javascript/reference/web-api/window',
+            '/frontend/javascript/reference/web-api/xhr',
+          ]
+        }, 
+        {
+          title: 'Built In Object', 
+          children: [
+            '/frontend/javascript/reference/built-in-object/array',
+            '/frontend/javascript/reference/built-in-object/function',
+            '/frontend/javascript/reference/built-in-object/object',
+            '/frontend/javascript/reference/built-in-object/promise'
+          ]
+        }, 
+        {
+          title: 'ECMA 6', 
+          children: [
+            '/frontend/javascript/reference/ecma6/syntax',
+            '/frontend/javascript/reference/ecma6/iterator',
+            '/frontend/javascript/reference/ecma6/generator',
+            '/frontend/javascript/reference/ecma6/symbol',
+            '/frontend/javascript/reference/ecma6/template-literals',
+          ]
+        }, 
+        '/frontend/javascript/reference/global-object',
+        '/frontend/javascript/reference/operator-and-expression'
+      ],
+      '/frontend/javascript/performance/': [
+        '', 
+        '/frontend/javascript/performance/event-loop',
+        '/frontend/javascript/performance/memory-leak',
+        '/frontend/javascript/performance/scope-closure',
+        '/frontend/javascript/performance/netfunnel'
+      ],
+      '/frontend/framework/node/': [
+        '', 
+        '/frontend/framework/node/express',
+        '/frontend/framework/node/http-transection'
+      ],
+      '/frontend/framework/react/': [
+        '', 
+        '/frontend/framework/react/lifecycle',
+        '/frontend/framework/react/redux'
+      ],
+      '/frontend/framework/vue/': [
+        '', 
+        '/frontend/framework/vue/lifecycle',
+        '/frontend/framework/vue/store'
+      ],
       '/backend/language/java/': [
         {
           title: 'General',

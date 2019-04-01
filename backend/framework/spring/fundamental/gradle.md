@@ -21,8 +21,9 @@ $ apt-get update
 $ apt-get install gradle
 ```
 
-> ### 참고자료
-> <https://zetawiki.com/wiki/우분투_Gradle_최신버전_설치>
+:::tip 참고자료
+<https://zetawiki.com/wiki/우분투_Gradle_최신버전_설치>
+:::
 
 ## Gradle 빌드
 

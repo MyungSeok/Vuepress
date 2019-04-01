@@ -134,8 +134,9 @@ public class Sum {
 }
 ```
 
-> ### 참고자료
-> <http://grayt.tistory.com/87>
+:::tip 참고자료
+<http://grayt.tistory.com/87>
+:::
 
 ## Access Modifier (접근 제어자)
 
@@ -169,8 +170,9 @@ stage1(right)->stage2(right)->stage3(right)->stage4
 
 어떤 클래스에서라도 접근 가능하다.
 
-> ### 참고자료
-> <https://wikidocs.net/232>
+:::tip 참고자료
+<https://wikidocs.net/232>
+:::
 
 ## 객체 재사용
 
