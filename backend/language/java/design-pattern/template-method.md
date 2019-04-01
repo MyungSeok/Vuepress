@@ -43,7 +43,7 @@ public class Main {
 }
 ```
 
-```log
+```sh
 Start
 move Car
 Something others

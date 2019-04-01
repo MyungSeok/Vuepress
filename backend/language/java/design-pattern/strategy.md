@@ -56,7 +56,7 @@ public class Client {
 }
 ```
 
-```log
+```sh
 Start Action
 Walking road
 End Action
