@@ -48,14 +48,25 @@ Java 에서 _**Call By Value**_ 를 통한 값 전달 방식은 객체의 복사
 Java 의 데이터는 클래스나 객체와 같은 _**참조자료형**_ 과 기본적인 _**원시타입**_ 을 가질 수 있다.  
 이는 다시 말해 각각의 기초 자료형을 포장되어 있는 `Wrapper Class` 로 변환이 가능하다.
 
-```mermaid
-  graph LR
-    A["기본 (원시) 타입"] -- Boxing --> B["참조 자료형"]
-    B -- Unboxing --> A
-```
-
 * Boxing : 값 (기초 타입) 을 참조 형식으로 변환
+
+@flowstart
+stage1=>operation: 기본 (원시) 타입
+stage2=>operation: Boxing
+stage3=>operation: 참조 자료형
+
+stage1(right)->stage2(right)->stage3
+@flowend
+
 * Unboxing : 참조 형식을 값 형식으로 변환
+
+@flowstart
+stage1=>operation: 참조 자료형
+stage2=>operation: Unboxing
+stage3=>operation: 기본 (원시) 타입
+
+stage1(right)->stage2(right)->stage3
+@flowend
 
 |기본형 타입|참조 자료형 (Wrapper Class)|
 |--|--|
@@ -79,19 +90,23 @@ int b = (int) a;
 
 ### Boxing 과정
 
-```mermaid
-  graph TD;
-    A["값 타입을 힙에 생성하기 위해 메모리를 힙 영역에 생성"]-->B["값을 힙 영역에 할당된 메모리로 복사"];
-    B-->C["참조할 변수에 할당된 메모리 주소를 할당"];
-```
+@flowstart
+stage1=>operation: 값 타입을 힙에 생성하기 위해 메모리를 힙 영역에 생성
+stage2=>operation: 값을 힙 영역에 할당된 메모리로 복사
+stage3=>operation: 참조할 변수에 할당된 메모리 주소를 할당
+
+stage1->stage2->stage3
+@flowend
 
 ### Unboxing 과정
 
-```mermaid
-  graph TD;
-    A["Boxing 값인지 확인"]-->B["Boxing 된 값이면 값유형의 변수에 복사"];
-    B-->C["박싱한 메모리와 언박싱한 메모리 2개 존재"];
-```
+@flowstart
+stage1=>operation: Boxing 값인지 확인
+stage2=>operation: Boxing 된 값이면 값유형의 변수에 복사
+stage3=>operation: 박싱한 메모리와 언박싱한 메모리 2개 존재
+
+stage1->stage2->stage3
+@flowend
 
 ### 문제점
 
@@ -127,12 +142,14 @@ public class Sum {
 Java 에는 다음과 같은 접근 제어자가 있다.  
 다음 순으로 접근을 허용한다.
 
-```mermaid
-  graph LR
-  A["Private"] --> B["Default"]
-  B --> C["Protected"]
-  C --> D["Public"]
-```
+@flowstart
+stage1=>operation: Private
+stage2=>operation: Default
+stage3=>operation: Protected
+stage4=>operation: Public
+
+stage1(right)->stage2(right)->stage3(right)->stage4
+@flowend
 
 ### Private
 
