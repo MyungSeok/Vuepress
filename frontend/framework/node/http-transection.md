@@ -42,7 +42,7 @@ const {method, url} = request;
 
 `request` 객체는 IncomingMessage 의 인스턴스이다.  
 
-:::tip `IncomingMessage Class` 의 특징
+:::tip IncomingMessage Class 의 특징
 * HTTP 에 의해 생성된다.
 * 특정 객체의 첫번째 변수로 전달되는 인수 (`SERVER` `http.ClientRequest` `request event` `response event`)
 * 응답상태 및 헤더, 데이터 등을 액세스 하는데 사용 한다.
