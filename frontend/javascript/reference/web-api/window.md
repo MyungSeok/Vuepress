@@ -7,13 +7,9 @@ _**자바스크립트 엔진이 일정시간 대기하였다가 UI 큐에 작업
 
 > UI 큐에 추가한 작업은 이전에 추가된 작업 대기열 이후에 실행행 될 수 있도록 예정된다.
 
-### Syntax
-
 ```javascript
 [window.]setTimeout(callback[, delay[, param1[, ... paramN]]]);
 ```
-
-#### Parameter
 
 * window
   * `this` 객체가 window 일때 생략 가능
@@ -25,7 +21,7 @@ _**자바스크립트 엔진이 일정시간 대기하였다가 UI 큐에 작업
   * 콜백 함수로 전달될 매개변수
   * IE9 이하에서는 매개변수 전달이 안된다. \(IE 10 이상 지원\)
 
-#### Example #1 : JS - ES5
+**Example #1 : JS - ES5**
 
 ```javascript
 var timeoutId;
@@ -49,13 +45,9 @@ function cancleTimer() {
 
 일정한 주기를 기간으로 `callback` 함수를 호출 합니다.
 
-### Syntax
-
 ```javascript
 [window.]setInterval(callback, delay[, param1[, ... paramN]]);
 ```
-
-#### Parameter
 
 * window
   * `this` 객체가 window 일때 생략 가능 
@@ -67,7 +59,7 @@ function cancleTimer() {
   * 콜백 함수로 전달될 매개변수 
   * IE9 이하에서는 매개변수 전달이 안된다. \(IE 10 이상 지원\)
 
-#### Example
+**Example**
 
 ```javascript
 var intervalID;
@@ -93,22 +85,20 @@ W3C 권장사항에 따라 디스플레이의 주사율과 일치하도록 실�
 
 > `<iframe>` 에서는 requestAnimationFrame\(\) 의 호출이 멈출수 있습니다.
 
-### Syntax
-
 ```javascript
 [window.]requestAnimationFrame(callback);
 ```
 
-### Polyfill
+**Polyfill**
 
 브라우저 별로 다를 수가 있으니 아래 구문으로 사용을 권한다.
 
 ```javascript
-const reqAnimate = window.requestAnimationFrame 
-      || window.webkitRequestAnimationFrame 
-      || window.mozRequestAnimationFrame 
-      || window.oRequestAnimationFrame 
-      || window.msRequestAnimationFrame 
+const reqAnimate = window.requestAnimationFrame
+      || window.webkitRequestAnimationFrame
+      || window.mozRequestAnimationFrame
+      || window.oRequestAnimationFrame
+      || window.msRequestAnimationFrame
       || ((callback) => {
         window.setTimeout(callback, 1000 / 60);
       });

@@ -2,24 +2,22 @@
 
 ## in
 
-#### Description
+**Description**
 
 `in` 연산자는 명시된 속성이 객체에 존재하면 `true` 를 반환합니다.
 
-#### Syntax
+**Syntax**
 
 ```javascript
 속성 in 객체명
 ```
-
-##### Parameters 
 
 * 속성
   * 속성의 이름이나 배열의 인덱스를 뜻하는 문자열 또는 수의 값입니다.
 * 객체명
   * 객체의 명칭
 
-#### Example 
+**Example**
 
 ```javascript
 var arrayObj = ['a', 'b', 'c'];
@@ -50,24 +48,22 @@ console.log('toString' in {});     // true
 
 ## instanceof
 
-#### Description
+**Description**
 
 `instanceof` 연산자는 생성자의 `prototype` 속성과 묶인 프로토타입을 가진 오브젝트인지 확인합니다.
 
-#### Syntax
+**Syntax**
 
 ```javascript
 object instanceof constructor
 ```
-
-##### Parameters
 
 * object
   * 테스트 대상인 오브젝트
 * constructor
   * 테스트할 함수 \(프로토타입 오브젝트\)
 
-#### Example
+**Example**
 
 ```javascript
 function C() {};
@@ -92,7 +88,7 @@ console.log(auto instanceof Object);  // true
 
 ## typeof
 
-#### Description
+**Description**
 
 `typeof` 연산자는 피연산자 타입을 가르키는 문자열을 반환합니다.
 
@@ -107,13 +103,13 @@ console.log(auto instanceof Object);  // true
 | Function Object | "function" |
 | other Object | "object" |
 
-#### Syntax
+**Syntax**
 
 ```javascript
 typeof 피연산자
 ```
 
-#### Example
+**Example**
 
 ```javascript
 console.log(typeof 100)                  // number
@@ -126,24 +122,22 @@ console.log(typeof function foo() {})    // function
 
 ## delete
 
-#### Description
+**Description**
 
 `delete` 연산자는 오브젝트의 속성을 삭제한다.
 
-#### Syntax
+**Syntax**
 
 ```javascript
 delete object[.property]
 ```
-
-##### Parameters
 
 * object
   * 오브젝트의 이름 또는 오브젝트의 표현식
 * property
   * 삭제하고자 하는 속성
 
-#### Example
+**Example**
 
 ```javascript
 var Employee = {
@@ -160,9 +154,7 @@ console.log(delete Employee.salary);   // true
 ```
 
 :::tip `delete`연산자의 사용시 유의사항.
-
 * 존재하지 않는 속성을 삭제하려고 하면 아무 작업 없이 `true`를 반환
 * 오브젝트에 프로토타입 체인과 같은 속성이 있다면 `delete`로 삭제 후에 프로토타입 체인 프로퍼티 사용가능
 * `var`로 선언된 프로퍼티는 삭제 불가
-
 :::

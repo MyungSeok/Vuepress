@@ -22,9 +22,10 @@ async(1, function () {
 
 `Promise` 패턴은 ES5 환경에서 일부 브라우저에서 사용 가능하며 ES6 에 정식 스팩에 포함되었다.
 
-> ### 브라우저별 지원 여부
-> IE 는 사용 불가하여 Polyfill 코드를 사용하여 구현해야 함  
-> Chrome, FF 는 _**Full Support**_
+:::tip 브라우저별 지원 여부
+IE 는 사용 불가하여 Polyfill 코드를 사용하여 구현해야 함  
+Chrome, FF 는 _**Full Support**_
+:::
 
 아래는 HTML5Rocks 에서 보이고 있는 프로미스의 예제 이다.
 
@@ -42,8 +43,6 @@ asyncThing1()
 
 ## 사용
 
-### Syntax
-
 ```javascript
 new Promise(function (resolve, reject) {
   /* statement */
@@ -52,16 +51,14 @@ new Promise(function (resolve, reject) {
 
 실행시 `Promise` 구문에서 실행한 익명함수의 반환값은 무시된다.
 
-#### Parameters
-
 * resolve
   * 성공시 전달되는 인수 (함수 혹은 변수)
 * reject
   * 실패시 전달되는 인수 (함수 혹은 변수)
 
-### Example
+**Example**
 
-#### Case 1 : 기초
+### Case 1 : 기초
 
 Promise 의 기본적인 선언은 아래와 같다.
 
@@ -107,7 +104,7 @@ _promise(true)
 실행부에서는 `_promise()` 를 실행하면 Promise 의 새로운 객체가 반환되고 정상적으로 비동기 작업이 수행됬을때 `then` 을 호출하는 API 가 존재한다.  
 `then` 은 성공시 첫번째 파라메터를 수행하며, 실패시 두번째 파라메터를 수행하게 된다.
 
-#### Case 2 : 예외처리
+### Case 2 : 예외처리
 
 Javascript 함수의 체이닝으로 연결된 형태에서 비동기 작업이 중간에 에러날 경우 다음과 같이 처리 가능하다.
 
@@ -122,7 +119,7 @@ _promise(true)
   })
 ```
 
-#### Case 3 : 모든 Promise 를 완료하고 실행
+### Case 3 : 모든 Promise 를 완료하고 실행
 
 ```javascript
 var promise1 = new Promise(function (resolve, reject) {
@@ -180,7 +177,7 @@ loadData()
 ```
 
 :::tip 참고자료
-<https://programmingsummaries.tistory.com/325>
-<https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise>
+<https://programmingsummaries.tistory.com/325>  
+<https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise>  
 <https://joshua1988.github.io/web-development/javascript/promise-for-beginners/>
 :::

@@ -121,9 +121,9 @@ app.use('/birds', birds);
 
 `/birds` 및 `/birds/about` 에 대한 요청을 처리 가능하며 해당 라우트에 대한 특정 미들웨어 함수인 timeLog 를 호출
 
-> Express 는 HTTP 메소드에 해당하는 다음과 같은 라우팅 메소드를 지원한다.
-
-> `get`, `post`, `put`, `head`, `delete`, `options`, `trace`, `copy`, `lock`, `mkcol`, `move`, `purge`, `propfind`, `proppatch`, `unlock`, `report`, `mkactivity`, `checkout`, `merge`, `m-search`, `notify`, `subscribe`, `unsubscribe`, `patch`, `search`및 `connect`.
+:::tip Express 는 HTTP 메소드에 해당하는 다음과 같은 라우팅 메소드를 지원한다.
+`get`, `post`, `put`, `head`, `delete`, `options`, `trace`, `copy`, `lock`, `mkcol`, `move`, `purge`, `propfind`, `proppatch`, `unlock`, `report`, `mkactivity`, `checkout`, `merge`, `m-search`, `notify`, `subscribe`, `unsubscribe`, `patch`, `search`및 `connect`.
+:::
 
 ### Path
 

@@ -17,8 +17,9 @@ const server = http.createServer((request, response) => {
 서버로 오는 모든 HTTP 요청 마다 `createServer` 에 전달된 함수가 한번씩 호출된다.  
 `createServer` 가 반환한 `Server` 객체는 `EventEmitter` 이고 `server` 객체를 생성하고 리스너를 추가하는 축약 문법이다.
 
-> [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) 이란 ?  
-> 이벤트 모듈의 의해 정의 되며 새로운 이벤트가 추가되거나 삭제될 때 이벤트를 내보냅니다.
+:::tip EventEmitter 이란 ?  
+[EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter)는 이벤트 모듈의 의해 정의 되며 새로운 이벤트가 추가되거나 삭제될 때 이벤트를 내보냅니다.
+:::
 
 ```javascript
 const http = require('http');
@@ -41,10 +42,11 @@ const {method, url} = request;
 
 `request` 객체는 IncomingMessage 의 인스턴스이다.  
 
-> `IncomingMessage Class` 의 특징
-> * HTTP 에 의해 생성된다.
-> * 특정 객체의 첫번째 변수로 전달되는 인수 (`SERVER` `http.ClientRequest` `request event` `response event`)
-> * 응답상태 및 헤더, 데이터 등을 액세스 하는데 사용 한다.
+:::tip `IncomingMessage Class` 의 특징
+* HTTP 에 의해 생성된다.
+* 특정 객체의 첫번째 변수로 전달되는 인수 (`SERVER` `http.ClientRequest` `request event` `response event`)
+* 응답상태 및 헤더, 데이터 등을 액세스 하는데 사용 한다.
+:::
 
 헤더 또한 `request` 객체에서 얻어온다.
 
@@ -53,10 +55,10 @@ const {headers} = request;
 const userAgent  = header['user-agent'];
 ```
 
-> Tips
->
-> 클라이언트가 설정한 헤더 프로퍼티는 대소문자 구분없이 _**소문자로만 표현**_ 된다.  
-> 일부 헤더 정보를 반복해서 설정하면 overwrite 하거나 csv 형태로 구성될 수 있다. 이런 경우에는 `rawHeaders` 를 사용할 수 있다.
+:::tip
+클라이언트가 설정한 헤더 프로퍼티는 대소문자 구분없이 _**소문자로만 표현**_ 된다.  
+일부 헤더 정보를 반복해서 설정하면 overwrite 하거나 csv 형태로 구성될 수 있다. 이런 경우에는 `rawHeaders` 를 사용할 수 있다.
+:::
 
 ### Request Body 의 처리
 
@@ -254,7 +256,7 @@ http.createServer((request, response) => {
 }).listen(8080);
 ```
 
-> 위의 방법으로 라우팅을 하고 있지만 [`express`](/book/02.-front-end/04.-framework/node-js/express.html) 프레임워크나 [`router`](/book/02.-front-end/04.-framework/node-js/express.html) 라이브러리릉 통해서 처리도 가능하다.  
+> 위의 방법으로 라우팅을 하고 있지만 `express`프레임워크나 `router`라이브러리릉 통해서 처리도 가능하다.  
 
 `request` 객체는 [`ReadableStream`](https://nodejs.org/api/stream.html#stream_class_stream_readable) 이고 `response` 객체는 [`WriteableStream`](https://nodejs.org/api/stream.html#stream_class_stream_writable) 이므로 [`pipe`](https://nodejs.org/api/stream.html#stream_readable_pipe_destination_options) 를 사용할 수 있다.
 

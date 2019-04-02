@@ -4,8 +4,6 @@
 
 요소의 크기와 요소의 viewport 에서의 상대적인 위치 정보를 가져옵니다.
 
-### Syntax
-
 ```javascript
 var domRect = element.getBoundingClientRect();
 ```

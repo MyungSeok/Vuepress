@@ -10,13 +10,11 @@ ES6 에서 나온 원시 데이터형 ([Primitive DataType](https://developer.mo
 * Object
 * _**Symbol**_
 
-## Syntax
+**Syntax**
 
 ```javascript
 Symbol([description]);
 ```
-
-### Parameter
 
 * description
   * 선택적 (Optional) 문자열로 디버깅에 사용할 수 있는 설명이다.
@@ -80,6 +78,6 @@ Symbol.iterator
 * Symbol.iterator
   * 이터러블한 객체를 정의하기 위한 심볼
 * Symbol.hasInstance
-  * [`instanceof`](/book/02.-front-end/03.-javascript/02.-references/operator-and-expression.html?h=instanceof) 를 확장하기 위한 심볼
+  * `instanceof` 를 확장하기 위한 심볼
 * Symbol.match
-  * [`String.prototype.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) 메소드의 확장
+  * `String.prototype.match` 메소드의 확장
