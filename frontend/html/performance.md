@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Performance
 
 ## HTML 랜더링 순서

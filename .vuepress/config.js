@@ -17,14 +17,14 @@ module.exports = {
         items: [
           { text: 'HTML', 
             items: [
-              { text: 'General', 'link': '/frontend/html/general' },
+              { text: 'General', 'link': '/frontend/html/general/' },
               { text: 'Performance', 'link': '/frontend/html/performance' },
               { text: 'Canvas', 'link': '/frontend/html/canvas' }
             ]
           },
           { text: 'CSS', 
             items: [
-              { text: 'Tips', 'link': '' }
+              { text: 'Tips', 'link': '/frontend/css' }
             ]
           },
           { text: 'Javascript', 
@@ -146,6 +146,10 @@ module.exports = {
         }, 
         '/general/tips'
       ], 
+      '/frontend/html/general/': [
+        '',
+        '/frontend/html/general/dtd'
+      ],
       '/frontend/javascript/general/': [
         '', 
         '/frontend/javascript/general/design-pattern'
