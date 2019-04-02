@@ -112,7 +112,7 @@ if (typeof Object.assign != 'function') {
 
 ### Syntax
 
-```text
+```javascript
 Object.hasOwnProperty(prop)
 ```
 

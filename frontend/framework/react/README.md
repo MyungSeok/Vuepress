@@ -63,7 +63,7 @@ _**Virtual DOM 은 DOM fragment 를 관리하는 과정을 수동으로 하나�
 
 이는 `this` 객체를 초기화 해주지 않기 때문이다.
 
-```es6
+```javascript
 class Myclass extends React.Component {
   constructor() {
     console.log(this);   // Error : 'this' is not allowed before
@@ -76,7 +76,7 @@ class Myclass extends React.Component {
 
 `super()` 를 호출할때 `props` 인자를 넘겨주면 constructor 안에서 `this.props` 를 접근 가능하게 구성해준다.
 
-```es6
+```javascript
 class Myclass extends React.Component {
   constructor(props) {
     super(props);
