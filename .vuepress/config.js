@@ -70,7 +70,7 @@ module.exports = {
             text: 'Network', 
             items: [
               { text: 'HTTP', link: '/backend/network/http/' },
-              { text: 'Security', link: '/backend/network/security' },
+              { text: 'Security', link: '/backend/network/security/' },
               { text: 'Etc', link: '/backend/network/etc' }
             ]
           }, 
@@ -260,6 +260,10 @@ module.exports = {
         '/backend/network/http/http2.0',
         '/backend/network/http/rest',
         '/backend/network/http/servlet'
+      ],
+      '/backend/network/security/': [
+        '', 
+        '/backend/network/security/cookie'
       ],
       '/backend/framework/spring/': [
         '',
