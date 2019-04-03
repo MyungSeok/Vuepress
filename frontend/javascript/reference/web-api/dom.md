@@ -30,6 +30,13 @@ document.onreadystatechange = function () {
 };
 ```
 
+|readyState|Description|
+|:--:|:--|
+|uninitialized|아직 로딩이 시작되지 않음|
+|loading|로딩중|
+|interactive|어느정도 로드가 되었으며 사용자가 상호작용 할 수 있음|
+|complete|로딩 완료|
+
 **jQuery Library 사용**
 
 ```javascript
@@ -37,13 +44,6 @@ $(document).ready(function () {
     /* statement */
 });
 ```
-
-|readyState|Description|
-|:--:|:--|
-|uninitialized|아직 로딩이 시작되지 않음|
-|loading|로딩중|
-|interactive|어느정도 로드가 되었으며 사용자가 상호작용 할 수 있음|
-|complete|로딩 완료|
 
 ### window.ready
 
@@ -81,6 +81,15 @@ $(window).load(function () {
 });
 ```
 
+**로딩 순서**
+
+@flowstart
+stage1=>operation: document.ready
+stage2=>operation: <body onload> or window.onload
+
+stage1(right)->stage2
+@flowend
+
 ### Object onload
 
 object 가 로드 되었을 때 발생 합니다.  
@@ -109,7 +118,7 @@ object.addEventListener('load', script);
 | 이벤트 버블링 | NO |
 | 중단 가능 여부 | NO |
 | 이벤트 유형 | UI 생성시 |
-| 지원 태그 | `<body>`, `<frame>`, `<iframe>`, `<img>`, `<input type="image">`, `<link>`, `<script>`, `<style>`  |
+| 지원 태그 | `<body>` `<script>` `<style>` `<link>` <br/> `<frame>` `<iframe>` `<img>` `<input type="image">`|
 | DOM 버전 | Level 2 이벤트 |
 
 :::tip 참고자료

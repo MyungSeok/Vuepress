@@ -5,7 +5,7 @@
 `WindowTimers` 에서 지원하는 타이머 객체로서
 _**자바스크립트 엔진이 일정시간 대기하였다가 UI 큐에 작업을 추가**_ 한다.
 
-> UI 큐에 추가한 작업은 이전에 추가된 작업 대기열 이후에 실행행 될 수 있도록 예정된다.
+> UI 큐에 추가한 작업은 이전에 추가된 작업 대기열 이후에 실행될 수 있도록 예정된다.
 
 ```javascript
 [window.]setTimeout(callback[, delay[, param1[, ... paramN]]]);

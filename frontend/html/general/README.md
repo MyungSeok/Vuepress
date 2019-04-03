@@ -1,4 +1,4 @@
-# General
+# Fundamental
 
 ## 시맨틱 (Semantic) 마크업
 
