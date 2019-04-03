@@ -91,6 +91,7 @@ request.on('error', (error) => {
 ```
 
 ### HTTP 요청 코드 정리
+
 ```javascript
 const http = require('http');
 
@@ -124,7 +125,7 @@ http.createServer((request, response) => {
 상태 코드를 변경 하려면 `statusCode` 프로퍼티를 설정해야 합니다.
 
 ```javascript
-// 리소스를 찾을수 없음 
+// 리소스를 찾을수 없음
 response.statusCode = 404;
 ```
 
@@ -197,7 +198,7 @@ http.createServer((request, response) => {
     response.statusCode = 200;
     response.setHeader('Content-Type', 'application/json');
 
-    // 위 두줄의 코드를 한줄로 가능 
+    // 위 두줄의 코드를 한줄로 가능
     // response.writeHead(200, {'Content-Type': 'application/json'});
 
     const responseBody = { headers, method, url, body };
