@@ -230,14 +230,3 @@ class Point extends Discount { ... }
 <https://johngrib.github.io/wiki/static-factory-method-pattern/>  
 <https://mommoo.tistory.com/53>
 :::
-
-## Marker Interface
-
-마커 인터페이스의 특징은 다음과 같다.
-
-* 메서드 선언이 없는 인터페이스이다.
-* 대표적으로는 `Serializable` 과 `Cloneable` 이 있다.
-
-:::tip 참고자료
-<https://programmingfbf7290.tistory.com/entry/안드로이드-마커Marker-인터페이스-어노테이션Annotation-활용>
-:::

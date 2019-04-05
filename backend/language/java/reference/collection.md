@@ -2,7 +2,7 @@
 
 ## 자바 콜렉션 프레임워크 (JCF) 란 ?
 
-JCF (Java Collection Framework) 는 Java 에서 데이터를 저장하는 기본적인 자료구조들을 한곳에 모아 관리하고 편하게 사용하기 위해서 제공하는 것  
+JCF (Java Collection Framework) 는 Java 에서 데이터를 저장하는 기본적인 자료구조들을 한곳에 모아 관리하고 편하게 사용하기 위해서 제공하는 통일된 아키텍처이다.
 JCF 의 상속 구조이며 사용용도에 따랄 `List` `Set` `Map` 으로 나뉜다.
 
 모든 콜렉션의 상위 인터페이스로써 콜렉션들이 갖고 있는 핵심 메소드를 선언 (add, contain, isEmpty, remove, size, iterator ...)

@@ -85,17 +85,26 @@ Server 에서 데이터를 완전히 받을때 까지 걸리는 시간
   * 모든 바이너리 타입
   * application/octet-stream, application/pkcs12, application/vnd.mspowerpoint, application/xhtml+xml, application/xml,  application/pdf
 
-## sendRedirect & forward 의 차이점
+## 페이지의 전환 방식
 
 ### sendRedirect
 
 새로운 요청을 작성하여 넘긴다.  
 `forward` 에 비해 느리다.
 
+```java
+response.sendRedirect(url);
+```
+
 ### forward
 
 요청 대상을 새로운 대상으로 전달한다.  
 `sendRedirect` 에 비해 빠르다.
+
+```java
+RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+dispatcher.forward(request, response);
+```
 
 ## Servlet Life Cycle
 
