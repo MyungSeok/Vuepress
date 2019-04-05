@@ -218,6 +218,7 @@ module.exports = {
             '/backend/language/java/general/gc',
             '/backend/language/java/general/oop',
             '/backend/language/java/general/solid',
+            '/backend/language/java/general/enum'
           ]
         },
         {
