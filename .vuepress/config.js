@@ -226,6 +226,7 @@ module.exports = {
           children: [
             '/backend/language/java/reference/class',
             '/backend/language/java/reference/interface',
+            '/backend/language/java/reference/operation',
             '/backend/language/java/reference/collection',
             '/backend/language/java/reference/functional',
             '/backend/language/java/reference/method',
