@@ -75,3 +75,19 @@ sumAll(numbers, n -> n % 2 == 1);
 <http://cyberx.tistory.com/79>
 <https://futurecreator.github.io/2018/08/26/java-8-streams/>
 :::
+
+## 기초
+
+자바의 람다는 익명 클래스와 유사하게 사용되지만 기술적으로는 차이가 있습니다.
+
+* 익명 클래스는 인스턴스를 생성해야 하지만, 함수는 평가될때마다 새로 생성되지 않는다.
+* 함수를 위함 메모리 할당은 Java Heap 영역의 Permanent 영역에 한번 저장된다.
+* 객체는 데이터와 밀접하게 연관해서 동작하는데 반해 함수는 데이터와 분리되어 있다.
+* 상태를 보존하지 않아 여러번 적용해도 결과가 달라지지 않는다. (멱등성)
+* 클래스의 static method 와 유사한 개념이다.
+
+> 멱등성 : 연산의 성질으로 여러번 적용하도 결과가 동일하여 달라지지 않는 성질을 말한다.
+
+:::tip 참고자료
+<https://futurecreator.github.io/2018/07/19/java-lambda-basics/>
+:::

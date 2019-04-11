@@ -198,4 +198,6 @@ Old 영역은 데이터가 가득차면 GC 를 실행한다.
 
 :::tip 참고자료
 <https://d2.naver.com/helloworld/1329>
+<https://yckwon2nd.blogspot.com/2014/04/garbage-collection.html>
+<https://yckwon2nd.blogspot.com/2015/03/java8-permanent.html>
 :::
