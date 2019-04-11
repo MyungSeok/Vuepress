@@ -228,7 +228,6 @@ module.exports = {
             '/backend/language/java/reference/interface',
             '/backend/language/java/reference/operation',
             '/backend/language/java/reference/collection',
-            '/backend/language/java/reference/functional',
             '/backend/language/java/reference/method',
             '/backend/language/java/reference/thread',
           ]
@@ -240,6 +239,14 @@ module.exports = {
             '/backend/language/java/design-pattern/strategy',
             '/backend/language/java/design-pattern/factory-method',
             '/backend/language/java/design-pattern/template-method'
+          ]
+        },
+        {
+          title: 'Java 8', 
+          children: [
+            '/backend/language/java/java8/lamda',
+            '/backend/language/java/java8/stream',
+            '/backend/language/java/java8/optional'
           ]
         },
         {

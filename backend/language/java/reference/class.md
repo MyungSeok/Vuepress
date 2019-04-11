@@ -93,7 +93,7 @@ String name = "one";
 System.out.println(String.format("p1 : %s", name));
 ```
 
-```text
+```md
 p1 : one
 ```
 
@@ -113,7 +113,7 @@ int num = 102;
 System.out.println(String.format("%04d", num));
 ```
 
-```text
+```md
 0102
 ```
 
@@ -132,7 +132,7 @@ System.out.println(String.format("%04d", num));
 
 **Syntax**
 
-```text
+```md
 % [숫자]$ [타입]
 ```
 
@@ -143,11 +143,96 @@ String.format("%2$s %1$s", "1", "2");
 System.out.printf("%1$tY.%1$tm.%1$td %1$tH:%1$tM:%1$tS.%1$tL", new Date().getTime());
 ```
 
-```text
+```md
 2 1
 2014.12.08 15:46:16.270
 ```
 
 :::tip 참고자료
 <https://micropai.tistory.com/48>
+:::
+
+## StringJoiner
+
+문자열을 손쉽게 붙일수 있다.
+
+```java
+String first = "관우";
+String second = "장비";
+String third = "조운";
+String fourth = "황충";
+String fifth = "마초";
+```
+
+**String `+` Operator**
+
+```java
+String 오호대장군 = first + "-" + "second" + "-" + third + "-" + fourth + "-" + fifth;
+System.out.println(오호대장군);
+```
+
+**StringBuffer / StringBuilder**
+
+```java
+StringBuffer sb = new StringBuffer();
+sb.append(first);
+sb.append("-");
+sb.append(second);
+sb.append("-");
+sb.append(third);
+sb.append("-");
+sb.append(fourth);
+sb.append("-");
+sb.append(fifth);
+sb.append("-");
+
+String 오호대장군 = sb.toString();
+System.out.println(오호대장군);
+```
+
+**StringJoiner**
+
+```java
+StringJoiner sj = new StringJoiner("-");
+
+sj.add(first);
+sj.add(second);
+sj.add(third);
+sj.add(fourth);
+sj.add(fifth);
+
+String 오호대장군 = sj.toString();
+System.out.println(오호대장군);
+```
+
+**StringJoiner 로 `prefix` 와 `suffix` 사용하기**
+
+```java
+StringJoiner sj = new StringJoiner("-", "[", "]");
+
+sj.add(first);
+sj.add(second);
+sj.add(third);
+sj.add(fourth);
+sj.add(fifth);
+
+String 오호대장군 = sj.toString();
+System.out.println(오호대장군);
+```
+
+```md
+[관우-장비-조운-황충-마초]
+```
+
+**`stream` 사용하기**
+
+```java
+List<String> 장군들 = Arrays.asList(first, second, third, fourth, fifth);
+
+String 오호대장군 = 장군들.stream().collect(Collectors.joining("-", "[", "]"));
+System.out.println(오호대장군);
+```
+
+:::tip 참고자료
+<https://futurecreator.github.io/2018/06/02/java-string-joiner/>
 :::

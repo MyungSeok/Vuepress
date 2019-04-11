@@ -1,4 +1,4 @@
-# GC : Garbege Collector
+# GC (Garbege Collector)
 
 ## 가비지 객체 선정
 

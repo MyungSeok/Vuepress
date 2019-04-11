@@ -1,10 +1,8 @@
-# Functional
+# Lamda
 
-JDK 8 (Java Development Kit 8) 에서 제공하는 새로운 인터페이스들과 기능들을 다룬다.
+JDK 8 (Java Development Kit 8) 에서 제공하는 람다 표현식 (Lamda Expression) 을 다룬다.
 
-## 람다 표현식 (Lamda Expression)
-
-Java 8 에서 지원하는 람다 표현식은 고차함수를 이용하여 더 쉽게 프로그래밍 할 수 있다.
+람다 표현식은 고차함수를 이용하여 더 쉽게 프로그래밍 할 수 있다.
 
 **Exmaple**
 
@@ -70,10 +68,10 @@ sumAll(numbers, n -> true);
 sumAll(numbers, n -> n % 2 == 0);
 // 홀수만 더함
 sumAll(numbers, n -> n % 2 == 1);
-
 ```
 
 :::tip 참고자료
 <http://cyberx.tistory.com/55>  
 <http://cyberx.tistory.com/79>
+<https://futurecreator.github.io/2018/08/26/java-8-streams/>
 :::
