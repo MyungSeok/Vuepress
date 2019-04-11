@@ -31,17 +31,80 @@ Java 는 구조적으로 다중 상속이 불가능 하다. 각 클래스는 하
 |접근 제어자|`public`|`private`, `protected`, `public`|
 |변수|기본적으로 `final` 로써 최종 변수임|비 최종 변수를 포함할 수 있음|
 
-> #### Java 8 이전까지는 Interface 안에 static 메서드를 선언할 수 없었다.
-> 이는 static 클래스인 경우에는 클래스 자체가 JVM 기동하면서 바로 로딩 된다.  
-> Interface 나 Abstract Class 인 경우 클래스가 생성되어진 이후에 해당 객체를 Reference 하게 된다.  
-> 상대적으로 로딩시간이 앞서 있는 static 클래스에 대해서는 interface 나 Abstract 클래스의 구현이 불가하다
-> ### 관련출처
-> <https://groups.google.com/forum/#!topic/ksug/XJAznUUFQl4>
+:::warning Java 8 이전까지는 Interface 안에 static 메서드를 선언할 수 없었다.
+이는 static 클래스인 경우에는 클래스 자체가 JVM 기동하면서 바로 로딩 된다.  
+Interface 나 Abstract Class 인 경우 클래스가 생성되어진 이후에 해당 객체를 Reference 하게 된다.  
+상대적으로 로딩시간이 앞서 있는 static 클래스에 대해서는 interface 나 Abstract 클래스의 구현이 불가하다
+:::
+
+:::tip 참고자료
+<https://groups.google.com/forum/#!topic/ksug/XJAznUUFQl4>
+:::
 
 ## Call By Value & Reference 의 차이
 
 Java 에서 _**Call By Value**_ 를 통한 값 전달 방식은 객체의 복사본이 전달된다는 것을 의미한다.  
 즉 _**원본 데이터에 영향을 주지 않는다.**_ 객체가 참조로 전달되면 이는 실제 객체가 전달되지 않는 _**참조객체의 전달**_ 을 의미한다.
+
+CBV (Call By Value) 와 CBR (Call By Reference) 의 비교예로는 흔희 다음과 같다.
+
+### `equals` 와 `==` 의 차이
+
+문자열 비교에서 흔하게 사용하지만 반환값이 `boolean` 이라는 공통점이 있지만 다음과 같은 차이점이 있다.
+
+* `equals`  
+  * _**메서드**_
+  * 대상의 내용을 비교
+* `==`
+  * _**연산자**_
+  * 대상의 주소값을 비교
+
+```java
+String A = "abc";
+String B = A;
+String C = new String("abc");
+
+System.out.println(A == B); // true
+System.out.println(A == C); // false
+System.out.println(B == C); // false
+
+System.out.println(A.equals(B));  // true
+System.out.println(A.equals(C));  // true
+System.out.println(B.equals(C));  // true
+```
+
+:::tip 참고자료
+<https://kmj1107.tistory.com/entry/JAVA-문자열string-비교-equals와-의-차이점-equals의-반대>
+:::
+
+### `equals` 에서 같음을 정의할 때 hashCode 도 같이 정의해줘야 한다.
+
+객체를 `equals` 메서드로 내용의 같음을 정의하였음에도 불구하고 서로 다른 객체 참조에서 이루어졌을때의 예외처리가 필요한 경우도 있기 때문이다.
+
+즉 다른 부작용이 생길 여지가 있기 때문이다.
+
+```java
+Set<Person> set = new HashSet<>();
+
+Person p1 = new Person("JDK", 27);
+Person p2 = new Person("JDK", 27);
+
+System.out.println("Person 1 : " + p1.hashCode()); // 2018699554
+System.out.println("Person 2 : " + p2.hashCode()); // 1311053135
+
+set.add(p1);
+set.add(p2);
+
+System.out.println(set.size());  // 2
+```
+
+위에서 같은 내용을 가진 `Object` 임에도 불구하고 `Set` 에 2건이 중복으로 입력되었다.
+
+즉 반드시 _**`equals` 로도 같은 객체라면 반드시 hashCode 도 같은 값**_ 이여야만 한다.
+
+:::tip 참고자료
+<https://jeong-pro.tistory.com/172>
+:::
 
 ## Boxing & Unboxing (박싱 & 언방식)
 
