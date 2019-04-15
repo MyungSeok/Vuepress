@@ -1,4 +1,4 @@
-# Spring Boot
+# Boot
 
 ## Spring Boot 기동
 
