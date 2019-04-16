@@ -222,6 +222,13 @@ module.exports = {
           ]
         },
         {
+          title: 'Type',
+          children: [
+            '/backend/language/java/type/enum',
+            '/backend/language/java/type/generic'
+          ]
+        },
+        {
           title: 'Reference Docs',
           children: [
             '/backend/language/java/reference/class',

@@ -7,6 +7,8 @@
 * 메서드 선언이 없는 인터페이스이다.
 * 대표적으로는 `Serializable` 과 `Cloneable` 이 있다.
 
+> 어노테이션으로도 사용가능하다.
+
 :::tip 참고자료
 <https://programmingfbf7290.tistory.com/entry/안드로이드-마커Marker-인터페이스-어노테이션Annotation-활용>
 :::
@@ -15,11 +17,27 @@
 
 클래스가 `Cloneable` 인터페이스를 구현함으로써 `Object.clone()` 메서드가 해당 클래스의 인스턴스에 대한 필드 복사본을 만들수 있음을 나타낸다.
 
-`Cloneable` 인터페이스를 구현하고 있지 않으면 `java.lang.CloneNotSupportedException` 에러가 반환됩니다.
+`Cloneable` 인터페이스에는 `clone` 메소드가 포함되어 있지 않으며 `clone` 인터페이스를 구현한다는 사실만으로도 객체의 복사를 보장할 수 없다.
 
-이 인터페이스에는 `clone` 메소드가 포함되어 있지 않으며 `clone` 인터페이스를 구현한다는 사실만으로도 객체의 복사를 보장할 수 없다.
+이는 `Object` 클래스에 정의되어 있는 아래 메서드를 `public` 으로 재정의 하여 사용해야 한다.
 
-## Map<K, V>
+```java
+protected native Object clone() throws CloneNotSupportedException;
+```
+
+원본 `Object` 클래스의 `clone()` 메서드는 `protected` 메서드이기 때문에 외부 패키지 클래스에서 호출할 수 없다.
+
+:::tip 참고자료
+<https://gyrfalcon.tistory.com/entry/Java-Tip-clone과-Cloneable>
+:::
+
+## Map
+
+**Spac**
+
+```java
+Interface Map <K, V>
+```
 
 **Type Parameters**
 
@@ -31,6 +49,10 @@
 **Implementing Classes**
 
 `HashMap` `HashTable` `EnumMap` `ConcurrentHashMap` `TreeMap` `WeakHashMap`
+
+**Since**
+
+[1.2](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)
 
 ---
 
@@ -46,7 +68,7 @@
 
 **Since**
 
-1.7
+[1.7](https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html)
 
 ---
 
