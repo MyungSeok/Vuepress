@@ -55,7 +55,7 @@ module.exports = {
           {
             text: 'Language', 
             items: [
-              { text: 'JAVA', link: '/backend/language/java/' },
+              { text: 'JAVA', link: '/backend/language/java/general/fundamental' },
               { text: 'PHP', link: '/backend/language/php/' },
             ]
           }, 
@@ -212,13 +212,13 @@ module.exports = {
         {
           title: 'General',
           children: [
+            '/backend/language/java/general/fundamental',
             '/backend/language/java/general/jpa',
             '/backend/language/java/general/ejb',
             '/backend/language/java/general/jvm',
             '/backend/language/java/general/gc',
             '/backend/language/java/general/oop',
-            '/backend/language/java/general/solid',
-            '/backend/language/java/general/enum'
+            '/backend/language/java/general/solid'
           ]
         },
         {

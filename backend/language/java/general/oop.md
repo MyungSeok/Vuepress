@@ -1,4 +1,4 @@
-# 객체 지향 프로그래밍 (OOP)
+# Object Oriented Programming
 
 객체 지향 프로그래밍 (OOP : Object Oriented Programming) 는 프로그램이 더 나은 방향으로 나아가기 위한 개발 방법론으로 대표적으로는 다음과 같은 장점을 예를 들수 있다.
 

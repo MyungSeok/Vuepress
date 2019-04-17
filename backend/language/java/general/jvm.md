@@ -1,4 +1,4 @@
-# JVM (Java Vertual Machine)
+# Java Vertual Machine
 
 프로그램을 실행하기 위해 물리적 머신 (컴퓨터) 과 유사하게 만든 머신을 소프트웨어로 구현한 것으로  
 실제로 _**Java Byte Code 를 실행할 수 있는 프로세스 가상 머신**_ 이다.

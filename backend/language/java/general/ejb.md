@@ -1,4 +1,4 @@
-# EJB (Enterprise Java Beans)
+# Enterprise Java Beans
 
 ## 엔터프라이즈 자바 빈즈 란 ?
 
