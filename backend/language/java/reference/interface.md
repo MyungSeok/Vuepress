@@ -27,6 +27,11 @@ protected native Object clone() throws CloneNotSupportedException;
 
 원본 `Object` 클래스의 `clone()` 메서드는 `protected` 메서드이기 때문에 외부 패키지 클래스에서 호출할 수 없다.
 
+::: tip 배열의 `clone` 메서드
+이와 예외적으로 배열의 `clone` 은 런타임 타입과 컴파일시 타입 모두가 원본 배열과 동일한 배열을 반환한다.  
+사실상 `clone` 메서드를 완벽하게 사용하는 _**유일한 예**_ 이다.
+:::
+
 :::tip 참고자료
 <https://gyrfalcon.tistory.com/entry/Java-Tip-clone과-Cloneable>
 :::

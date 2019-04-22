@@ -11,7 +11,7 @@
 
 * bean factory 를 확장한 IoC 컨테이너
 
-## Container (IoC Container)
+## Bean Container (IoC Container)
 
 * 객체를 관리하는 컨테이너로써 컨테이너에 객체를 담아두고 필요할 때에 컨테이너에서 객체를 가져와 사용할 수 있도록 한다.
 * IoC 방식으로 Bean 을 관리한다는 의미에서 Bean Factory 나 Application Context 를 가르킨다.
