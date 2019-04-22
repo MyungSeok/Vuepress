@@ -78,3 +78,18 @@ class Point extends Discount { ... }
 <https://johngrib.github.io/wiki/static-factory-method-pattern/>  
 <https://mommoo.tistory.com/53>
 :::
+
+## `getClass` 란 ?
+
+`Object Class` 의 메서드로서 `Object Class` 를 상속 받는 자식 클래스에서 사용 가능한 메서드 이다.
+
+* getClass()
+  * 객체가 속하는 클래스의 정보를 알아내는 메소드이다.
+* getName()
+  * 클래스의 이름을 리턴하는 메소드이다.
+* getSuperclass()
+  * 슈퍼 클래스의 정보를 리턴하는 메소드이다.
+* getDeclaredFields()
+  * 클래스에 선언되어 있는 필드 정보를 가져오는 메소드이다.
+* getDeclaredMethod()
+  * 클래스에 선언되어 있는 메소드 정보를 가져오는 메소드이다.
