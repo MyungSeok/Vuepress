@@ -93,3 +93,7 @@ class Point extends Discount { ... }
   * 클래스에 선언되어 있는 필드 정보를 가져오는 메소드이다.
 * getDeclaredMethod()
   * 클래스에 선언되어 있는 메소드 정보를 가져오는 메소드이다.
+
+:::tip 참고자료
+<https://zzdd1558.tistory.com/57>
+:::
