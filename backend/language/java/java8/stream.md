@@ -2,4 +2,5 @@
 
 :::tip 참고자료
 <https://futurecreator.github.io/2018/08/26/java-8-streams/>
+<http://iloveulhj.github.io/posts/java/java-stream-api.html>
 :::
