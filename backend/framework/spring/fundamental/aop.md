@@ -132,11 +132,11 @@ AOP 적용 대상 페이지를 호출하면 다음과 같이 로그가 남는다
 [Pointcut] Logger Advice Around Before
 Logger Advice Before
 [Pointcut] Logger Advice Before
-[Pointcut] Logger Advice Around After
-Logger Advice After
 ##
 # 컨트롤러 로직 처리
 ##
+[Pointcut] Logger Advice Around After
+Logger Advice After
 [Pointcut] Logger Advice After
 Returning is index
 Logger Advice AfterReturning
