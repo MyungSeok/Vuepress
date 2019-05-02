@@ -105,3 +105,47 @@ try (MyResource res = new MyResource()){
 :::tip 참고자료
 <https://hyoj.github.io/blog/java/basic/java7-autocloseable.html#method-summary>
 :::
+
+## Comparable
+
+정렬 수행시 기본적으로 적용이 되는 정렬기준 메서드를 정의하는 인터페이스
+
+`Comparable` 인터페이스를 구현시에 `compareTo()` 를 오버라이드 하여 구현한다.
+
+`compareTo()` 메서드의 작성 규칙은 다음과 같다.
+
+* `<` : 음수 반환
+* `>` : 양수 반환
+* `==` : 0 반환
+
+이후 `Arrays.sort()` 혹은 `Collections.sort()` 를 통하여 정렬
+
+```java
+// x좌표가 증가하는 순, x좌표가 같으면 y좌표가 감소하는 순으로 정렬하라.
+class Point implements Comparable<Point> {
+    int x, y;
+
+    @Override
+    public int compareTo(Point p) {
+        if(this.x > p.x) {
+            return 1; // x에 대해서는 오름차순
+        }
+        else if(this.x == p.x) {
+            if(this.y < p.y) { // y에 대해서는 내림차순
+                return 1;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+```java
+List<Point> pointList = new ArrayList<>();
+pointList.add(new Point(x, y));
+Collections.sort(pointList);
+```
+
+:::tip 참고자료
+<https://gmlwjd9405.github.io/2018/09/06/java-comparable-and-comparator.html>
+:::

@@ -110,6 +110,14 @@ module.exports = {
           }, 
         ]
       },
+      { text: 'Books', 
+        items: [
+          {
+            text: 'Effective Java 3rd', 
+            link: '/books/effective_java_3rd'
+          }
+        ]
+      }
     ],
     sidebar: {
       '/about/': [
