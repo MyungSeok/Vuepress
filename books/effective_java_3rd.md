@@ -268,6 +268,228 @@ public enum Elvis {
 
 단, 만들려는 싱글턴이 Enum 외의 클래스를 상속해야 한다면 이 방법은 사용할 수 없다 (열거 타입이 다른 인터페이스를 구현하도록 선언할 수는 있다).
 
+### Item 4 인스턴스화를 막으려거든 `private` 생성자를 사용하라
+
+상속 혹은 정적 메서드로만 사용할 목적으로 만든 클래스들이 있다. (`java.lang.Math`, `java.util.Arrays`)
+
+이들은 인스턴스화 해서 사용할 목적이 아니기 때문에 인스턴스화를 막을 장치가 필요하다.
+
+`private` 생성자를 추가하면 간단하게 인스턴스화를 막을 수 있다.
+
+**인스턴스를 만들 수 없는 유틸리티 클래스**
+
+```java
+public class UtilityClass {
+  private UtilityClass() {
+    throw new AssertionError();
+  }
+  ...
+}
+```
+
+명시적 생성자의 접근제어자가 `private` 이니 클래스 바깥에서는 접근할 수 없다.
+
+반드시 `AssertionError` 를 던질 필요는 없지만 클래스 안에서 실수로라도 생성자를 호출하지 않도록 해준다.
+
+이는 상속을 불가능 하게끔 하는 효과도 동시에 적용된다.
+
+### Item 5 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+
+클래스가 하나 이상의 자원에 의존적이며, 그 자원이 클래스 동작에 영향을 준다면 싱글턴이나 정적 팩토리 메서드 방식의 클래스는 적합하지 않다.
+
+여러 자원을 지원해야 하는 경우에는 인스턴스를 생성할 때 생성자에 필요한 자원을 넘겨주는 방식이다.
+
+```java
+public class SpellChecker {
+  private final Lexicon dictionary;
+
+  public SpellChecker(Lexicon dictionary) {
+    this.dictionary = Objects.requireNonNull(dictionary);
+  }
+
+  public boolean isValid(String word) { ... }
+  public List<String> suggestions(String typo) { ... }
+}
+```
+
+이 외에도 생성자에 자원 팩토리를 넘겨주는 방식이 있다.
+
+팩토리란 호출할 때 마다 특정 타입의 인스턴스를 반복해서 만들어주는 객체를 말한다. (Factory Method Pattern)
+
+이 팩토리 자원을 의존 객체에 주입시켜 사용하면 유연성 및 재사용성을 크게 개선시키는 효과가 있다.
+
+### Item 6 불필요한 객체 생성을 피하라
+
+성능 개선에 있어 객체 하나를 재사용하는 편이 나을때가 많다.
+
+**안티 패턴**
+
+```java
+String str = new String("Bikini");
+```
+
+**권장 패턴**
+
+```java
+String str = "Bikini";
+```
+
+생성자 대신 정적 팩터리 메서드를 제공하는 불변 클래스에서는 정적 팩터리 메서드를 사용해 불필요한 객체 생성을 피할 수 있다.
+
+예를 들면 `Boolean(String)` 생성자 대신 `Boolean.valueOf(String)` 팩터리 메서드를 사용하는 것이 좋다.
+
+생성자는 호출할 때마다 새로운 객체를 만들지만, 팩터리 메서드는 전혀 그렇지 않다.  
+불변 객체 뿐만이 아니라 가변 객체라고 해도 사용 중에 변경되지 않을 것임을 안다면 재사용할 수 있다.
+
+불필요한 객체를 만드는 가장 큰 예는 **오토박싱** 이다.
+
+**오토박싱 (Auto Boxing) 의 잘못된 예**
+
+```java
+private static long sum() {
+  Long sum = 0L;
+
+  for (long i = 0; i <= Integer.MAX_VALUE; i++) {
+    sum += i;
+  }
+
+  return sum;
+}
+```
+
+위 코드에서는 `sum` 변수의 타입을 오토박싱 하는 과정에서 Long 인스턴스가 **231** 개나 만들어진다.
+
+즉 박싱된 기본타입 보다는 기본타입을 사용하고 의도치 않는 오토박싱이 숨어들지 않도록 주의하도록 한다.
+
+### Item 7 다 쓴 객체 참조를 해제하라
+
+객체 참조의 해제는 가비지 컬렉션 (GC : Garbege Collection) 과의 밀접한 영향이 있다.
+
+```java
+public class Stack {
+  private Object[] elements;
+  private int size = 0;
+  private static final int DEFAULT_INITIAL_CAPACITY = 16;
+  
+  public Stack() {
+    elements = new Object[DEFAULT_INITIAL_CAPACITY]; 
+  }
+  
+  public void push(Object e) {
+    ensureCapacity();
+    elements[size++] = e;
+  }
+  public Object pop() {
+    if (size == 0) throw new EmptyStackException();
+    return elements[--size];
+  }
+
+  /**
+  * 원소를 위한 공간을 적어도 하나 이상 확보한다.
+  * 배열 크기를 늘려야 할 때마다 대략 두 배씩 늘린다. */
+  private void ensureCapacity() {
+    if (elements.length == size) elements = Arrays.copyOf(elements, 2 * size + 1);
+  }
+}
+```
+
+위 코드를 활용하여 사용하다보면 `OutOfMemoryError` 를 일으켜 프로그램이 예기치 않게 종료되기도 한다.
+
+이는 `elements` 배열의 활성 영역 밖의 참조들이 다 사용한 참조를 (obsolete reference) 를 여전히 가지고 있기 때문이다.
+
+위 코드를 해결하기 위해서는 아래와 같이 참조를 해제 시켜줘야 한다.
+
+```java
+public Object pop() {
+  if (size == 0) throw new EmptyStackException();
+
+  Object result = elements[-size];
+  
+  elements[size] = null;  // 사용이 완료된 참조 객체 해제
+
+  return result;
+}
+```
+
+사용이 완료된 참조객체를 `null` 처리하면 다른 이점도 따라온다. null 처리한 참조를 실수로 참조하려하면 `NullPointerException` 을 던지며 종료된다.
+
+사용이 완료된 참조 객체를 해제하는 가장 좋은 방법은 그 참조 변수를 담은 변수를 유효범위 (scope) 밖으로 밀어내는 것이다.
+
+다른 방법은 캐시성 데이터를 사용하는 경우에는 `WeakHashMap` 을 사용하여 캐시를 만드는 법이다.  
+단 이방법은 제한적이기 때문에 특정한 상황에서만 유효하다.
+
+### Item 8 `finalizer` 와 `cleaner` 사용을 피하라
+
+자바에서 제공하는 객체 소멸자 `finalizer` 와 `cleaner` 는 되도록이면 지양한다.
+
+`finalizer` 는 예측이 불가능 하며 `cleaner` 는 `finalizer` 에 비해 덜 위험 하지만 여전히 예측이 불가능 하며 느리며 불편하다.
+
+이 두 객체 소멸자는 수행을 보장할 수 없으며 수행이 된다해도 수행시간을 예측할 수 없기 때문에 얼마나 시간적인 소요가 되는지 알 수 없다.
+
+이 두 소멸자에 대한 대안은 `AutoCloseable` 을 구현해주고 클라이언트에 인스턴스를 다 쓰고 나면 `close` 메서드를 호출하면 된다.
+
+`close` 메서드는 이 객체가 더이상 유효하지 않음을 말해주며 이 객체가 닫힌후에 불렀다면 `IllegalStateException` 을 던질 것입니다.
+
+### Item 9 `try-finally` 보다는 `try-with-resources` 를 사용하라
+
+자바 라이브러리에서는 `close` 메서드를 호출하여 직접 닫아줘야 하는 자원이 많다.
+
+`InputStream` `OutputStream` `java.sql.Connection` 등이 대표적인 예이다.
+
+전통적으로 자원이 제대로 닫힘을 보장하는 수단으로 `try-finally` 이 사용되었다.  
+이는 예외가 발생되거나 혹은 메서드에서 반환되는 경우를 포함한다.
+
+이는 두개 이상의 자원 사용시에 발생할수 있는 맹점을 가지고 있는데 다음과 같다.
+
+**자원이 두개 이상일 경우**
+
+```java
+static void copy(String src, String dst) throws IOException {
+  InputStream in = new FileInputStream(src);
+
+  try {
+    OutputStream out = new FileOutputStream(dst);
+
+    try {
+      byte[] buf = new byte[BUFFER_SIZE];
+      int n;
+      while ((n = in.read(buf)) >= 0) out.write(buf, 0, n);
+    } finally {
+      out.close();
+    }
+  } finally {
+    in.close();
+  }
+}
+```
+
+위 코드에서 입력 기기에 문제가 생긴다면 `firstLineOfFile` 메서드 안에 readLine 메서드가 예외를 던지고 두번째 예외가 첫번째 예외를 집어 삼킨다.  
+이는 실제 디버깅 상황을 몹시 어렵게 한다. 또한 케이스 별로 오류를 남기려 수정하면 코드가 너무 지저분해져서 가독성이 떨어진다.
+
+이러한 문제점을 해결하기 위하여 Java 7 에서는 `try-with-resources` 를 지원해 해결하였다.
+
+이를 사용하려면 `AutoCloseable` 인터페이스를 사용하여 구현해야 한다.  
+다음을 이를 사용한 예이다.
+
+**`try-with-resources` 사용**
+
+```java
+static void copy(String src, String dst) throws IOException {
+  try (
+    InputStream in = new FileInputStream(src);
+    OutputStream out = new FileOutputStream(dst)
+  ) {
+    byte[] buf = new byte[BUFFER_SIZE];
+    int n;
+    while ((n = in.read(buf)) >= 0) out.write(buf, 0, n); 
+  }
+}
+```
+
+위 코드는 가독성이 뛰어날 뿐만 아니라 문제를 진단 하기도 훨씬 수월하다.
+
+반드시 회수해야 할 자원을 다룰 때는 `try-with-resources` 를 사용하여 작성하도록 한다.
+
 ## Chapter 3 모든 객체의 공동 메서드
 
 ### Item 13 `clone` 재정의는 주의해서 진행 하라
@@ -322,4 +544,3 @@ protected final Object clone() throws CloneNotSuppertedException {
 즉 프로그램 요소의 접근성은 가능한 한 최소한의 `public` API 설계를 해야 한다.
 
 ### Item 16 `public` 클래스에서는 `public` 필드가 아닌 접근자 메서드를 사용하라
-
