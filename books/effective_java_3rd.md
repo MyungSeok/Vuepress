@@ -28,7 +28,13 @@ sidebar: auto
 
 ## Chapter 2 객체 생성과 파괴
 
-### Item 1 생성자대신 정적 팩터리 메서드를 고려하라
+객체를 만들어야 할 때와 만들지 말아야 할 때를 구분하는 법
+
+올바른 객체 생성 방법과 불피룡한 생성을 피하는 방법
+
+제때 소멸됨을 보장하고, 소멸전에 수행해야 할 작업에 대해서 관리하는 요령을 알아본다.
+
+### Item 1 생성자 대신 정적 팩터리 메서드를 고려하라
 
 클라이언트가 클래스 인스턴스를 얻는 수단중에 정적 팩터리 메서드를 사용하는 방법이 있는데 간단한 코드는 다음과 같다.
 
@@ -635,9 +641,75 @@ protected final Object clone() throws CloneNotSuppertedException {
 
 ### Item 14 Comparable 구현할지 고려하라
 
-@TODO
+`Comparable` 인터페이스의 `compareTo` 를 알아보자.
+
+`compareTo` 는 `Object` 메서드가 아니며 단순 동치성 비교에 순서까지 비교할 수 있으며 제네릭 하다.
+
+그래서 `Comparable` 을 구현한 객체들의 배열은 다음처럼 손쉽게 정렬할 수 있다.
+
+```java
+Arrays.sort(arr);
+```
+
+검색, 극단값 계산, 자동정렬 되는 컬렉션 관리도 쉽게 가능하다.
+
+다음은 명령줄 인수들을 중복을 제거하고 알파벳 순으로 출력한다.
+
+`String` 이 `Comparable` 을 구현한 덕분이다.
+
+**명령줄 인수들을 중복을 제거하고 알파벳 순으로 출력**
+
+```java
+public class WordList {
+  public static void main(String[] args) {
+    Set<String> set = new TreeSet<>();
+    Collections.addAll(set, args);
+    System.out.println(set);
+  }
+}
+```
+
+자바 플랫폼의 모든 값 클래스와 열거 타입이 `Comparable` 을 구현했다.  
+알파벳, 숫자, 연대와 같이 순서가 명확한 값 클래스를 작성한다면 반드시 Comparable 인터페이스를 구현하자.
+
+`compareTo` 메서드의 일반 규약은 다음과 같다.
+
+* 원본 객체와 주어진 객체의 순서를 비교한다.
+* 주어진 객체가 작으면 음의정수, 같으면 0, 크면 양의 정수를 반환한다.
+* 비교할수 없는 타입의 객체가 주어지면 `ClassCastException` 을 반환한다.
+* 필드값을 비교해야 할 때는 `<` 나 `>` 는 사용하지 말고 박싱된 기본 타입 클래스가 제공하는 compare 메서드나 `Comparator` 인터페이스가 제공하는 비교자 생성 메서드를 사용하자
+
+**객체 참조 필드가 하나일때 비교자**
+
+```java
+public final class CaseInsensitiveString implements Comparable <CaseInsensitiveString> {
+  public int compareTo (CaseInsensitiveString cis) {
+    return String.CASE_INSENSITIVE_ORDER.compare(s,cis.s);
+  }
+  ... 나머지 코드는 생략
+}
+```
+
+**기본 타입 필드가 여럿을때의 비교자**
+
+```java
+public int compareTo(PhoneNumber number) {
+  int result = Short.compare(areaCode, number.areaCode); 
+  
+  if (result == 0) {
+    result = Short.compare(prefix, number.prefix);
+    if (result == 0) {
+      result = Short.compare(prefix, number.prefix);
+    }
+  }
+
+  return result;
+}
+```
 
 ## Chapter 4 클래스와 인터페이스
+
+클래스와 인터페이스 설계에 강력한 요소를 적절히 활용하여 견고하고 유연한 코드를 만드는 방법을 안내한다.
 
 ### Item 15 클래스와 멤버의 접근 권한을 최소화 하라
 
