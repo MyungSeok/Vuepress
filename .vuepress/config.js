@@ -10,6 +10,7 @@ module.exports = {
     'flowchart'
   ],
   themeConfig: {
+    logo: '/img/A049.png',
     nav: [
       { text: 'About', link: '/about/'},
       { text: 'General', link: '/general/'},

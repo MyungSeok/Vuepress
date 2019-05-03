@@ -416,7 +416,7 @@ public Object pop() {
 사용이 완료된 참조 객체를 해제하는 가장 좋은 방법은 그 참조 변수를 담은 변수를 유효범위 (scope) 밖으로 밀어내는 것이다.
 
 다른 방법은 캐시성 데이터를 사용하는 경우에는 `WeakHashMap` 을 사용하여 캐시를 만드는 법이다.  
-단 이방법은 제한적이기 때문에 특정한 상황에서만 유효하다.
+단 이방법은 제한적이기 때문에 특정한 상황에서만 유효하다. (GC 참고)
 
 ### Item 8 `finalizer` 와 `cleaner` 사용을 피하라
 
@@ -481,7 +481,7 @@ static void copy(String src, String dst) throws IOException {
   ) {
     byte[] buf = new byte[BUFFER_SIZE];
     int n;
-    while ((n = in.read(buf)) >= 0) out.write(buf, 0, n); 
+    while ((n = in.read(buf)) >= 0) out.write(buf, 0, n);
   }
 }
 ```
@@ -491,6 +491,117 @@ static void copy(String src, String dst) throws IOException {
 반드시 회수해야 할 자원을 다룰 때는 `try-with-resources` 를 사용하여 작성하도록 한다.
 
 ## Chapter 3 모든 객체의 공동 메서드
+
+`Object` 는 객체를 만들 수 있는 구체 클래스지만 기본적으로는 상속해서 사용하도록 설계되었다.
+
+`Object` 에서 `final` 이 아닌 메서드 (`equals` `hashCode` `toString` `clone` `finalize`) 는 모두 재정의 (overriding)를 염두에 두고 설계된 것이라 재정의시 반드시 지켜야 하는 일반 규약이 명시되어있다.
+
+이번장에서는 이러한 성격이 지닌 메서드들을 다룬다.
+
+### Item 10 'equals' 는 일반 규약을 지켜 재정의하라
+
+`equals` 메서드는 재정의하기 쉬워 보이지만 곳곳에 함정이 도사리고 있어서 자칫하면 끔찍한 결과를 초래한다.
+
+다음 상황일경우에는 재정의하지 않는것이 최선이다.
+
+* 각 인스턴스가 본질적으로 고유하다.
+* 인스턴스의 논리적 동치성 (logical equality) 을 검사할 일이 없다.
+* 상위 클래스에서 재정의한 `equals` 가 하위 클래스에도 딱 들어맞는다.
+* 클래스가 `private` 이거나 `package-private` 이고 `equals` 메서드를 호출할 일이 없다.
+
+이러한 경우에는 다음과 같이 `equals` 를 제한한다.
+
+```java
+@Override
+public boolean equals(Object o) {
+  throw new AssertionError();
+}
+```
+
+`equals` 를 재정의해야 할 때는 객체 식별성 (object identity : 두 객체가 물리적으로 같은가) 이 아니라 논리적 동치성을 확인해야 할 때 상위 클래스의 `equals` 가 논리적 동치성을 비교하도록 재정의되지 않았을때 이다.
+
+대부분의 값 클래스 (`Integer` `String` 과 같이 값을 표현하는 클래스) 들이 이 케이스에 해당된다.
+
+굳이 `equals` 의 재정의가 필요하면 다음 규약을 지켜야 한다
+
+**Object 명세에 적힌 `equals` 메서드 규약**
+
+* 반사성 (reflexivity)
+* 대칭성 (symmetry)
+* 추이성 (transitivity)
+* 일관성 (consistency)
+* `null` 아님
+
+위의 규약은 반드시 지켜야 하며 이를 아래 단계대로 구현한다.
+
+**`equals` 메서드 구현방법**
+
+1. `==` 연산자를 사용해 입력이 자기 자신의 참조인지 확인한다.
+2. `instanceof` 연산자로 입력이 올바른 타입인지 확인한다.
+3. 입력을 올바른 타입으로 형변환한다.
+4. 입력 객체와 자기 자신의 대응되는 **핵심** 필드들이 모두 일치하는지 하나씩 검사한다.
+
+> `equals` 메서드는 꼭 필요한 경우에만 재정의 해주도록 한다.
+
+### Items 11 `equals` 를 재정의하려거든 `hashCode` 도 재정의하라
+
+`equals` 에서 재정의한 클래스 모두에서 `hashCode` 도 재정의해야 한다.
+
+`equals` 에서는 물리적으로 다른 두 객체를 논리적으로는 같다고 할 수 있지만 Object 의 기본 hashCode 메서드는 이 둘이 전혀 다르다고 판단하여 규약과 달리 서로 다른 값을 반환한다.
+
+마치 아래의 예가 서로 다른 값을 반환하는거 처럼 말이다.
+
+```java
+Map<PhoneNumber, String> map = new HashMap<>();
+map.put(new PhoneNumber(707, 867, 5309), "제니");
+
+map.get(new PhoneNumber(707, 867, 5309));   // null 을 반환
+```
+
+이 문제는 `PhoneNumber` 에 적절한 해시코드를 삽입해주면 해결하다 (일시적)
+다만 사용자가 임의의 해시코드 발급 가능한 코드 작성은 어려운 것으로 동치인 인스턴스에 대해서 같은 해시코드를 반환할지 고민해보자
+
+**전형적인 `hashCode` 메서드**
+
+```java
+@Override
+public int hashCode() {
+  int result = Short.hashCode(areaCode);
+  result = 31 * result + Short.hashCode(prefix);
+  result = 31 * result + Short.hashCode(lineNum);
+  return result;
+}
+```
+
+위 코드에서 곱하는 숫자를 **31** 으로 정하는 기준은 **31** 이 **홀수 (odd)** 이면서 **소수 (prime)** 이기 때문이다.  
+2를 곱하는것은 시프트 연산과 같은 결과를 내기 때문이다.
+
+해시 충돌이 우려된다면 구아바 (Guava) 의 `com.google.com.hash.Hashing` 을 참고하도록 하자.
+
+혹은 `AutoValue` 프레임워크를 사용하면 `hashCode` 뿐만이 아닌 `equals` 도 자동으로 만들어준다.
+
+### Items 12 `toString` 을 항상 재정의하라
+
+Object 의 기본 toString 메서드가 우리가 작성한 클래스에 적합한 문자열을 반환하는 경우는 거의 없다.
+
+`toString` 메서드는 `PhoneNumber@abbd` 처럼 `클래스_이름@16진수_해시코드` 를 반환할 뿐이다.
+
+따라서 실무에서의 `toString` 은 객체가 가진 주요 정보를 반환하는게 좋다.
+
+**전화번호부의 `toString` 예시**
+
+```java
+@Override
+public String toString() {
+  return String.format("%03d-%03d-%034", areaCode, prefix, lineNum);
+}
+```
+
+혹은 포맷 여부와 상관없이 해당 객체에 관한 명확하고 유용한 정보를 읽기 좋은 형태로 반환해야 한다.
+
+단, 상위 클래스에서 이미 알맞게 재정의한 경우는 예외이다.
+
+즉 `toString` 이 반환한 값에 포함된 정보를 얻어올수 있는 API 를 제공하도록 한다.
 
 ### Item 13 `clone` 재정의는 주의해서 진행 하라
 
@@ -523,6 +634,8 @@ protected final Object clone() throws CloneNotSuppertedException {
 ```
 
 ### Item 14 Comparable 구현할지 고려하라
+
+@TODO
 
 ## Chapter 4 클래스와 인터페이스
 
