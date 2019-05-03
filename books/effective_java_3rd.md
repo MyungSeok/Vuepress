@@ -729,3 +729,33 @@ public int compareTo(PhoneNumber number) {
 즉 프로그램 요소의 접근성은 가능한 한 최소한의 `public` API 설계를 해야 한다.
 
 ### Item 16 `public` 클래스에서는 `public` 필드가 아닌 접근자 메서드를 사용하라
+
+캡슐화 및 은닉화는 클래스 설계에서 가장 중요한 일이다.
+
+```java
+class Point {
+  public double x;
+  public double y;
+}
+```
+
+위 예제는 클래스의 데이터필드에 직접 접근 할 수 있으니 캡슐화의 이점을 제공하지 못한다.
+
+때문에 아래와 같이 수정하여 외부에서 필드 접근을 제한하여 사용하는것을 권장 한다.
+
+```java
+class Point {
+  private double x; 
+  private double y;
+  
+  public Point(double x, double y) { 
+    this.x = x;
+    this.y = y; 
+  }
+  
+  public double getX() { return x; }
+  public double getY() { return y; }
+  public void setX(double x) { this.x = x; }
+  public void setY(double y) { this.y = y; }
+}
+```
