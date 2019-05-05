@@ -160,6 +160,39 @@ loadScript('file1.js', function () {
 });
 ```
 
+위 방식으로 순차적 로딩이 필요한 스크립트는 다음과 같이 사용한다.
+
+```javascript
+loadScript('file1.js', function () {
+  loadScript('file2.js', function () {
+    loadScript('file3.js', function () {
+      alert('All files are loaded !!');
+    })
+  });
+});
+```
+
+**XMLHttpRequest 스크립트 삽입**
+
+XHR (XMLHttpRequest) 객체를 통해서도 다른 작업을 방해하지 않고 자바스크립트 파일을 내려받을수 있다.
+
+이 방법은 XHR 객체를 만들고 스크립트 파일 내용을 동적 `<script>` 태그를 써서 페이지에 코드를 삽입 한다.
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('get', 'file1.js', true);
+xhr.onreadystatechange = function () {
+  if (xhr.readyState == 4) {
+    if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.text = xhr.responseText;
+      document.body.appendChild(script);
+    }
+  }
+}
+```
+
 ## Chapter 2 데이터 접근
 
 ## Chapter 3 DOM 스크립팅
