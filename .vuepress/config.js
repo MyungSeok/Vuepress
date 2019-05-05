@@ -113,10 +113,8 @@ module.exports = {
       },
       { text: 'Books', 
         items: [
-          {
-            text: 'Effective Java 3rd', 
-            link: '/books/effective_java_3rd'
-          }
+          { text: 'Effective Java 3rd',  link: '/books/effective_java_3rd' }, 
+          { text: '자바스크립트 성능 최적화',  link: '/books/js_high_performance' }
         ]
       }
     ],
