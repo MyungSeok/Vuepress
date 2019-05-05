@@ -193,6 +193,8 @@ xhr.onreadystatechange = function () {
 }
 ```
 
+???
+
 ## Chapter 2 데이터 접근
 
 ## Chapter 3 DOM 스크립팅
