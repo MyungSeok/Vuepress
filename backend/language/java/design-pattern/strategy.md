@@ -1,4 +1,4 @@
-# 전략 디자인 패턴 (Strategy Design Pattern)
+# Strategy
 
 디자인 패턴의 가장 중요한 패턴으로 다음 3가지의 요소로 구성된다.
 
@@ -56,7 +56,7 @@ public class Client {
 }
 ```
 
-```log
+```sh
 Start Action
 Walking road
 End Action

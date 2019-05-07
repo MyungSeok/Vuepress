@@ -1,10 +1,6 @@
-# TIP
+# Log4j
 
-자잘한 팁
-
-## Log4j
-
-### Log Level
+## Log Level
 
 1. TRACE
    * 해당되는 내용에 대한 경로추적을 위해 사용
@@ -23,7 +19,7 @@
    * 시스템 운여이 불가능한 경우
    * 보통 예외가 발생하고 정상 처리 못한 경우
 
-### Layout
+## Layout
 
 * %d : 로그의 기록시간을 출력
 * %p : 로깅의 레벨을 출력
@@ -41,7 +37,7 @@
 * %x : 로깅이 발생한 Thread와 관련된 NDC\(Nested diagnostic context\)를 출력
 * %X : 로깅이 발생한 Thread와 관련된 MDC\(Mapped diagnostic context\)를 출력
 
-### Sample
+**Sample**
 
 ```java
 [%d{yyyy-MM-dd HH:mm}] %5p (%F:%L) %M: %m%n

@@ -1,4 +1,4 @@
-# SOLID 란 ?
+# SOLID
 
 객체지향 4대 특성인 캡슐화, 상속, 추상화, 다형성 등을 이용하여 객체지향 프로그래밍 설계를 도와주는 원칙들이 있다.  
 이를 SOLID 원칙들이라 하며 자기 자신의 클래스의 응집도를 높이고, 타 클래스의 결합도를 낮추는 _**High-Cohesion - Loose Coupling**_ 원칙을 객체 지향관점에서 도입한것이다.
@@ -105,10 +105,12 @@ OCP (Open Close Principle : 개방 폐쇠의 법칙) 과 밀접한 연관이 있
 
 다음 예는 이를 설명하기 위한 가장 유명한 예 이다.
 
-```mermaid
-graph LR
-  A["Rectangle"] --> B["Square"]
-```
+@flowstart
+stage1=>operation: Rectangle
+stage2=>operation: Square
+
+stage1->stage2
+@flowend
 
 최초에 기반타입을 담당할 `Rectagle` 클래스를 선언한다.
 
