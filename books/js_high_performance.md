@@ -225,6 +225,8 @@ function add(a, b) {
 실행 문맥 (execution context) 의 생명주기는 함수의 실행기준으로 한다.
 :::
 
+///
+
 ## Chapter 3 DOM 스크립팅
 
 ## Chapter 4 알고리즘과 흐름 제어
