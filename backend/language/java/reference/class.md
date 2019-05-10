@@ -179,6 +179,10 @@ System.out.printf("%1$tY.%1$tm.%1$td %1$tH:%1$tM:%1$tS.%1$tL", new Date().getTim
 * `[` => `\\[`
 * `]` => `\\]`
 
+:::tip 특수문자 사용
+`%` 사용하려면 `%%` 두번 입력
+:::
+
 ## StringJoiner
 
 문자열을 손쉽게 붙일수 있다.
