@@ -66,8 +66,11 @@
 
 ## `String` vs `StringBuffer` 차이점은 ?
 
-* String Class 인 경우 Character 조작을 위한 것이며 단순한 상태값을 가지고 있는 불변 속성이다.
-* StringBuffer Class 인 경우 문자열을 재구성하기 위한 것이며 수정이 가능하다.
+* `String` Class 인 경우 Character 조작을 위한 것이며 단순한 상태값을 가지고 있는 불변 속성이다.
+* `StringBuffer` Class 인 경우 문자열을 재구성하기 위한 것이며 수정이 가능하다.
+
+* `StringBuilder` 는 변경 가능한 문자열로 synchronization 이 적용되지 않는다.
+* `StringBuffer` 는 _**멀티쓰레드 환경에서 안정적**_ 이다.
 
 ## `CheckedException` 과 `UncheckedException` 의 차이와 용도를 설명
 
