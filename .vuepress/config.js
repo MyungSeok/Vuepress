@@ -260,7 +260,8 @@ module.exports = {
           children: [
             '/backend/language/java/java8/lamda',
             '/backend/language/java/java8/stream',
-            '/backend/language/java/java8/optional'
+            '/backend/language/java/java8/optional',
+            '/backend/language/java/java8/functional'
           ]
         },
         {
