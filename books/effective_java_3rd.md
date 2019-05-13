@@ -694,7 +694,7 @@ public final class CaseInsensitiveString implements Comparable <CaseInsensitiveS
 
 ```java
 public int compareTo(PhoneNumber number) {
-  int result = Short.compare(areaCode, number.areaCode); 
+  int result = Short.compare(areaCode, number.areaCode);
   
   if (result == 0) {
     result = Short.compare(prefix, number.prefix);
@@ -745,10 +745,10 @@ class Point {
 
 ```java
 class Point {
-  private double x; 
+  private double x;
   private double y;
   
-  public Point(double x, double y) { 
+  public Point(double x, double y) {
     this.x = x;
     this.y = y;
   }
@@ -830,7 +830,7 @@ class Point {
 ```java
 public interface PhysicalConstants {
   // 아보가드로 수 (1/몰)
-  static final double AVOGADROS_NUMBER = 6.022_140_857e23; 
+  static final double AVOGADROS_NUMBER = 6.022_140_857e23;
   // 볼츠만 상수 (J/K)
   static final double BOLTZMANN_CONSTANT = 1.380_648_52e-23;
   // 전자 질량 (kg)
