@@ -822,3 +822,22 @@ class Point {
 상속해서 만든 클래스는 래퍼 클래스보다 활용도가 떨어지고 깨지기는 더 쉽다. 반면에 인터페이스 메서드중 구현 방법이 명백한게 있다면, 그 구현을 디폴트 메서드로 만들어 제공할 수 있다.
 
 ### Item 21 인터페이스는 구현하는 쪽을 생각해 설계하라
+
+### Item 22 인터페이스는 타입을 정의하는 용도로만 사용하라
+
+상수 인터페이스는 안티패턴이며 잘못된 예이다
+
+```java
+public interface PhysicalConstants {
+  // 아보가드로 수 (1/몰)
+  static final double AVOGADROS_NUMBER = 6.022_140_857e23; 
+  // 볼츠만 상수 (J/K)
+  static final double BOLTZMANN_CONSTANT = 1.380_648_52e-23;
+  // 전자 질량 (kg)
+  static final double ELECTRON_MASS = 9.109_383_56e-31;
+}
+```
+
+이는 더이상 사용하지 않더라도 바이너리 호환성을 위해 여전히 다음 릴리즈때까지 해당 인터페이스를 구현해야 하는 유지성을 보여야 한다.
+
+유틸리티 클래스에서 정의된 상수를 클라이언트에 사용하려면 클래스 이름까지 사용하라 `PhysicalConstants.BOLTZMANN_CONSTANT` 와 같이 사용 혹은 정적 임포트 (static import) 를 사용한다.
