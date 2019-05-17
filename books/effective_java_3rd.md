@@ -840,4 +840,6 @@ public interface PhysicalConstants {
 
 이는 더이상 사용하지 않더라도 바이너리 호환성을 위해 여전히 다음 릴리즈때까지 해당 인터페이스를 구현해야 하는 유지성을 보여야 한다.
 
-유틸리티 클래스에서 정의된 상수를 클라이언트에 사용하려면 클래스 이름까지 사용하라 `PhysicalConstants.BOLTZMANN_CONSTANT` 와 같이 사용 혹은 정적 임포트 (static import) 를 사용한다.
+유틸리티 클래스에서 정의된 상수를 클라이언트에 사용하려면 클래스 이름까지 사용하라 사용빈도가 많다면 `PhysicalConstants.BOLTZMANN_CONSTANT` 와 같이 사용 혹은 정적 임포트 (static import) 를 사용한다.
+
+### Item 23 태그 달린 클래스보다는 클래스 계층구조를 활용하라
