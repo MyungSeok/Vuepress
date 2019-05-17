@@ -113,11 +113,6 @@ Optional<Member> maybeMember = Optional.ofNullable(aMember);
 Optional<Member> maybeMember = Optional.ofNullable(null);
 ```
 
-:::tip 참고자료
-<https://futurecreator.github.io/2018/08/26/java-8-streams/>  
-<http://www.daleseo.com/java8-optional-before/>
-:::
-
 ### 객체 접근
 
 `Optional` 이 담고 있는 객체를 반환하며 `Optional` 이 비어있는 경우 (null 인 경우) 에는 다르게 작동한다.
@@ -208,3 +203,8 @@ maybeCity.ifPresent(city -> {
   System.out.println("length : " + city.length());
 });
 ```
+
+:::tip 참고자료
+<https://futurecreator.github.io/2018/08/26/java-8-streams/>  
+<http://www.daleseo.com/java8-optional-before/>
+:::
