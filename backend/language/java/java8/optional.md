@@ -1,6 +1,6 @@
 # Optional
 
-Java 8 에서 처음 등장한 개념으로 null 의 접근 방식에 대한 해결책으로 등장 하였다.
+Java 8 에서 처음 등장한 개념으로 `null` 의 접근 방식에 대한 해결책으로 등장 하였다.
 
 ## NPE (Null Pointer Exception)
 
