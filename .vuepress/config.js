@@ -244,6 +244,7 @@ module.exports = {
             '/backend/language/java/reference/collection',
             '/backend/language/java/reference/method',
             '/backend/language/java/reference/thread',
+            '/backend/language/java/reference/annotation'
           ]
         },
         {
