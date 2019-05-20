@@ -823,6 +823,14 @@ class Point {
 
 ### Item 21 인터페이스는 구현하는 쪽을 생각해 설계하라
 
+자바 라이브러리의 디폴트 메서드는 코드 품질이 높고 범용적이라 대부분의 상황에서 잘 작동된다.
+
+하지만 모든 상황에서 불변식을 해치지 않는 디폴트 메서드를 작성하기란 어려운 일이므로 기존 구현에 런타임 오류를 야기시킬수 있다.
+
+따라서 인터페이스 설계를 할때는 세심한 주의를 기울여야 한다. 인터페이스 릴리즈 후라도 결함을 수정하는게 가능한 경우도 있지만 그 가능성에 혹은 기회에 기대서는 안된다.
+
+인터페이스 릴리즈 이전에는 반드시 많은 검증 및 테스트 과정을 거쳐야 한다.
+
 ### Item 22 인터페이스는 타입을 정의하는 용도로만 사용하라
 
 상수 인터페이스는 안티패턴이며 잘못된 예이다
@@ -842,4 +850,116 @@ public interface PhysicalConstants {
 
 유틸리티 클래스에서 정의된 상수를 클라이언트에 사용하려면 클래스 이름까지 사용하라 사용빈도가 많다면 `PhysicalConstants.BOLTZMANN_CONSTANT` 와 같이 사용 혹은 정적 임포트 (static import) 를 사용한다.
 
+인터페이스는 되도록 타입을 정의하는 용도로만 사용해야 하며 상수를 공개하는 수단을 사용하는것은 좋지 않다.
+
 ### Item 23 태그 달린 클래스보다는 클래스 계층구조를 활용하라
+
+태그가 달린 클래스 (두가지 이상의 기능을 커버하는 클래스) 라고 한다
+
+아래가 태그가 달린 클래스의 예이다.
+
+```java
+class Figure {
+  enum Shape { RECTANGLE, CLRCLE };
+
+  // 현재모양
+  final Shape shape;
+
+  // 사각형일 때만 사용하는 필드
+  double lengh;
+  double width;
+
+  // 원 일때만 사용하는 필드
+  double radius;
+
+  Figure(double radius) {
+    shape = Shape.CIRCLE;
+    this.radius = radius;
+  }
+
+  Figure(double length, double widht) {
+    shape = Shape.RECTANGLE;
+    this.length = length;
+    this.width = width;
+  }
+
+  double area() {
+    switch (shape) {
+      case RECTANGLE :
+        return length * width;
+      case CIRCLE :
+        return Math.PI * (radius * radius);
+      default :
+        throw new AssertionError();
+    }
+  }
+}
+```
+
+태그가 달린 클래스는 장황하고 오류를 내기 쉽고 비 효율적이다.
+
+* 하나의 클래스나 객체에서 구현하는 객체 지향적 관점에서 벗어난다
+* 반복성의 코드가 많다
+* 하나의 기능을 구현 혹은 수정시에 다른 기능의 필드들도 자동생성되서 메모리도 많이 소비한다
+* 코드 가독성이 떨어진다
+
+위 코드는 클래스 계층구조를 활용하는 서브타이핑 (subtyping) 형태 임에도 불구하고 클래스 계층 구조를 어설프게 흉내내는 아류일 뿐이다.
+
+위 코드를 가독성 있게 계층구조를 바꾸면 아래와 같다.
+
+```java
+abstract class Figure {
+  abstract double area();
+}
+
+class Circle extends Figure {
+  final double radius;
+
+  Clrcle(double radius) {
+    this.radius = radius;
+  }
+
+  @Override
+  double area() {
+    return Math.PI * radius * radius;
+  }
+}
+
+class Ractangle extends Figure {
+  double lengh;
+  double width;
+
+  Ractangle(double length, double, width) {
+    this.length = length;
+    this.width = width;
+  }
+
+  @Override
+  double area() {
+    return length * width;
+  }
+}
+```
+
+위 코드는 이전 코드가 가진 태그가 가진 클래스의 단점을 모두 날려버렸다.
+
+* 간결하고 명확하다.
+* 쓸데없는 코드들까지 모두 사라졌다.
+* `case` 문에서 사용하는 런타임 오류가 발생할 일도 없다.
+* 다른 코드의 유연성까지 고려가 가능하다.
+
+위 코드에서 클래스의 계층 구조를 활용한 정사각형의 도형을 추가하면 다음과 같다.
+
+```java
+class Square extends Rectangle {
+  Square(double side) {
+    super(side, side);
+  }
+}
+```
+
+태그가 달린 클래스를 사용해야 하는 일은 거의 없으나 새로운 클래스를 작성하는데 태그 필드가 등장한다면 태그를 없애고 계층구조로 대체하는 방법을 생각해 보자
+
+기존 코드에서 태그 필드를 사용하고 있다면 계층 구조로 리팩터링 하는것을 고민해 보자
+
+### Item 24 멤버 클래스는 되도록 `static` 으로 만들자
