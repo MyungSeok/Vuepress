@@ -2,7 +2,7 @@
 sidebar: auto
 ---
 
-# THREE.JS
+# THREE
 
 ## Example
 
