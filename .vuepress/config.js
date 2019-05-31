@@ -46,7 +46,8 @@ module.exports = {
           { text: 'Library', 
             items: [
               { text: 'jQuery', 'link': '/frontend/javascript/library/jquery' },
-              { text: 'D3', 'link': '/frontend/javascript/library/d3' }
+              { text: 'D3', 'link': '/frontend/javascript/library/d3' },
+              { text: 'THREE', 'link': '/frontend/javascript/library/three' }
             ]
           }
         ]
