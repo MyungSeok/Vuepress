@@ -1,6 +1,6 @@
 # Symbol
 
-ES6 에서 나온 원시 데이터형 ([Primitive DataType](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)) 의 일종으로 객체에 `Unique` 한 속성을 만들어 다른 라이브러리와 충동을 피하기 위함이다.
+`ES6` 에서 나온 원시 데이터형 ([Primitive DataType](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)) 의 일종으로 객체에 `Unique` 한 속성을 만들어 다른 라이브러리와 충동을 피하기 위함이다.
 
 * Undefined
 * Null
@@ -20,7 +20,7 @@ Symbol([description]);
   * 선택적 (Optional) 문자열로 디버깅에 사용할 수 있는 설명이다.
   * 자체적으로 심볼에 접근하는 용도로 사용할 수 없음 
 
-## Description
+**Description**
 
 기본적으로 새 원시 심볼을 생성하려면 아래와 같이 선택적 문자열과 함께 `Symbol()` 을 쓰면 된다.
 
@@ -55,19 +55,19 @@ typeof symObj;            // "object"
 
 심볼의 생성은 다음 3가지 방법이 있다.
 
-### 고유한 심볼 생성
+* 고유한 심볼 생성
 
 ```javascript
 var sym = Symbol('foo');
 ```
 
-### 심볼 레지스트리에서 찾아서 복사
+* 심볼 레지스트리에서 찾아서 복사
 
 ```javascript
 var sym = Symbol.for('foo');
 ```
 
-### 미리 정의된 상용 심볼 사용
+* 미리 정의된 상용 심볼 사용
 
 ```javascript
 Symbol.iterator

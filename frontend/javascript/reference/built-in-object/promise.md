@@ -41,7 +41,7 @@ asyncThing1()
         then( () => console.log('All done') );
 ```
 
-## 사용
+**Syntax**
 
 ```javascript
 new Promise(function (resolve, reject) {
@@ -56,9 +56,7 @@ new Promise(function (resolve, reject) {
 * reject
   * 실패시 전달되는 인수 (함수 혹은 변수)
 
-**Example**
-
-### Case 1 : 기초
+## 선언
 
 Promise 의 기본적인 선언은 아래와 같다.
 
@@ -104,7 +102,7 @@ _promise(true)
 실행부에서는 `_promise()` 를 실행하면 Promise 의 새로운 객체가 반환되고 정상적으로 비동기 작업이 수행됬을때 `then` 을 호출하는 API 가 존재한다.  
 `then` 은 성공시 첫번째 파라메터를 수행하며, 실패시 두번째 파라메터를 수행하게 된다.
 
-### Case 2 : 예외처리
+## 예외처리
 
 Javascript 함수의 체이닝으로 연결된 형태에서 비동기 작업이 중간에 에러날 경우 다음과 같이 처리 가능하다.
 
@@ -119,7 +117,7 @@ _promise(true)
   })
 ```
 
-### Case 3 : 모든 Promise 를 완료하고 실행
+## 모든 Promise 를 완료하고 실행
 
 ```javascript
 var promise1 = new Promise(function (resolve, reject) {
@@ -147,13 +145,13 @@ Promise.all([promise1, promise2])
 
 ES8 에서 Promise 사용을 쉽게 해주는 `async` 와 `await` 을 도입 하였다.
 
-### async
+**async**
 
 비동기 함수를 정의하며 `AsyncFunction` 객체를 반환 합니다.
 
 `AsyncFunction` 객체는 해당 함수내에 포함되어 있는 코드를 수행하는 비동기 함수를 나타냅니다.
 
-### await
+**await**
 
 `async` 함수 내에서만 사용될 수 있으며 _**동기적으로 Promise 를 처리**_ 해줍니다.
 

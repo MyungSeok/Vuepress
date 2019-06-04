@@ -79,9 +79,10 @@ function cancleTimer() {
 
 ## RequestAnimationFrame
 
-브라우저에게 `callback` 함수를 \(프레임 단위로 처리되는\) 호출 하도록 합니다.   
-이 `callback` 은 보통 1초에 60회 정도 호출되게 설계되어 있지만   
-W3C 권장사항에 따라 디스플레이의 주사율과 일치하도록 실행 됩니다.
+브라우저에게 `callback` 함수를 \(프레임 단위로 처리되는\) 호출하도록 한다.
+
+이 `callback` 은 _**보통 1초에 60회 정도 호출되게 설계**_ 되어 있지만  
+_**W3C 권장사항에 따라 디스플레이의 주사율과 일치하도록 실행**_ 됩니다.
 
 > `<iframe>` 에서는 requestAnimationFrame\(\) 의 호출이 멈출수 있습니다.
 

@@ -11,6 +11,8 @@ module.exports = {
   ],
   themeConfig: {
     logo: '/img/A049.png',
+    search: true,
+    searchMaxSuggestions: 10,
     nav: [
       { text: 'About', link: '/about/'},
       { text: 'General', link: '/general/'},

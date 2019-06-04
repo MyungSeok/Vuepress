@@ -2,22 +2,17 @@
 
 ## concat
 
-### Description
+**Description**
 
 `concat` 메서드는 인자로 주어진 배열이나 값들을 기존 배열에 합쳐서 _**새로운 배열을 반환**_ 합니다. 
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj1.concat(arrayObj2)
 ```
 
-#### Parameter
-
-* arrayObj1, arrayObj2
-  * **Array** 객체 
-
-### Example
+**Example**
 
 ```javascript
 ['H', 'e', 'l', 'l', 'o'].concat(['W', 'o', 'r', 'l', 'd']);
@@ -28,26 +23,26 @@ arrayObj1.concat(arrayObj2)
 
 ## slice
 
-### Description
+**Description**
 
 특정 배열의 `start` 와 `end` 인덱스의 _**새로운 배열 객체를 반환**_ 합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.slice(start, [end])
 ```
 
-#### Parameter
+**Parameter**
 
 * arrayObj
-  * **Array** 객체 
+  * **Array** 객체
 * start
   * arrayObject 에 대한 지정된 부분의 시작
 * end
   * arrayObject 에 대한 지정된 부분의 끝
 
-### Example
+**Example**
 
 ```javascript
 ['H', 'e', 'l', 'l', 'o'].slice(1)
@@ -73,17 +68,17 @@ arrayObj.slice(start, [end])
 
 ## shift
 
-### Description
+**Description**
 
 배열의 첫번째 요소를 제거하고, 제거된 요소를 반환합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.shift()
 ```
 
-### Example
+**Example**
 
 ```javascript
 var arrayObj = ['H', 'e', 'l', 'l', 'o'];
@@ -108,24 +103,23 @@ while( (i = names.shift()) !== undefined ) {
 // Andrew, Edward, Paul, Chris, John
 ```
 
-> 이 메소드는 배열의 길이를 변하게 합니다.
-
+> 이 메소드는 배열의 길이를 변하게 합니다.  
 > 배열의 마지막 요소를 제거하는건 **`pop`** 메소드 이다.
 
 ## unshift
 
-### Description
+**Description**
 
 새로운 요소를 배열의 앞쪽에 추가한다.  
 return 값은 새로운 요소가 추가된 배열이다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.unshift([element1[, ...[, elementN]]])
 ```
 
-### Example
+**Example**
 
 ```javascript
 var arrayObj = ['1', '2'];
@@ -144,11 +138,11 @@ arrayObj.unshift([-3]);
 
 ## map
 
-### Description
+**Description**
 
 `map()` 메소드는 배열내의 모든 요소에 대하여 제공된 함수\(callback\)를 호출하고, 그 결과를 모아서 _**새로운 배열을 반환**_ 합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 var newAry = arrayObj.map(function callback(currentValue[, index[, array]]) {
@@ -156,7 +150,7 @@ var newAry = arrayObj.map(function callback(currentValue[, index[, array]]) {
 }[, thisArg]);
 ```
 
-#### Parameter
+**Parameter**
 
 * callback
   * 새로운 배열 요소를 생성하는 함수
@@ -169,7 +163,7 @@ var newAry = arrayObj.map(function callback(currentValue[, index[, array]]) {
 * thisArg
   * `callback`을 실행할 때 `this`로 사용되는 값 \(기본값은 window 객체\)
 
-### Example
+**Example**
 
 ```javascript
 var numbers = [1, 4, 9];
@@ -204,7 +198,7 @@ console.log(new_mapAry);
 // [{1:10}, {2:20}, {3:30}]
 ```
 
-#### 지정된 사이즈로 임의의 배열 생성 
+**지정된 사이즈로 임의의 배열 생성**
 
 ```javascript
 var SIZE = 10;
@@ -221,11 +215,11 @@ var newArray = Array
 
 ## filter
 
-### Description
+**Description**
 
 `filter()` 메소드는 배열내의 모든 요소에 대하여 제공된 테스트 함수\(callback\)를 호출하고, 그 결과를 모아서 _**새로운 배열을 반환**_ 합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 var newAry = arrayObj.filter(function callback(currentValue[, index[, array]]) {
@@ -233,7 +227,7 @@ var newAry = arrayObj.filter(function callback(currentValue[, index[, array]]) {
 }[, thisArg]);
 ```
 
-#### Parameter
+**Parameter**
 
 * callback
   * 새로운 배열 요소를 생성하는 함수
@@ -246,7 +240,7 @@ var newAry = arrayObj.filter(function callback(currentValue[, index[, array]]) {
 * thisArg
   * `callback`을 실행할 때 `this`로 사용되는 값 \(기본값은 window 객체\)
 
-### Example
+**Example**
 
 ```javascript
 function isBigEnough(value) {
@@ -263,11 +257,11 @@ console.log(filtered);
 
 ## forEach
 
-### Description
+**Description**
 
 `forEach()` 메소드는 배열 요소마다 한 번씩 제공된 함수\(callback\) 함수를 호출해서 사용합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.forEach(function callback(currentValue[, index[, array]]) {
@@ -275,7 +269,7 @@ arrayObj.forEach(function callback(currentValue[, index[, array]]) {
 }[, thisArg]);
 ```
 
-#### Parameter
+**Parameter**
 
 * callback
   * 새로운 배열 요소를 생성하는 함수
@@ -290,23 +284,23 @@ arrayObj.forEach(function callback(currentValue[, index[, array]]) {
 
 ## sort
 
-### Description
+**Description**
 
 `sort()` 메서드는 배열의 요소를 적절한 위치에 정렬하고 배열을 반환합니다.  
 기본 정렬 순서는 _**유니 코드 포인트**_에 따릅니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.sort([compareFunction])
 ```
 
-#### Parameter
+**Parameter**
 
 * compareFunction
   * 정렬 순서를 정의하는 함수를 지정합니다. \(미 지정시 기본 정렬 순서에 따름\)
 
-### Example
+**Example**
 
 ```javascript
 var fruit = ['orange', 'apple', 'banana'];
@@ -374,7 +368,7 @@ student.sort(function(a, b) {
 });
 ```
 
-#### 기존순서는 그대로 두고 중복 제거 
+**기존순서는 그대로 두고 중복 제거**
 
 ```javascript
 var names = ["Mike","Matt","Nancy","Adam","Jenny","Nancy","Carl"];
@@ -390,7 +384,7 @@ console.log(uniq, names) // [ 'Mike', 'Matt', 'Nancy', 'Adam', 'Jenny', 'Carl' ]
 return names.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
 ```
 
-#### 기존순서는 그대로 두고 중복 제거
+**기존순서는 그대로 두고 중복 제거**
 
 ```javascript
 var uniq = names.slice() // 정렬하기 전에 복사본을 만든다.
@@ -408,24 +402,24 @@ return names.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (
 
 ## indexOf
 
-### Description
+**Description**
 
 `indexOf` 메서드는 배열에서 지정된 요소를 찾을 수있는 첫 번째 인덱스를 반환하고 존재하지 않으면 `-1`을 반환합니다.
 
-### Syntax
+**Syntax**
 
 ```javascript
 arrayObj.indexOf(element)
 ```
 
-#### Parameter
+**Parameter**
 
 * arrayObj
   * 배열 객체
 * element
   * 찾을 요소
 
-### Example
+**Example**
 
 ```javascript
 var a = [2, 9, 9]; 
@@ -458,27 +452,3 @@ if (indexOf.call(arrayObj, value) > -1) {
     console.log('value is not contain');
 }
 ```
-
-:::tip 배열 초기화
-
-* `0` 으로 초기화
-
-```javascript
-Array.apply(null, new Array(5)).map(Number.prototype.valueOf, 0);
-```
-
-```javascript
-// [0, 0, 0, 0, 0]
-```
-
-* 공백(`''`) 으로 초기화
-
-```javascript
-Array.apply(null, new Array(5)).map(String.prototype.valueOf, '');
-```
-
-```javascript
-// ['', '', '', '', '']
-```
-
-:::
