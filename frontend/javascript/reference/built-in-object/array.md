@@ -439,7 +439,7 @@ if (a.indexOf(7) === -1) {
 
 ### Polyfill
 
-* IE 8 이하 지원 안함 
+* IE 8 이하 지원 안함
 
 ```javascript
 var indexOf = Array.prototype.indexOf || (function (prop, s) {
@@ -458,3 +458,27 @@ if (indexOf.call(arrayObj, value) > -1) {
     console.log('value is not contain');
 }
 ```
+
+:::tip 배열 초기화
+
+* `0` 으로 초기화
+
+```javascript
+Array.apply(null, new Array(5)).map(Number.prototype.valueOf, 0);
+```
+
+```javascript
+// [0, 0, 0, 0, 0]
+```
+
+* 공백(`''`) 으로 초기화
+
+```javascript
+Array.apply(null, new Array(5)).map(String.prototype.valueOf, '');
+```
+
+```javascript
+// ['', '', '', '', '']
+```
+
+:::
