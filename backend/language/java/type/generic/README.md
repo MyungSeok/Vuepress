@@ -1,4 +1,4 @@
-# Generic
+# Generic 이란?
 
 하나 이상의 매개변수 타입 (Paramter Type) 을 선언하고 있는 클래스나 인터페이스를 제네릭 타입 이라 한다.
 

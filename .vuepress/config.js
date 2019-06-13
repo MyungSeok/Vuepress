@@ -235,7 +235,13 @@ module.exports = {
           title: 'Type',
           children: [
             '/backend/language/java/type/enum',
-            '/backend/language/java/type/generic'
+            {
+              title: 'Generic', 
+              children: [
+                '/backend/language/java/type/generic/',
+                '/backend/language/java/type/generic/typetoken'
+              ]
+            }
           ]
         },
         {
