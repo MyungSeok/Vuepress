@@ -37,10 +37,8 @@
 어떤 메소드가 실행될지는 _**Dynamic Dispatch (동적 디스패치)**_ 가 일어나며 확인 가능하다.
 
 :::tip Dispatch ?
-
 * Static Dispatch
   * 컴파일 시점에서는 알 수 있다.  
 * Dynamic Dispatch
   * 런타임 순간에 알 수 있다.
-
 :::
