@@ -3,8 +3,6 @@ sidebar: auto
 ---
 # Effective Java 3rd
 
-## Intro
-
 ## Chapter 1 들어가기
 
 ### 새로운 기능 목록
@@ -963,3 +961,60 @@ class Square extends Rectangle {
 기존 코드에서 태그 필드를 사용하고 있다면 계층 구조로 리팩터링 하는것을 고민해 보자
 
 ### Item 24 멤버 클래스는 되도록 `static` 으로 만들자
+
+**중첩 클래스 (ndested class) 의 종류**
+
+* 정적 멤버 클래스
+* (비정적) 멤버 클래스
+* 익명 클래스
+* 지역 클래스
+
+비 정적 멤버 클래스의 인스턴스 메서드에서 정규화된 this 를 사용해 바깥 인스턴스의 메서드를 호출하거나 바깥 인스턴스의 참조를 가져올 수 있다. (정규화된 `this` 란 `{클래스명}.this`)
+
+따라서 개념상 중첩 클래스의 인스턴스가 바깥 인스턴스와 독립적으로 존재할 수 있다면 정적 멤버 클래스로 만들어야 한다.
+
+`static` 을 생략하여 사용하면 바깥 인스턴스로의 숨은 외부 참조를 갖게되며 이 참조를 저장하려면 시간과 공간이 소비된다.
+
+이는 가비지 컬렉션이 바깥 클래스의 인스턴스를 수거하지 못하여 메모리 누수가 생길수 있는 단점이 있다.
+
+:::tip 참고자료
+<https://docstore.mik.ua/orelly/java-ent/jnut/ch03_09.htm>
+:::
+
+### Item 25 톱레벨 클래스는 한 파일에 하나만 담으라
+
+```java
+class Utensil {
+  static final String NAME = "pot";
+}
+
+class Dessert {
+  static final String NAME = "pie"; 
+}
+```
+
+컴파일러에 어느 소스파일을 먼저 전달 했으냐에 따라 결과가 뒤바뀌기 때문에 
+
+한파일에는 톱 클래스를 하나만 명시하도록 한다.
+
+위 코드는 아래와 같이 수정하여 사용이 가능하다.
+
+```java
+public class Text {
+  public static void main(String[] args) {
+    System.out.println(Utensil.NAME + Dessert.NAME);
+  }
+
+  private static class Utensil {
+    static final String NAME = "pan";
+  }
+
+  private static class Dessert {
+    static final String NAME = "cake";
+  }
+}
+```
+
+## Chapter 5 제네릭
+
+### Item 26 로 타입은 사용하지 말라

@@ -149,3 +149,7 @@ c2(no)->op2->e
 @flowend
 
 [Flow Chart](https://flowchart.vuepress.ulivz.com) 관련 매뉴얼을 참조
+
+:::tip 참고자료
+<https://62che.com/blog/vuepress/마크다운-예제.html#그룹핑>
+:::
