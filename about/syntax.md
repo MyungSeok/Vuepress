@@ -64,7 +64,7 @@ _테스트 기울임_ 효과를 지정할 수 있다.
 
 **Input**
 
-````
+````markdown
 ```js
 const foo;
 ```
@@ -80,7 +80,7 @@ const foo;
 
 **Input**
 
-````
+````markdown
 ```js{2}
 const a;
 const b;
@@ -100,7 +100,7 @@ const c;
 
 **Input**
 
-```
+```markdown
 ::: tip
 This is a tip
 :::
@@ -151,5 +151,6 @@ c2(no)->op2->e
 [Flow Chart](https://flowchart.vuepress.ulivz.com) 관련 매뉴얼을 참조
 
 :::tip 참고자료
-<https://62che.com/blog/vuepress/마크다운-예제.html#그룹핑>
+<https://62che.com/blog/vuepress/마크다운-예제.html#그룹핑>  
+<https://vuepress.vuejs.org/guide/using-vue.html>
 :::
