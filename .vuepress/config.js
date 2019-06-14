@@ -59,7 +59,7 @@ module.exports = {
           {
             text: 'Language', 
             items: [
-              { text: 'JAVA', link: '/backend/language/java/general/fundamental' },
+              { text: 'JAVA', link: '/backend/language/java/' },
               { text: 'PHP', link: '/backend/language/php/' },
             ]
           }, 
@@ -219,15 +219,31 @@ module.exports = {
         '/frontend/framework/vue/store'
       ],
       '/backend/language/java/': [
+        '',
         {
           title: 'General',
           children: [
-            '/backend/language/java/general/fundamental',
+            {
+              title: 'Fundamental',
+              children: [
+                '/backend/language/java/general/fundamental/',
+                '/backend/language/java/general/fundamental/access_modifier',
+                '/backend/language/java/general/fundamental/boxing_unboxing',
+              ]
+            },
             '/backend/language/java/general/jpa',
             '/backend/language/java/general/ejb',
             '/backend/language/java/general/jvm',
             '/backend/language/java/general/gc',
-            '/backend/language/java/general/oop',
+            {
+              title: 'OOP', 
+              children: [
+                'general/oop/',
+                'general/oop/inheritance',
+                'general/oop/encapsulation',
+                'general/oop/polymorphism',
+              ]
+            },
             '/backend/language/java/general/solid'
           ]
         },
@@ -269,6 +285,7 @@ module.exports = {
           title: 'Java 8', 
           children: [
             '/backend/language/java/java8/lamda',
+            '/backend/language/java/java8/method_reference',
             '/backend/language/java/java8/stream',
             '/backend/language/java/java8/optional',
             '/backend/language/java/java8/functional'

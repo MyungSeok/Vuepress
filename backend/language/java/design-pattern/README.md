@@ -1,10 +1,12 @@
 # Design Pattern 이란?
 
-객체 지향 설계에서 상황에 따른 요구사항의 문제를 빠르게 해결할 수 있도록 설계를 도와준다.
+_**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방법**_ 이다.
 
-Java 에서 대표적으로 사용되는 Design Pattern 은 크게 3가지의 범주로 나뉜다.
+이는 상황에 따른 요구사항의 문제를 빠르게 해결할 수 있도록 설계를 도와주며 _**런타임시에 바뀔수 있는 상속관계보다 더 동적**_ 이다.
 
-!["Java Design Pattern Map"](/img/A015.png)
+이 Design Pattern 은 **Scope** 관점과 **Purpose** 관점에 따라 나뉘게 되며 해당 관점에 따라 더욱 세분화 된다.
+
+!["Java Design Pattern Table"](/img/A077.png)
 
 ## 생성관련 패턴
 
@@ -43,30 +45,8 @@ Java 에서 대표적으로 사용되는 Design Pattern 은 크게 3가지의 �
 
 클래스와 객체들의 구성을 통해서 더 큰 구조로 확장 가능한 패턴
 
+!["Java Design Pattern Map"](/img/A015.png)
+
 :::tip 참고자료
 <https://brunch.co.kr/@springboot/31>
 :::
-
-## 함수 시그니처 (Function Signature)
-
-_**함수**_ 의 원형에 명시되는 매개변수 리스트를 가르킨다.
-
-두 함수의 _**매개변수의 갯수**_ 와 _**타입**_ 이 같으면 두 함수의 시그니처는 같다고 할 수 있습니다.
-
-```java
-int sum (int a, int b, double c);
-
-int sum2 (int, int, double);
-```
-
-위 두 함수의 시그니처가 같다.  
-시그니처가 같은 함수는 같은 함수 포인터에 의해 상호호환이 가능하다.
-
-:::tip 참고자료
-<https://blog.sapzape.com/330>
-:::
-
-## 메서드 시그니처 (Method Signature)
-
-메서드 이름과 매개변수 (Parameter)로 이루어진다.
-반환값의 타입은 시그니처에 포함되지 않는다.
