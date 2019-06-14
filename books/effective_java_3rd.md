@@ -1032,3 +1032,61 @@ public class Text {
 제네릭의 구현에는 소거 (erasure) 방식을 사용하기로 했다.
 
 ## Item 27 비검사 경고를 제거하라
+
+제네릭 사용시 많은 컴파일러 경고를 제거해야 한다.
+
+```java
+// Runtime Error
+Set<Lark> exaltation = new HashSet();
+
+// Success
+Set<Lark> exaltation = new HashSet<>();
+```
+
+JDK 7 부터 지원하는 다이아몬드 연산자 (`<>`) 를 사용하여 타입 추론을 사용하여 비검사 경고를 제거하자.
+
+모든 비 검사 경고를 제거하면 타입 안정성이 보장되며 런 타임시에 `ClassCaseException` 이 발생할 일이 없다.
+
+경고를 제거할 수 없지만 타입이 안전하다고 확신 한다면 `@SuppressWarnings("unchecked")` Annotation 을 사용하여 경고를 숨기자.
+
+`@SuppressWarnings("unchecked")` Annotation 을 사용할때는 그 경고를 무시해도 안전한 근거를 주석으로 명시해줘야 한다.
+
+## Item 28 배열보다는 리스트를 사용하라
+
+아래 코드는 RuntimeException 을 반환한다.
+
+```java
+Object[] objAry = new Long[1];
+
+// ArrayStoreException 을 반환
+objAry[0] = "타입이 달라 넣을 수 없다.";
+```
+
+이는 배열이 공변타입이라 Long 용 저장소에 String 을 넣을수 없지만 컴파일시에는 알수 없다.
+
+```java
+// 호환되지 않는 타입
+List<Object> = objList = new ArrayList<Long>();
+
+objList.add("타입이 달라 넣을 수 없다.");
+```
+
+위 코드는 컴파일시에 오류를 검증 할 수 있다.
+
+또한 배열은 _**실체화 (reify)**_ 된다.  
+이는 _**배열은 런타임에도 자신이 담기로 한 원소의 타입을 인지하고 확인**_ 한다. 그래서 공변임에도 불구하고 런타임시에 서로 다른 타입을 삽입하였을때 `ArrayStoreException` 이 발생하는것이다.
+
+이와 반대로 제네릭은 런타임시에는 데이터 타입이 소거가 되는 `Type Erasure` 현상이 발생된다. 원소타입을 컴파일시에만 검사하며 런타임에는 알 수 없다는 뜻이다.  
+이 `Type Erasure` 는 제너릭이 지원되기 전의 레거시 코드와 제네릭 타입을 순조롭게 사용 가능하도록 하는 일종의 매커니즘으로 역활을 해준다.
+
+**사용불가 제네릭 유형**
+
+* 제네릭 타입 :: `new List<E>[]`
+* 매개변수화 타입 :: `new List<String>[]`
+* 타입 매개변수 :: `new E[]`
+
+위 세가지 유형은 타입이 안전하지 않기 때문에 제네릭 배열을 만들 수 없다.
+
+이는 `E` `List<E>` `List<String>` 와 같은 타입을 실체화 불가 타입 (non-reifiable type) 이라고 하는데 실체화 되지 않아서 런타임시 컴파일 할때보다 정보량이 적게 가지는 타입을 말한다.
+
+실체화 불가 타입을 사용할때는 `@SafeVarargs` Annotation 으로 대체 가능하다.

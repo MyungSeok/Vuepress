@@ -89,17 +89,17 @@ ArrayList list = new ArrayList();
 
 바운드 와일드 카드 타입 (Bounded Wildcard Type) 은 `Collection` 계열의 클래스들의 코드에 자주 사용되는 방식이다.
 
-### 무공변 (Invariant)
+* 무공변 (Invariant)
 
 오로지 자기 타입만 허용하는 것 `<T>`
 
-### 공변 (Covariant)
+* 공변 (Covariant)
 
 구체적인 방향으로 타입 변환을 허용하는 것
 
 자기 자신과 자식 객체만 허용 (리스코프 치환 법칙) `<? extends T>`
 
-### 반공변 (Contravariant)
+* 반공변 (Contravariant)
 
 추상적인 방향으로의 타입 변환을 허용하는 것
 
