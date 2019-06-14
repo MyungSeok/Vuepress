@@ -1169,3 +1169,23 @@ public class Chooser<T> {
 
 둘을 섞어 쓰다 컴파일 오류나 경고를 만나면 가장 먼저 **배열을 리스트로 대체하는 방법을 적용** 해보자.
 :::
+
+### Item 29 이왕이면 제네릭 타입으로 만들라
+
+클라이언트에서는 직접 형 변환해야 하는 타입보다 제네릭 타입이 더 안전하고 쓰기 편하다.
+
+새로운 타입을 설계할 때는 형 변환 없이도 사용할 수 있도록 제네릭 타입으로 만들어야 할 경우가 많다.
+
+다음은 `Stack` 클래스는 제네릭 타입으로 리펙토링 하는 과정이다.
+
+```java
+public class Stack {
+  private Object[] elements;
+  private int size = 0;
+  private static final int DEFAULT_INITIAL_CAPACITY = 16;
+
+  public Stack() {
+    elements = new Object[DEFAULT_INITAL_CAPACITY];
+  }
+}
+```
