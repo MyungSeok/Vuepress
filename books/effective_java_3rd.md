@@ -1091,3 +1091,81 @@ objList.add("타입이 달라 넣을 수 없다.");
 배열을 비한정적 와일드카드 타입으로 만들수 있지만 유용하게 쓸 일이 거의 없다.
 
 실체화 불가 타입을 사용할때는 `@SafeVarargs` Annotation 으로 대체 가능하다.
+
+**생성자에서 컬렉션을 받은 Chooser 클래스 리펙토링**
+
+```java
+public class Chooser {
+  private final Object[] choiceArray;
+
+  public Chooser(Collection choices) {
+    choiceArray = choices.toArray();
+  }
+
+  public Object choose() {
+    Random rnd = ThreadLocalRandom.current();
+    return choiceArray[rnd.nextInt(choiceArray.length)];
+  }
+}
+```
+
+`choose()` 메서드를 호출 할때마다 반환된 `Object`를 원하는 타입으로 형 반환 해야 하기 때문에 타입이 다른 원소가 들어있으면 형 변환 오류가 난다  
+때문에 해당 클래스를 제네릭으로 변환한다.
+
+```java {4,5,6}
+public class Chooser<T> {
+  private final T[] choiceArray;
+
+  public Chooser(Collection<T> choices) {
+    choiceArray = choiceArray.toArray();
+  }
+
+  // choose 메서드는 그대로
+}
+```
+
+`Object[]` 가 `T[]` 으로 변환 되지 않기 때문에 명시적으로 캐스팅 해준다.
+
+```java {5}
+public class Chooser<T> {
+  private final T[] choiceArray;
+
+  public Chooser(Collection<T> choices) {
+    choiceArray = (T[]) choiceArray.toArray();
+  }
+
+  // choose 메서드는 그대로
+}
+```
+
+`T[]` 가 무슨 타입인지 알 수 없으니 형 변환이 런타임에 안전함을 보장할수 없다는 경고가 뜬다.
+
+비검사 형 변환 경고이기 때문에 배열 대신 리스트를 사용한다.
+
+```java {5,10}
+public class Chooser<T> {
+  private final List<T> choiceList;
+
+  public Chooser(Collection<T> choices) {
+    choiceList = new ArrayList<>(choices);
+  }
+
+  public T choose() {
+    Random rnd = ThreadLocalRandom.current();
+    return choiceList.get(rnd.nextInt(choiceList.size()));
+  }
+}
+```
+
+코드량은 조금더 늘었고 아마도 조금더 느리지만,  
+런타임에 `ClassCastException` 이 발생될 리스크가 줄었다.
+
+:::tip 핵심 정리
+배열은 **공변** 이고 **실체화** 되는 반면,  
+제네릭은 **불공변** 이고 **타입 정보가 소거** 된다.
+
+**배열은 런타임에는 타입이 안전** 하지만 **컴파일 타임에는 안전하지 않다.**  
+**제네릭은 이와 반대** 여서 그 둘을 섞어 쓰기란 쉽지 않다.
+
+둘을 섞어 쓰다 컴파일 오류나 경고를 만나면 가장 먼저 **배열을 리스트로 대체하는 방법을 적용** 해보자.
+:::
