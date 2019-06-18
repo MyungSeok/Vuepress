@@ -44,4 +44,6 @@ int sum2 (int, int, double);
 
 **Method Overriding**
 
-상의 클래스가 가지고 있는 메소드를 하위 클래스가 _**재 정의**_ 하여 사용하는 것  
+상의 클래스가 가지고 있는 메소드를 하위 클래스가 _**재 정의**_ 하여 사용하는 것
+
+## Double Dispatch

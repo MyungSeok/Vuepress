@@ -221,43 +221,49 @@ module.exports = {
       '/backend/language/java/': [
         '',
         {
-          title: 'General',
+          title: 'Basic', 
           children: [
-            {
-              title: 'Fundamental',
-              children: [
-                '/backend/language/java/general/fundamental/',
-                '/backend/language/java/general/fundamental/access_modifier',
-                '/backend/language/java/general/fundamental/boxing_unboxing',
-              ]
-            },
-            '/backend/language/java/general/jpa',
-            '/backend/language/java/general/ejb',
-            '/backend/language/java/general/jvm',
-            '/backend/language/java/general/gc',
-            {
-              title: 'OOP', 
-              children: [
-                'general/oop/',
-                'general/oop/inheritance',
-                'general/oop/encapsulation',
-                'general/oop/polymorphism',
-              ]
-            },
-            '/backend/language/java/general/solid'
+            '/backend/language/java/basic/',
+            '/backend/language/java/basic/access_modifier',
+            '/backend/language/java/basic/boxing_unboxing',
           ]
         },
         {
-          title: 'Type',
+          title: 'Essential',
           children: [
-            '/backend/language/java/type/enum',
             {
-              title: 'Generic', 
+              title: 'Generics', 
               children: [
-                '/backend/language/java/type/generic/',
-                '/backend/language/java/type/generic/typetoken'
+                '/backend/language/java/essential/generic/',
+                '/backend/language/java/essential/generic/type',
+                '/backend/language/java/essential/generic/method',
+                '/backend/language/java/essential/generic/bounded_type_parameters',
+                '/backend/language/java/essential/generic/wildcards',
+                '/backend/language/java/essential/generic/type_erasure'
               ]
             }
+          ]
+        },
+        {
+          title: 'Expert', 
+          children: [
+            '/backend/language/java/expert/typetoken',
+            '/backend/language/java/expert/pecs',
+            '/backend/language/java/expert/variant',
+            '/backend/language/java/expert/gc',
+            '/backend/language/java/expert/jvm',
+            '/backend/language/java/expert/jpa',
+            '/backend/language/java/expert/ejb',
+          ]
+        },
+        {
+          title: 'OOP', 
+          children: [
+            '/backend/language/java/oop/',
+            '/backend/language/java/oop/inheritance',
+            '/backend/language/java/oop/encapsulation',
+            '/backend/language/java/oop/polymorphism',
+            '/backend/language/java/oop/solid',
           ]
         },
         {
@@ -267,6 +273,7 @@ module.exports = {
             '/backend/language/java/reference/interface',
             '/backend/language/java/reference/operation',
             '/backend/language/java/reference/collection',
+            '/backend/language/java/reference/enum',
             '/backend/language/java/reference/method',
             '/backend/language/java/reference/thread',
             '/backend/language/java/reference/annotation'
@@ -276,6 +283,7 @@ module.exports = {
           title: 'Design Pattern', 
           children: [
             '/backend/language/java/design-pattern/',
+            '/backend/language/java/design-pattern/singleton',
             '/backend/language/java/design-pattern/strategy',
             '/backend/language/java/design-pattern/factory-method',
             '/backend/language/java/design-pattern/template-method'

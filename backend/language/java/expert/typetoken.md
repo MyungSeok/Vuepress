@@ -1,6 +1,4 @@
-# Type Token
-
-## Generic Type Token
+# Type Token <Badge text="Generic"/>
 
 타입의 안정성을 확보하기 위하여 클래스의 식별 토큰으로 사용하는 기법을 말한다.
 
@@ -38,7 +36,7 @@ System.out.println(Integer.class);
 System.out.println(List.class);
 ```
 
-## Erasure Type
+## Type Erasure
 
 ```java
 map.put(List.class, Arrays.asList(1, 2, 3));

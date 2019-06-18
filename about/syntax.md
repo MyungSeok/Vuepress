@@ -150,6 +150,24 @@ c2(no)->op2->e
 
 [Flow Chart](https://flowchart.vuepress.ulivz.com) 관련 매뉴얼을 참조
 
+## 뱃지 (Badge)
+
+```markdown
+<Badge text="tip"/>
+<Badge text="tip" type="tip"/>                  // default
+<Badge text="warn" type="warn"/>
+<Badge text="error" type="error"/>
+<Badge text="tip" type="tip" vertical="top"/>   // default
+<Badge text="tip" type="tip" vertical="middle"/>
+```
+
+<Badge text="tip"/>
+<Badge text="tip" type="tip"/>
+<Badge text="warn" type="warn"/>
+<Badge text="error" type="error"/>
+<Badge text="tip" type="tip" vertical="top"/>
+<Badge text="tip" type="tip" vertical="middle"/>
+
 :::tip 참고자료
 <https://62che.com/blog/vuepress/마크다운-예제.html#그룹핑>  
 <https://vuepress.vuejs.org/guide/using-vue.html>

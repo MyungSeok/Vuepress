@@ -6,10 +6,9 @@
 
 > HEAP 영역에서의 값이 바뀌는건 아니다.
 
-불편클래스의 예시는 아래가 대표적이다.
+불변클래스의 예시는 아래가 대표적이다.
 
-### String / StringBuffer / StringBuilder 의 사용
-
+:::tip String / StringBuffer / StringBuilder 의 사용
 문자열을 더하는 식에는 `String` 보다는 `StringBuffer` 나 `StringBuilder` 을 사용해야 한다.
 
 `String` 은 새로운 값을 할당할 때마다 새로 생성되기 때문 \(클래스의 메모리 참조 주소가 바뀜\)
@@ -19,6 +18,7 @@
 `StringBuilder` 는 변경 가능한 문자열로 synchronization 이 적용되지 않는다.
 
 `StringBuffer` 는 _**멀티쓰레드 환경에서 안정적**_ 이다.
+:::
 
 ## Exception
 
