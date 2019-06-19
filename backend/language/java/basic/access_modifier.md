@@ -1,4 +1,4 @@
-# Access Modifier (접근 제어자)
+# Access Modifier
 
 Java 에는 다음과 같은 접근 제어자가 있다.  
 다음 순으로 접근을 허용한다.
