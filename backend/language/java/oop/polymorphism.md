@@ -12,7 +12,7 @@ Java 의 Polymorphism (다형성) 은 하나의 객체를 여러 타입으로 �
 
 Static Dispatch 는 프로그램이 컴파일 시점에 알수 있으며 대표적으로 Method Overriding 이 있다.
 
-:::tip Method Overriding
+:::tip Method Overriding (메서드 오버라이딩)
 상위 클래스가 가지고 있는 메소드를 하위 클래스가 _**재 정의**_ 하여 사용하는 것
 :::
 
@@ -44,7 +44,7 @@ public class Dispatch {
 
 정적 디스패치 (static dispatch) 에 비해서는 느리고 컴파일러의 최적화를 막아 비용이 더 크게 발생될 수 있다.
 
-:::tip Method Overloading
+:::tip Method Overloading (메서드 오버로딩)
 같은 이름의 메서드를 여러개 정의하고 매개변수의 유형과 개수를 다르게 하여 다양한 유형의 호출에 응답하는 방법이다.
 
 이는 _**Function Signature 를 다르게 하여 사용하는 방법**_ 으로 _**Method Signature**_ 가 동일하면 사용이 불가하다.
@@ -79,15 +79,15 @@ public class Dispatch {
 
 위 코드의 어떤 클래스의 `run()` 메서드가 실행될지는 컴파일 시점에는 알 수 없다.  
 
-**Method Signature**
+**Method Signature (메서드 시그니처)**
 
 메서드의 이름 (Method Name) 과 매개변수의 타입 (Parameter Types) 이 같으면 메서드 시그니쳐가 같다고 한다.
 
-::: warning
+:::warning
 반환값의 타입 (Return Type) 은 메서드 시그니쳐에 포함되지 않는다.
 :::
 
-**Function Signature**
+**Function Signature (함수 시그니처)**
 
 함수의 원형에 명시되는 매개변수의 리스트를 가르킨다.  
 두 함수의 _**매개변수의 갯수**_ 와 _**타입**_ 이 같으면 두 함수의 시그니처는 같다고 할 수 있습니다.
