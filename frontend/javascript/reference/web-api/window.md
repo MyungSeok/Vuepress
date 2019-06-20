@@ -108,3 +108,17 @@ reqAnimate(() => {
 /* statement */
 });
 ```
+
+## `encodeURI` vs `encodeURIComponent`
+
+* `encodeURI` / `decodeURI`
+  * 최소한의 문자만 인코딩 합니다.
+  * `;` `/` `?` `:` `@` `&` `=` `+` `$` `,` `-` `_` `.` `!` `~` `*` `'` `(` `)` `#` 와 같은 특수문자는 인코딩 되지 않습니다.
+* `encodeURIComponent` / `decodeURIComponent`
+  * 대부분의 문자를 인코딩 합니다.
+* `escape` / `unescape`
+  * `encodeURI` 와 `encodeURIComponent` 의 중간정도의 문자를 인코딩 합니다.
+
+:::tip 참고자료
+<http://mwultong.blogspot.com/2006/10/encodeuri-encodeuricomponent-escape.html>
+:::
