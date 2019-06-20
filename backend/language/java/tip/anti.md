@@ -6,13 +6,13 @@
 
 생성후 변경 불가능한 객체로서 대표적으로 _`String`_, _`Boolean`_, _`Integer`_, _`Float`_, _`Long`_ 등등이 있다.
 
-### 안티패턴
+**Bad Code**
 
 ```java
 String str = new String("bikini");
 ```
 
-### 권장 패턴
+**Better Code**
 
 ```java
 String str = "bikini";
@@ -20,6 +20,7 @@ String str = "bikini";
 
 > 최신 JVM 상에서는 고정 문자열일때 컴파일러가 처음부터 바이트 코드를 StringBuilder 로 변경되어 인스턴스가 생성되지 않는다.  
 > 하지만 가급적 문자열 연산이 많다면 `StringBuilder` 를 권장
+> 동기화를 염려한다면 `StringBuffer` 를 권장
 
 ## 오토 박싱
 
@@ -75,4 +76,127 @@ public class Stack {
 
 :::tip 참고자료
 <http://www.yunsobi.com/blog/entry/finalize-메소드의-오버라이딩을-자제해야하는-이유>
+:::
+
+## 문자열 조합
+
+**Bad Code**
+
+```java {3,6}
+String str = "";
+for (Person p : persons) {
+  str += ", " + p.getName();
+}
+
+s = s.substring(2);
+```
+
+위 코드는 loop 안에서 `String` 의 concatenation 을 반복하며 필요없는 **array copy** 와 **garbage** 를 남발한다.  
+마지막에는 콤마를 제거하는 연산을 한 번 더 해줘야 한다.
+
+**Better Code**
+
+```java
+StringBuilder sb = new StringBuilder(persons.size() * 16);
+for (Person p : persons) {
+  if (sb.length() > 0) sb.append(", ");
+  sb.append(p.getName());
+}
+```
+
+## StringBuffer 성능
+
+**Bad Code**
+
+```java {1,3}
+StringBuffer sb = new StringBuffer();
+sb.append("Name : ");
+sb.append(name + '\n');
+sb.append("!");
+...
+String s = sb.toString();
+```
+
+위에서 3라인에서 `String` concatenation 이 일어난다.
+또한 buffer 사이즈를 초기화 하지 않음으로 인해 불필요한 _**resizing(array copy)**_ 가 일어날 수 있다.
+
+> Java SE 5 에서는 `synchronization` 이 필요없는 로컬 변수에는 `StringBuffer` 가 `StringBuilder` 로 변경된다.
+
+**Good Code**
+
+```java
+StringBuilder sb = new StringBuilder(100);
+sb.append("Name : ");
+sb.append(name);
+sb.append('\n');
+sb.append('!');
+
+String s = sb.toString();
+```
+
+## String 비교
+
+**Bed Code**
+
+```java
+if (name.compareTo("John") == 0) { /* statement */ }
+if (name == "John") { /* statement */ }
+if (name.equals("John")) { /* statement */ }
+if ("".equals(name)) { /* statement */ }
+```
+
+`==` 연산자는 객체 동치에 대한 연산을 수행한다.
+`equals()` 메서드의 변수와 상수의 위치를 바꾸면 NPE (Null Pointer Exception) 를 피할수 있는 안정성도 얻을수 있다.
+빈 문자열 체크할 때는 문자열 길이를 체크하는 것이 빠른데 `equals()` 의 메서드가 hash code 를 먼저 계산하기 때문이다.
+
+**Better Code**
+
+```java
+if ("John".equals(name)) { /* statement */ }
+if (name.length() == 0) { /* statement */ }
+```
+
+## 숫자를 문자열로 변환
+
+**Bad Code**
+
+```java
+"" + set.size();
+new Integer(set.size()).toString();
+```
+
+1번 라인에서 String concatenation 연산을 불필요하게 해줘야 한다.
+2번 라인에서는 `toString()` 메서드를 수행하기 위해서 `Integer` 클래스를 생성하기까지 한다.
+
+**Better Code**
+
+```java
+String.valueOf(set.size());
+```
+
+## 불변 객체 사용
+
+**Bad Code**
+
+```java
+new Integer(0);
+return Boolean.valueOf("true");
+```
+
+`Integer` 클래스와 `Boolean` 클래스는 불변 객체 (Immutable Object) 이다.  
+때문에 불 필요하게 객체를 생성할 필요가 없다.
+
+`Integer` 와 `Boolean` 클래스들은 자주 사용하는 Instance 에 대해서 Built-In Cache 가 존재한다.
+
+`Boolean` 클래스의 경우에는 값이 오로지 `TRUE` / `FALSE` 두가지 뿐이다.
+
+**Better Code**
+
+```java
+Integer.valueOf(0);
+return Boolean.TRUE;
+```
+
+:::tip 참고자료
+<https://jnylove.tistory.com/192>
 :::
