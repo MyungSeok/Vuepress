@@ -120,7 +120,7 @@ String s = sb.toString();
 위에서 3라인에서 `String` concatenation 이 일어난다.
 또한 buffer 사이즈를 초기화 하지 않음으로 인해 불필요한 _**resizing(array copy)**_ 가 일어날 수 있다.
 
-> Java SE 5 에서는 `synchronization` 이 필요없는 로컬 변수에는 `StringBuffer` 가 `StringBuilder` 로 변경된다.
+> Java SE 5 이상에서는 `synchronization` 이 필요없는 로컬 변수에는 `StringBuffer` 가 아닌 `StringBuilder` 로 사용해야 한다.
 
 **Good Code**
 
