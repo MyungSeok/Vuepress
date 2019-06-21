@@ -10,10 +10,12 @@ Java 의 Polymorphism (다형성) 은 하나의 객체를 여러 타입으로 �
 
 ### Static Dispatch
 
-Static Dispatch 는 프로그램이 컴파일 시점에 알수 있으며 대표적으로 Method Overriding 이 있다.
+Static Dispatch 는 프로그램이 컴파일 시점에 알수 있으며 대표적으로 Method Overloading 이 있다.
 
-:::tip Method Overriding (메서드 오버라이딩)
-상위 클래스가 가지고 있는 메소드를 하위 클래스가 _**재 정의**_ 하여 사용하는 것
+:::tip Method Overloading (메서드 오버로딩)
+같은 이름의 메서드를 여러개 정의하고 매개변수의 유형과 개수를 다르게 하여 다양한 유형의 호출에 응답하는 방법이다.
+
+이는 _**Function Signature 를 다르게 하여 사용하는 방법**_ 으로 _**Method Signature**_ 가 동일하면 사용이 불가하다.
 :::
 
 ```java {4,13}
@@ -40,14 +42,12 @@ public class Dispatch {
 
 ### Dynamic Dispatch
 
-특정 메서드나 함수 구현이 프로그램의 런타임에 결정되는 것으로 대표적으로는 Method Overloading 이 있다.
+특정 메서드나 함수 구현이 프로그램의 런타임에 결정되는 것으로 대표적으로는 Method Overriding 이 있다.
 
 정적 디스패치 (static dispatch) 에 비해서는 느리고 컴파일러의 최적화를 막아 비용이 더 크게 발생될 수 있다.
 
-:::tip Method Overloading (메서드 오버로딩)
-같은 이름의 메서드를 여러개 정의하고 매개변수의 유형과 개수를 다르게 하여 다양한 유형의 호출에 응답하는 방법이다.
-
-이는 _**Function Signature 를 다르게 하여 사용하는 방법**_ 으로 _**Method Signature**_ 가 동일하면 사용이 불가하다.
+:::tip Method Overriding (메서드 오버라이딩)
+상위 클래스가 가지고 있는 메소드를 하위 클래스가 _**재 정의**_ 하여 사용하는 것
 :::
 
 ```java
@@ -107,7 +107,65 @@ int sum2 (int, int, double);
 
 싱글 디스패칭이 여러번 일어나는 것이 더블 디스패칭이다.
 
+```java
+interface Game {
+  void play(Play play);
+}
+
+static class Init implements Game{
+  @Override
+  public void play(Play play) {
+    play.run(this);
+  }
+}
+
+static class Score implements Game {
+  @Override
+  public void play(Play play) {
+    play.run(this);
+  }
+}
+
+interface Play {
+  void run(Init init);
+  void run(Score score);
+}
+
+static class Puzzle implements Play {
+  @Override
+  public void run(Init init) {
+    System.out.println("Init Puzzle");
+  }
+
+  @Override
+  public void run(Score score) {
+    System.out.println("Score Puzzle");
+  }
+}
+
+static class Action implements Play {
+  @Override
+  public void run(Init init) {
+    System.out.println("Init Action");
+  }
+
+  @Override
+  public void run(Score score) {
+    System.out.println("Score Action");
+  }
+}
+
+@Test
+public void doubleDispatch() {
+  List<Game> games = Arrays.asList(new Init(), new Score());
+  List<Play> play = Arrays.asList(new Puzzle(), new Action());
+
+  games.forEach(g -> play.forEach(p -> g.play(p)));
+}
+```
+
 :::tip 참고자료
 [토비의 봄 TV 1회 - 재사용성과 다이나믹 디스패치, 더블 디스패치](https://www.youtube.com/watch?v=s-tXAHub6vg)  
-<https://multifrontgarden.tistory.com/133>
+<https://multifrontgarden.tistory.com/133>  
+<http://wonwoo.ml/index.php/post/1490>
 :::

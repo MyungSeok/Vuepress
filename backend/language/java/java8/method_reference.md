@@ -26,7 +26,7 @@ Boolean result = func.apply("123");
 
 `isEmpty()` 는 static method 는 아니지만 인자로 놈어오는 타입이 `String` 이기 때문에 해당 타입의 메서드를 호출해준다.
 
-## 레퍼런스별 추론방법
+## 레퍼런스별 타입 추론 (Type Inference) 방법
 
 * Static Method Reference
 
