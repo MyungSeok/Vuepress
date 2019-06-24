@@ -1187,5 +1187,79 @@ public class Stack {
   public Stack() {
     elements = new Object[DEFAULT_INITAL_CAPACITY];
   }
+
+  public void push(Object e) {
+    ensureCapacity();
+    elements[size++] = e;
+  }
+
+  public Object pop() {
+    if (size == 0)
+      throw new EmptyStackException();
+    Object result = elements[--size];
+
+    // 사용이 끝난 참조 해제
+    elements[size] = null;
+
+    return result;
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  private void ensureCapacity() {
+    if (elements.length == size)
+      elements = Arrays.copyOf(elements, 2 * size + 1);
+  }
 }
 ```
+
+`Object` 를 제네릭 타입으로 변경한다.
+
+```java {2,7,15,18}
+public class Stack<E> {
+  private E[] elements;
+  private int size = 0;
+  private static final int DEFAULT_INITAL_CAPACITY = 16;
+
+  public Stack() {
+    elements = new E(DEFAULT_INITAL_CAPACITY);
+  }
+
+  public void push(E e) {
+    ensureCapacity();
+    elements[size++] = e;
+  }
+
+  public E pop() {
+    if (size == 0)
+      throw new EmptyStackException();
+    E result = elements[--size];
+
+    // 사용이 끝난 참조 해제
+    elements[size] = null;
+
+    return result;
+  }
+}
+```
+
+`E` 는 실체화 불가 타입으로 배열을 만들수 없어 아래와 같은 에러를 뱉는다.
+
+```bash {2}
+Stack.java:8: generic array creation
+  elements = new E[DEFAULT_INITIAL_CAPACITY];
+```
+
+제네릭 배열 생성을 금지하는 제약을 우회하는 방법으로 `Object` 배열을 생성한 다음 제네릭 배열로 형변환 하는 방법이 있다.  
+하지만 이는 _**오류대신 경고**_ 를 내보낸다.
+
+이 경고는 비검사 형변환이 프로그램의 안정성을 해칠수 있다는 의미이므로 스스로 확인해야 한다.
+
+* 배열의 `elements` 는 `private` 필드에 저장된다.
+* Client 로 반환되거나 다른 메서드에 전달되는 일이 전혀 없다.
+* `push()` 메서드를 통해 배열에 저장되는 원소의 타입은 항상 E 다.
+
+항상 위 3가지 조건을 만족하므로 이 코드의 비검사 형변환은 안전하다.  
+따라서 `@SuppressWarnings` 애너테이션으로 해당 경고를 숨긴다.
