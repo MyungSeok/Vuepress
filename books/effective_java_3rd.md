@@ -1392,3 +1392,75 @@ public static <T> UnaryOperator<T> identityFunction() {
 위 비검사 경고 애너테이션은 `T` 가 어떤 타입이든 `UnaryOperator<Object>` 는 `UnaryOperator<T>` 가 아니기 때문이다 (타입 소거)
 
 하지만 항등 함수는 `T` 가 어떤 타입이든 입력 값을 그대로 반환하기 때문에 `UnaryOperator<T>` 를 사용해도 안전하다.
+
+### Item 31 한정적 와일드카드를 사용해 API 유연성을 높이라
+
+매개변수화 타입 (Parameterized Types) 은 불공변 (invariant) 이다.
+
+와일드카드 타입을 사용하지 않은 `pushAll()` 메서드는 결함이 있다.
+
+```java
+public void pushAll(Iterable<E> src) {
+  for (E e : src) {
+    push(e);
+  }
+}
+```
+
+`Integer` 는 `Number` 의 하위타입이니 잘 동작 해야 한다. (리스코프 치환 법칙)
+
+```java {3}
+Stack<Number> numberStack = new Stack();
+Iterable<Integer> integers = ...;
+numberStack.pushAll(integers);
+```
+
+하지만 아래와 같이 오류 메세지가 뜬다.  
+_**매개변수화 타입이 불공변이기 때문**_ 이다.
+
+```java
+StackTest.java:7: error: incompatible types: Iterable<Integer> cannot be converted to Iterable<Number>
+  numberStack.pushAll(integers);
+```
+
+위 에러를 고치기 위해서 자바는 _**한정적 와일드 카드 타입이라는 특별한 매개변수화 타입을 지원**_ 한다.  
+`pushAll()` 의 입력 매개변수 타입은 `E` 의 `Iterable` 이 아니라 `E` 의 하위 타입의 `Iterable` 이여야 하며 와일드 카드의 타입은 `Iterable<? extends E>` 이 되어야 한다.  
+
+**생산자 (Producer) 에 의한 매개변수화 타입을 적용**
+
+```java {1}
+public void pushAll(Iterable<? extends E> src) {
+  for (E e : src) {
+    push(e);
+  }
+}
+```
+
+`popAll()` 메서드 또한 와일드카드의 미적용으로 인해 결함이 생긴다.
+
+```java
+Stack<Number> numberStack = new Stack<>();
+Collection<Object> objects = ...;
+numberStack.popAll(objects);
+```
+
+위 코드를 컴파일 하면 _**`Collection<Object>` 는 `Collction<Number>` 의 하위타입이 아니다**_ 라는 메세지와 함께 오류가 발생한다.  
+이 경우에도 한정적 와일드카드 타입을 적용하여 해결한다.
+
+`popAll()` 의 입력 매개변수 타입이 `E` 의 Collection 이 아니라 `E` 의 상위 타입의 Collection 이여야 하며 와일드 카드의 타입은 `Collection<? super E>` 가 되어야 한다.
+
+**소비자 (Consumer) 매개변수에 와일드카드 타입을 적용**
+
+```java {1}
+public void popAll(Collection<? super E> dst) {
+  while(!isEmpty())
+    dst.add(pop());
+}
+```
+
+:::tip PECS
+위와 같은 패턴을 PECS (Producer Extends & Consumer Super) 라고 하며 매개변수를 유연성있게 와일드카드를 사용하게끔 도와준다.  
+매개변수화 타입 `T` 생산 및 소비에 맞게 한정적 와일드 카드가 분리된다.
+* 생산자 : `<? extends T>`
+* 소비자 : `<? super T>`
+:::
