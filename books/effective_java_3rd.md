@@ -1198,7 +1198,7 @@ public class Stack {
       throw new EmptyStackException();
     Object result = elements[--size];
 
-    // 사용이 끝난 참조 해제
+    // 사용이 끝난 참조를 해제
     elements[size] = null;
 
     return result;
@@ -1245,15 +1245,12 @@ public class Stack<E> {
 }
 ```
 
-`E` 는 실체화 불가 타입으로 배열을 만들수 없어 아래와 같은 에러를 뱉는다.
+아래와 같은 `E` 는 실체화 불가 타입으로 배열을 만들수 없어 아래와 같은 에러를 뱉는다.
 
-```bash {2}
+```java {2}
 Stack.java:8: generic array creation
   elements = new E[DEFAULT_INITIAL_CAPACITY];
 ```
-
-제네릭 배열 생성을 금지하는 제약을 우회하는 방법으로 `Object` 배열을 생성한 다음 제네릭 배열로 형변환 하는 방법이 있다.  
-하지만 이는 _**오류대신 경고**_ 를 내보낸다.
 
 이 경고는 비검사 형변환이 프로그램의 안정성을 해칠수 있다는 의미이므로 스스로 확인해야 한다.
 
@@ -1262,4 +1259,136 @@ Stack.java:8: generic array creation
 * `push()` 메서드를 통해 배열에 저장되는 원소의 타입은 항상 E 다.
 
 항상 위 3가지 조건을 만족하므로 이 코드의 비검사 형변환은 안전하다.  
-따라서 `@SuppressWarnings` 애너테이션으로 해당 경고를 숨긴다.
+
+아래와 같이 제네릭 배열 생성을 금지하는 제약을 우회하는 방법으로  
+`Object` 배열을 생성한 다음 제네릭 배열로 형변환 하는 방법이 있다.  
+하지만 이는 _**오류대신 경고**_ 를 내보낸다.
+
+아래 코드와 같이 생성자 메서드를 `@SuppressWarnings("unchecked")` 애너테이션으로 해당 경고를 숨긴다.  
+배열 `elements` 은 `push(E)` 로 넘어온 인스턴스 `E` 만 담는다.
+
+```java
+@SuppressWarnings("unchecked")
+public Stack() {
+  elements = (E[]) new Object[DEFAULT_INITAL_CAPACITY];
+}
+```
+
+위 코드는 타입의 안정성을 보장하지만 이 배열의 런타입은 `E[]` 가 아닌 `Object[]` 이다.
+
+아래와 같이 배열 객체 `elements` 형변환 할 수 없다는 에러가 뜬다.
+
+```java
+Stack.java:19: incompatible types found: Object, required: E
+  E result = elements[--size];
+```
+
+배열이 반환한 원소를 `E` 로 형변환 하면 오류대신 경고가 뜬다.
+
+```java
+Stack.java:19: warning: [unchecked] unchecked cast found: Object, required: E
+  E result = (E) elements[--size];
+```
+
+위 코드에서의 경고 `E` 는 실체화 불가 타입이므로 런타임에 이루어지는 형변환이 안전한지 증명할 방법이 없다.  
+하지만 `push()` 메서드에서는 `E` 타입만 허용하므로 위 형변환은 안전하다.
+
+형변환이 안전하다 생각이 들면 비검사 경고를 숨긴다.
+
+```java
+public E pop() {
+  if (size == 0)
+    throw new EmptyStackException();
+
+  @SuppressWarnings("unchecked")
+  E result = (E) elements[--size];
+
+  // 사용이 끝난 참조를 해제
+  elements[size] = null;
+  return result;
+}
+```
+
+[Item 28](#item-28-배열보다는-리스트를-사용하라) 에서의 배열보다는 리스트를 우선하라는 상황에 따라 다르며  
+제네릭 타입 안에서 리스트를 사용하는게 항상 가능하지도 더 좋은 방법이 아닐수도 있다.
+
+자바가 리스트를 기본타입으로 제공하지 않으므로 `ArrayList` 와 같은 제네릭 타입도 결국은 기본 타입인 배열을 사용해 구현해야 하는 경우도 있다.
+
+`HashMap` 과 같은 제네릭 타입은 성능을 높일 목적으로 배열을 사용하기도 한다.
+
+제네릭 타입은 타입 매개변수에 어떠한 제약을 두고 있지는 않지만 기본타입은 사용할 수 없다.  
+가령 `Stack<int>` `Stack<double>` 을 만드려고 하면 컴파일 오류가 난다.  
+이는 자바의 근몬적인 문제이나, 박싱된 기본타입을 사용하여 우회가 가능하다.
+
+혹은 타입 매개변수의 제약을 두어 사용하는 방법도 있다. (한정적 타입 매개변수)
+예를 들면 [java.util.concurrent.DelayQueue](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/DelayQueue.html) 과 같이 `DelayQueue` 자신과 `DelayQueue` 의 원소를 사용하는 `Delayed` 클래스에서 `ClassCastException` 걱정 할 필요 없이 사용 가능하다.
+
+### Item 30 이왕이면 제네릭 메서드로 만들라
+
+클래스와 마찬가지로 메서드도 제네릭으로 만들수 있다.
+
+매개변수화 타입을 받는 정적 유틸리티 메서드는 제네릭으로 대표적으로 `Collections` 의 알고리즘 메서드는 모두 제네릭 메서드이다.
+
+```java {2,3}
+public static Set union(Set s1, Set s2) {
+  Set result = new HashSet(s1);
+  result.addAll(s2);
+  return result;
+}
+```
+
+위 코드는 컴파일은 되지만 경고가 두개가 발생한다.
+
+```java
+Union.java:5: warning: [unchecked] unchecked call to HashSet(Collection<? extends E>) as a member of raw type HashSet
+  Set result = new HashSet(s1);
+```
+
+```java
+Union.java:6: warning: [unchecked] unchecked call to addAll(Collection<? extends E>) as a member of raw type Set
+  result.addAll(s2);
+```
+
+위 경고는 메서드 타입의 안정성을 보장해야 한다.
+
+```java {1,2}
+public static <E> Set<E> union(Set<E> s1, Set<E> s2) {
+  Set<E> result = new HashSet<>();
+  result.addAll(s2);
+  return result;
+}
+```
+
+단순한 제네릭 메서드라면 위 코드정도가 적당하다.  
+이 메서드는 경고 없이 컴파일 되며, 안전하고 쓰기도 쉽다.
+
+```java
+public static void main(String[] args) {
+  Set<String> guys = Set.of("톰", "딕", "해리");
+  Set<String> stooges = Set.of("래리", "모에", "컬리");
+  Set<String> aflCio = union(guys, stooges);
+  System.out.println(aflcio);
+}
+```
+
+위 프로그램을 실행시켰을때의 결과는 아래와 같다.
+
+```bash
+[모에, 톰, 해리, 래리, 컬리, 딕]
+```
+
+_**항등함수**_ 란 입력값을 수정없이 그대로 반환하는 특별한 함수로  
+이를 이용한 제네릭 싱글턴 방식를 만들면 아래의 예시와 같다.
+
+```java {3}
+public static UnaryOperator<Object> IDENTITY_FN = (t) -> t;
+
+@SuppressWarning("unchecked")
+public static <T> UnaryOperator<T> identityFunction() {
+  return (UnaryOperator<T>) IDENTITY_FN
+}
+```
+
+위 비검사 경고 애너테이션은 `T` 가 어떤 타입이든 `UnaryOperator<Object>` 는 `UnaryOperator<T>` 가 아니기 때문이다 (타입 소거)
+
+하지만 항등 함수는 `T` 가 어떤 타입이든 입력 값을 그대로 반환하기 때문에 `UnaryOperator<T>` 를 사용해도 안전하다.
