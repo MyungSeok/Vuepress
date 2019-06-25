@@ -1,11 +1,17 @@
 # Method Reference
 
+아래와 같이 사용하며 해당 클래스에 (인스턴스) 메서드를 `::` 으로 붙여서 사용한다.
+
+```java
+Class :: (Instance) Method
+```
+
 Method 의 Reference 를 전달하는다는 의미이기 때문에 Lamda 보다 축약된 문법이다.
 
 Java 의 Method 는 일급 객체가 아니기 때문에 객체의 Reference 를 전달하는 방식으로 동작된다.
 
 ```java
-Function<String, Integer> func = Integer.parseInt(str);
+Function<String, Integer> func = str -> Integer.parseInt(str);
 ```
 
 `Function` 인터페이스는 하나의 인자를 받아 다른타입의 리턴 타입을 갖는 `apply()` Method 를 갖고 있는 함수형 인터페이스이다.
@@ -82,5 +88,6 @@ Comparator<String> compare = String::compareTo;
 
 :::tip 참고자료
 <https://multifrontgarden.tistory.com/126>  
-<https://imcts.github.io/java-method-reference/>
+<https://imcts.github.io/java-method-reference/>  
+<https://palpit.tistory.com/675>
 :::

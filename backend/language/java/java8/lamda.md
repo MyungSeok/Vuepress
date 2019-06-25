@@ -76,7 +76,7 @@ sumAll(numbers, n -> n % 2 == 1);
 <https://futurecreator.github.io/2018/08/26/java-8-streams/>
 :::
 
-## 기초
+## lamda 의 특징
 
 자바의 람다는 익명 클래스와 유사하게 사용되지만 기술적으로는 차이가 있습니다.
 
@@ -91,3 +91,9 @@ sumAll(numbers, n -> n % 2 == 1);
 :::tip 참고자료
 <https://futurecreator.github.io/2018/07/19/java-lambda-basics/>
 :::
+
+람다식의 형태는 _**매개변수를 가진 코드 블럭**_ 이기 때문에 마치 자바의 메서드를 선언하는것처럼 보여집니다.
+
+자바는 메서드를 단독으로 선언할 수 없고 항상 클래스의 구성멤버로 선언하기 때문에 _**람다식은 단순히 메서드를 선언하는 것이 아닌 메서드를 가고 있는 객체를 생성**_ 해 낸다.
+
+람다식은 `FunctionalInterface` 을 가지고 사용해야 하기 때문에 [Functional Interface](/backend/language/java/java8/functional.html) 내용을 참고하자.

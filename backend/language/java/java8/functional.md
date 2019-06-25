@@ -16,6 +16,57 @@ public static void main(String[] args) {
 }
 ```
 
+## `@FunctionalInterface`
+
+모든 인터페이스를 람다식의 타겟 타입으로 사용할 수 없다.
+
+람다식이 하나의 메소드를 정의하기 때문에 _**두개 이상의 추상메서드가 선언된 인터페이스는 람다식을 이용하애 구현 객체를 생성할 수 없다.**_
+
+> _**하나의 abstract method 만이 선언**_ 된 인터페이스 만이 _**lamda**_ 식의 Target Type 이 될 수 있다.
+
+`FunctionalInterface` 를 작성할 때 `@FunctionalInterface` 어노테이션을 붙여주면 명시적으로 `FunctionalInterface` 이라는 것을 알수 있으며 또한 두개이상의 _**추상 메서드가 선언되지 않도록 컴파일러가 체크**_ 를 한다.
+
+아래와 같이 두개 이상의 메서드를 선언한 `FunctionalInterface` 은 컴파일 에러가 난다.
+
+```java {4}
+@FunctionalInterface
+public interface MyFunctionalInterface {
+    public void method();
+    public void otherMethod(); // Compile Error
+}
+```
+
+아래와 같이 간단히 만들어 사용가능하다.
+
+**매개변수가 있는 함수형 인터페이스**
+
+```java
+@FunctionalInterface
+public interface MyFuncInterface {
+  public int method(int x, int y);
+}
+```
+
+```java
+public static void main(String[] args) {
+  MyFuncInterface func = (x, y) => {
+    return x + y;
+  };
+
+  int result = func(3, 5);
+
+  System.out.println(result);
+}
+```
+
+```bash
+5
+```
+
+:::tip 참고자료
+<https://palpit.tistory.com/671>
+:::
+
 Java SE 8 부터는 빈번하게 사용되는 함수적 인터페이스 (Functional Interface) 는 `java.util.function` 표준 API 패키지로 제공합니다.  
 이 패키지에서 제공하는 _**함수적 인터페이스의 목적은 메서드 또는 생성자의 매개타입으로 사용되어 람다식을 대입**_ 할 수 있도록 하기 위해서 이다.
 
@@ -118,6 +169,46 @@ public class Person {
 ```
 
 ```java
+id:1, Name:KIM
+id:2, Name:LEE
+id:3, Name:PARK
+```
+
+또한 정렬 알고리즘을 이용한 생산자 관점에서 사용하는 메서드이다. (`sort(Comparator<? super E> c)`)
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class ForEach {
+  public static void main(String[] args) {
+    List<Person> list = new ArrayList<>();
+    list.add(new Persion(1, "KIM"));
+    list.add(new Persion(2, "LEE"));
+    list.add(new Persion(3, "PARK"));
+
+    Consumer<Person> style = (Person p) -> System.out.println("id: " + p.getPid() + ", Name: " + p.getName());
+
+    list.sort(new PersonComparatorByName());
+
+    list.forEach(style);
+  }
+}
+```
+
+```java
+import java.util.Comparator;
+public class PersonComparatorByName implements Comparator<Person> {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p1.getName().compareTo(p2.getName());
+    }
+}
+```
+
+```java
+// 오름차순 정렬
 id:1, Name:KIM
 id:2, Name:LEE
 id:3, Name:PARK
@@ -389,52 +480,83 @@ id:3, Name:PARK
 
 :::tip 참고자료
 <https://palpit.tistory.com/673>
+<https://www.concretepage.com/java/jdk-8/java-8-list-example-with-foreach-removeif-replaceall-and-sort>
 :::
 
-<!-- 
-## sort()
+## `andThen()` 과 `compose()` 의 디폴트 메서드
 
-`sort(Comparator<? super E> c)`
+`andThen()` 과 `compose()` 메서드는 두개의 Functional Interface 를 순차적으로 연결하고 첫번째 처리 결과를 두번째 매개값으로 전달하여 최종 결과값을 얻을때 사용한다.
+
+`andThen()` 과 `compose()` 메서드는 처리순서에 따라 다르다.
 
 ```java
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
-public class ForEach {
-  public static void main(String[] args) {
-    List<Person> list = new ArrayList<>();
-    list.add(new Persion(1, "KIM"));
-    list.add(new Persion(2, "LEE"));
-    list.add(new Persion(3, "PARK"));
-
-    Consumer<Person> style = (Person p) -> System.out.println("id: " + p.getPid() + ", Name: " + p.getName());
-
-    list.sort(new PersonComparatorByName());
-
-    list.forEach(style);
-  }
-}
+InterfaceAB = InterfaceA.compose(Interface B)
+Output = InterfaceAB.method()
 ```
 
-```java
-import java.util.Comparator;
-public class PersonComparatorByName implements Comparator<Person> {
-    @Override
-    public int compare(Person p1, Person p2) {
-        return p1.getName().compareTo(p2.getName());
-    }
-}
-```
+@flowstart
+stage1=>operation: Interface AB
+stage2=>operation: Interface A
+stage3=>operation: Interface B
+stage4=>operation: Output
+sub=>subroutine: andThen()
+
+stage1(right)->stage2(right)->sub(right)->stage3(right)->stage4
+@flowend
 
 ```java
-// 오름차순 정렬
-id:1, Name:KIM
-id:2, Name:LEE
-id:3, Name:PARK
+InterfaceAB = InterfaceA.compose(Interface B)
+Output = InterfaceAB.method()
+```
+
+@flowstart ant
+stage1=>operation: Interface AB
+stage2=>operation: Interface B
+stage3=>operation: Interface A
+stage4=>operation: Output
+sub=>subroutine: compose()
+
+stage1(right)->stage2(right)->sub(right)->stage3(right)->stage4
+@flowend
+
+|Types|Functional Interface|andThen()|compose()|
+|:-:|:-|:-:|:-:|
+|Consumer|`Consumer<T>`|O||
+||`BiConsumer<T, U>`|O||
+||`DoubleConsumer`|O||
+||`IntConsumer`|O||
+||`LongConsumer`|O||
+|Function|`Function<T, R>`|O|O|
+||`BiFunction<T, U, R>`|O||
+|Operator|`BinaryOperator<T>`|O||
+||DoubleUnaryOperator|O|O|
+||IntUnaryOperator|O|O|
+||LongUnaryOperator|O|O|
+
+## `and()` `or()` `negate()` 디폴트 메소드와 `isEqual()` 정적 메소드
+
+두 개 이상의 `Predicate` 연산을 생성합니다.
+
+```java
+public static void main(String[] args) {
+  IntPredicate predicateA = a -> a % 2 == 0;
+  IntPredicate predicateB = b -> b % 3 == 0;
+
+  boolean result;
+  IntPredicate predicateAB = predicateA.and(predicateB);
+  result = predicateAB.test(9);
+  System.out.println("9는 2와 3의 배수입니까? : " + result);
+
+  predicateAB = predicateA.or(predicateB);
+  result = predicateAB.test(9);
+  System.out.println("9는 2또는 3의 배수입니까? : " + result);
+
+  predicateAB = predicateA.negate();
+  result = predicateAB.test(9);
+  System.out.println("9는 홀수입니까? : " + result);
+}
 ```
 
 :::tip 참고자료
-<https://www.concretepage.com/java/jdk-8/java-8-list-example-with-foreach-removeif-replaceall-and-sort>
-::: 
--->
+<https://palpit.tistory.com/674>
+:::

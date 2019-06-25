@@ -293,10 +293,10 @@ module.exports = {
           title: 'Java 8', 
           children: [
             '/backend/language/java/java8/lamda',
+            '/backend/language/java/java8/functional',
             '/backend/language/java/java8/method_reference',
             '/backend/language/java/java8/stream',
             '/backend/language/java/java8/optional',
-            '/backend/language/java/java8/functional'
           ]
         },
         {
