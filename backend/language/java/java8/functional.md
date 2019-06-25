@@ -401,7 +401,6 @@ public static void main(String[] args) {
 }
 ```
 
-
 다음은 `replaceAll(UnaryOperator operator)` 을 이용한 문자열을 `concatenate` 연산 과정이다.
 
 ```java
@@ -555,6 +554,33 @@ public static void main(String[] args) {
   result = predicateAB.test(9);
   System.out.println("9는 홀수입니까? : " + result);
 }
+```
+
+다음은 `isEquals()` 를 이용한 문자열 비교이다.
+
+```java
+public static void main(String[] args) {
+  Predicate<String> predicate;
+
+  predicate = Predicate.isEqual(null);
+  System.out.println("null, null: " + predicate.test(null));
+
+  predicate = Predicate.isEqual("Java");
+  System.out.println("Java, null: " + predicate.test(null));
+
+  predicate = Predicate.isEqual(null);
+  System.out.println("null, Java: " + predicate.test("Java"));
+
+  predicate = Predicate.isEqual("Java");
+  System.out.println("Java, Java: " + predicate.test("Java"));
+}
+```
+
+```bash
+null, null: true
+Java, null: false
+null, Java: false
+Java, Java: true
 ```
 
 :::tip 참고자료
