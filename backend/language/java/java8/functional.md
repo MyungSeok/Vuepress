@@ -21,7 +21,7 @@ Java SE 8 부터는 빈번하게 사용되는 함수적 인터페이스 (Functio
 
 `java.util.function` 패키지의 함수적 인터페이스는 크게 `Consumer` `Supplier` `Function` `Operator` `Predicate` 로 구분된다.
 
-## [Consumer Interface](https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html)
+## [Consumer](https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html)
 
 `Consumer` 인터페이스의 특징은 리턴값이 없는 `accept()` 메서드를 가지고 있다.  
 `accept()` 메서드는 매개값을 소비하는 역활만 한다.
@@ -123,7 +123,7 @@ id:2, Name:LEE
 id:3, Name:PARK
 ```
 
-## [Supplier Interface](https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html)
+## [Supplier](https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html)
 
 `Supplier` 인터페이스의 특징은 매개변수가 없고 리턴값이 있다.  
 _**get**_ 으로 시작하는 이름의 메서드를 가지고 있으며 이 메서드는 실행한 후 호출한 곳으로 데이터를 리턴하는 역활을 한다.
@@ -162,7 +162,7 @@ public static void main(String[] args) {
 }
 ```
 
-## [Function Interface](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html)
+## [Function](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html)
 
 `Function` 인터페이스의 특징은 매개값이 리턴값이 있는 _**apply**_ 로 시작하는 메서드를 가지고 있다.  
 이 메서드들은 매개값을 리턴값으로 매핑하는 역활을 합니다.
@@ -271,21 +271,92 @@ public static void main(String[] args) {
 수학 평균 점수 : 90.25
 ```
 
-## Operator Interface
+## Operator
 
 `Operator` 인터페이스는 `Function` 과 동일하게 매개변수와 리턴값이 있는 _**apply**_ 이름으로 시작하는 메서드를 가지고 있다.
 
-## [Predicate Interface](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)
+|Interface Name|Abstract Method|Description|
+|:-|:-|--|
+|`BinaryOperator<T>`|`BiFunction<T, U, R>` 의 하위 인터페이스|`T` 와 `U` 를 연산 후 `R` 을 리턴|
+|`UnaryOperator<T>`|`Function<T, R>` 의 하위 인터페이스|`T` 를 연산한 후 R 을 리턴|
+|`DoubleBinaryOperator`|double applyAsDouble(double, double)|두개의 `double` 을 연산|
+|`DoubleUnaryOperator`|double applyAsDouble(double)|한개의 `double` 을 연산|
+|`IntBinaryOperator`|int applyAsInt(int, int)|두개의 `int` 을 연산|
+|`IntUnaryOperator`|int applyAsInt(int)|한개의 `int` 를 연산|
+|`LongBinaryOperator`|long applyAsLong(long, long)|두 개의 `long` 을 연산|
+|`LongUnaryOperator`|long applyAsLong(long)|한 개의 `long` 을 연산|
 
-:::tip 참고자료
-<https://palpit.tistory.com/673>
-:::
+다음은 `int[]` 배열의 최대값과 최소값을 얻습니다.
 
----
+```java
+private static int[] scores = {100, 92, 81, 78, 88, 96, 55, 94};
 
-## `removeIf()`
+public static int compareNum(IntBinaryOperator operator) {
+  int result = scores[0];
 
-`removeIf(Predicate<? super E> filter)`
+  for (int score : scores) {
+    result = operator.applyAsInt(result, score);
+  }
+
+  return result;
+}
+
+public static void main(String[] args) {
+  int max = compareNum((a, b) -> (a >= b ? a : b));
+  System.out.println("최대값 : " + max);
+
+  int min = compareNum((a, b) -> (a <= b ? a : b));
+  System.out.println("최솟값 : " + min);
+}
+```
+
+
+다음은 `replaceAll(UnaryOperator operator)` 을 이용한 문자열을 `concatenate` 연산 과정이다.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class ForEach {
+  public static void main(String[] args) {
+    List<Person> list = new ArrayList<>();
+    list.add(new Persion(1, "KIM"));
+    list.add(new Persion(2, "LEE"));
+    list.add(new Persion(3, "PARK"));
+
+    Consumer<Person> style = (Person p) -> System.out.println("id: " + p.getPid() + ", Name: " + p.getName());
+
+    UnaryOperator<Person> unaryOpt = pn -> pn.getName(pn.getName().concat(" -God"));
+    list.replaceAll(unaryOpt);
+
+    list.forEach(style);
+  }
+}
+```
+
+```java
+id:1, Name:KIM -God
+id:2, Name:LEE -God
+id:3, Name:PARK -God
+```
+
+## [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)
+
+`Predicate` 인터페이스는 매개변수와 `boolean` 리턴값이 있으며  _**test**_ 로 시작하는 메서드 명을 가지고 있다.  
+이 메서드는 매개값을 조사해서 `true` 혹은 `false` 을 리턴하는 역활을 한다.
+
+매개변수타입과 수에 따라서 아래와 같은 `Predicate` 함수 인터페이스를 가지고 있다.
+
+|Interface Name|Abstract Method|Description|
+|:-|:-|--|
+|`Predicate<T>`|Boolean test(T t)|객체 `T` 를 조사|
+|`BiPredicate<T, U>`|Boolean test(T t, U u)|객체 `T` 와 `U` 를 조사|
+|`DoublePredicate`|Boolean test(double value)|`double` 값을 조사|
+|`IntPredicate`|Boolean test(int value)|`int` 값을 조사|
+|`LongPredicate`|Boolean test(long value)|`long` 값을 조사|
+
+다음은 `removeIf()` 을 이용한 값을 리스트를 제거하는 소비자의 코드이다. (`removeIf(Predicate<? super E> filter)`)
 
 ```java
 import java.util.ArrayList;
@@ -316,38 +387,11 @@ id:1, Name:KIM
 id:3, Name:PARK
 ```
 
-## `replaceAll()`
+:::tip 참고자료
+<https://palpit.tistory.com/673>
+:::
 
-`replaceAll(UnaryOperator operator)`
-
-```java
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
-public class ForEach {
-  public static void main(String[] args) {
-    List<Person> list = new ArrayList<>();
-    list.add(new Persion(1, "KIM"));
-    list.add(new Persion(2, "LEE"));
-    list.add(new Persion(3, "PARK"));
-
-    Consumer<Person> style = (Person p) -> System.out.println("id: " + p.getPid() + ", Name: " + p.getName());
-
-    UnaryOperator<Person> unaryOpt = pn -> pn.getName(pn.getName().concat(" -God"));
-    list.replaceAll(unaryOpt);
-
-    list.forEach(style);
-  }
-}
-```
-
-```java
-id:1, Name:KIM -God
-id:2, Name:LEE -God
-id:3, Name:PARK -God
-```
-
+<!-- 
 ## sort()
 
 `sort(Comparator<? super E> c)`
@@ -392,4 +436,5 @@ id:3, Name:PARK
 
 :::tip 참고자료
 <https://www.concretepage.com/java/jdk-8/java-8-list-example-with-foreach-removeif-replaceall-and-sort>
-:::
+::: 
+-->
