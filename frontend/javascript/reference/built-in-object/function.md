@@ -16,13 +16,13 @@ func.bind(thisArg[, arg1[, arg2[, ... ]]];
 **Parameters**
 
 * thisArg
-  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값 
+  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값
 * arg1, arg2, ...
   * 대상 함수를 호출할 때 바인딩된 함수에 제공되는 인수
 
 **Retrun Value**
 
-* 지정된 `this` 값 및 초기 인수가 있는 주어진 함수의 복제본 
+* 지정된 `this` 값 및 초기 인수가 있는 주어진 함수의 복제본
 
 ## call
 
@@ -39,7 +39,7 @@ func.call(thisArg[, arg1[, arg2[, ... ]]];
 **Parameters**
 
 * thisArg
-  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값 
+  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값
 * arg1, arg2, ...
   * 대상 함수를 호출할 때 바인딩된 함수에 제공되는 인수
 
@@ -58,7 +58,7 @@ func.call(thisArg, [argsArray];
 **Parameters**
 
 * thisArg
-  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값 
+  * 바인딩된 함수가 호출될 때 대상함수에 `this` 매개변수로서 전달되는 값
 * argsArray
   * 대상 함수를 호출할 때 바인딩된 함수에 제공되는 인수의 배열
 
@@ -66,7 +66,7 @@ func.call(thisArg, [argsArray];
 
 **Description**
 
-이벤트 타겟에서 사용할 리스너를 등록합니다. 
+이벤트 타겟에서 사용할 리스너를 등록합니다.
 
 **Syntax**
 
@@ -77,7 +77,7 @@ target.addEventListener(type, listener [, useCapture]);
 #### Parameter
 
 * type
-  * 등록할 이벤트 타입 
+  * 등록할 이벤트 타입
   * `click` `mousedown` `mouseup` `keyup` `keydown` `keypress`  등등...
 * listener
   * 특정 타입의 이벤트가 발생할 때 받을 객체
