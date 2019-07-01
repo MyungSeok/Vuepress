@@ -1565,3 +1565,66 @@ public class Favorites {
 ### Item 34 int 상수대신 열거타입을 사용하라
 
 정수형 혹은 문자열 열거타입은 오타 혹은 프로그램 작성상에 하드코딩 때문에 깨지기 쉽다.
+
+때문에 열거 (enum) 타입을 지향하여 사용하며 이 또한 데이터와 메서드를 갖는 형태로 사용하는 것을 권장한다.
+
+```java
+public enum Planet {
+  MERCURY(3.302e+23, 2.439e6),
+  VENUS (4.869e+24, 6.052e6),
+  EARTH (5.975e+24, 6.378e6),
+  MARS (6.419e+23, 3.393e6),
+  JUPITER(1.899e+27, 7.149e7),
+  SATURN (5.685e+26, 6.027e7),
+  URANUS (8.683e+25, 2.556e7),
+  NEPTUNE(1.024e+26, 2.477e7);
+
+  // 질량 (단위: 킬로그램)
+  private final double mass;
+
+  // 반지름 (단위: 미터)
+  private final double radius;
+
+  // 표면중력 (단위: m / s^2)
+  private final double surfaceGravity;
+  
+  // 중력 단위 상수
+  private static final double G = 6.67300E-11;
+
+  Planet(double mass, double radius) {
+    this.mass = mass;
+    this.radius = radius;
+    surfaceGravity = G * mass / (radius * radius);
+  }
+
+  public double mass() { return mass; }
+  public double radius() { return radius; }
+  public double surfaceGravity() { return surfaceGravity; }
+
+  public double surfaceWeight(double mass) {
+    // F = m * a
+    return mass * surfaceGravity;
+  }
+}
+```
+
+```java
+public class WeightTable {
+  public static void main(String[] args) {
+    double earthWeight = Double.parseDouble(args[0]);
+    double mass = earthWeight / Planet.EARTH.surfaceGravity(); for (Planet p : Planet.values())
+    System.out.printf("%s에서의 무게는 %f이다.%n", p, p.surfaceWeight(mass));
+  }
+}
+```
+
+```bash
+MERCURY에서의 무게는 69.912739이다.
+VENUS에서의 무게는 167.434436이다.
+EARTH에서의 무게는 185.000000이다.
+MARS에서의 무게는 70.226739이다.
+JUPITER에서의 무게는 467.990696이다.
+SATURN에서의 무게는 197.120111이다.
+URANUS에서의 무게는 167.398264이다.
+NEPTUNE에서의 무게는 210.208751이다.
+```
