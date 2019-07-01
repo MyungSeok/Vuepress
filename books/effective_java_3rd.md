@@ -989,11 +989,11 @@ class Utensil {
 }
 
 class Dessert {
-  static final String NAME = "pie"; 
+  static final String NAME = "pie";
 }
 ```
 
-컴파일러에 어느 소스파일을 먼저 전달 했으냐에 따라 결과가 뒤바뀌기 때문에 
+컴파일러에 어느 소스파일을 먼저 전달 했으냐에 따라 결과가 뒤바뀌기 때문에
 
 한파일에는 톱 클래스를 하나만 명시하도록 한다.
 
@@ -1087,10 +1087,11 @@ objList.add("타입이 달라 넣을 수 없다.");
 
 위 세가지 유형은 타입이 안전하지 않기 때문에 제네릭 배열을 만들 수 없다.
 
-이는 `E` `List<E>` `List<String>` 와 같은 타입을 실체화 불가 타입 (non-reifiable type) 이라고 하는데 실체화 되지 않아서 런타임시 컴파일 할때보다 정보량이 적게 가지는 타입을 말한다. 소거 매커니즘 때문에 매개변수화 타입 가운데 실체화 될수 잇는 타입은 `List<?>` 와 `Map<?, ?>` 같은 비 한정 와일드카드 타입 뿐이다.  
+이는 `E` `List<E>` `List<String>` 와 같은 타입을 _**실체화 불가 타입 (non-reifiable type)**_ 이라고 하는데 _**실체화 되지 않아서 런타임시 컴파일 할때보다 정보량이 적게 가지는 타입**_ 을 말한다.  
+소거 매커니즘 때문에 매개변수화 타입 가운데 실체화 될수 잇는 타입은 `List<?>` 와 `Map<?, ?>` 같은 비 한정 와일드카드 타입 뿐이다.  
 배열을 비한정적 와일드카드 타입으로 만들수 있지만 유용하게 쓸 일이 거의 없다.
 
-실체화 불가 타입을 사용할때는 `@SafeVarargs` Annotation 으로 대체 가능하다.
+실체화 불가 타입을 사용할때는 안정된 가변인수(varags) 라는 의미로 `@SafeVarargs` Annotation 을 사용하여 대체 가능하다.
 
 **생성자에서 컬렉션을 받은 Chooser 클래스 리펙토링**
 
@@ -1464,3 +1465,103 @@ public void popAll(Collection<? super E> dst) {
 * 생산자 : `<? extends T>`
 * 소비자 : `<? super T>`
 :::
+
+### Item 32 제네릭과 가변인수를 함께 쓸 때는 신중하라
+
+실체화 불가 타입 (non-reifiable type) 은 런타임에는 컴파일 타임보다 타입관련 정보를 적게 담고 있다.
+
+메서드를 선언할 때 실체화 불가 타입으로 `varargs` 매개변수를 선언하면 컴파일러가 경고를 보낸다.
+
+```bash
+warning: [unchecked] Possible heap pollution from
+  parameterized vararg type List<String>
+```
+
+매개변수화 타입 (parameterized type) 의 변수가 다른 객체를 참조하면 힙 (heap) 오염이 발생한다는 의미로  
+다른 타입의 객체를 참조하는 상황에서 컴파일러가 자동 생성한 형변환이 실패할 수 있다.
+
+제네릭 가변인수 (varargs) 배열 매개변수에 값을 저장하는것은 안전하지 않다.  
+아래 예제를 보자
+
+```java {4,5}
+static void dangerous(List<String>... stringLists) {
+  List<Integer> intList = List.of(42);
+  Object[] objects = stringLists;
+  objects[0] = intLists;            // 힙 오염 발생
+  String s = stringLists[0].get(0)  // ClassCastException - 형 변환 발생
+}
+```
+
+자바에서는 위 같은 위험성을 인지하고도 대표적으로 아래와 같은 메서드를 제공한다.
+
+* `Array.asList(T... a)`
+* `Collections.addAll(Collection<? super T> c, T... elements)`
+* `EnumSet.of(E first, E... rest)`
+
+제네릭이나 혹은 매개변수화 타입의 가변인수 (varargs) 타입의 매개변수를 받는 모든 메서드에서는 `@SafeVarargs` 를 달아줘야 한다.
+
+이는 가변인수 (varargs) 타입의 매개변수 배열에 아무것도 저장해선 안되며, 그 배열 혹은 복제본을 신뢰할 수 없는 코드에 노출하는 않는것이 원칙이다.
+
+### Item 33 타입 안전 이종 컨테이너를 고려하라
+
+컨테이너 대신 키를 매개변수화 시키고, 컨테이너에 값을 넣거나 뺄 때 매개변수화 한 키를 함께 제공한다.
+
+```java
+public class Favorites {
+  public <T> void putFavorite(Class<T> type, T instance);
+  public <T> T getFavorite(Class<T> type);
+}
+```
+
+```java
+public static void main(String[] args) {
+  Favorites f = new Favorites();
+
+  f.putFavorite(String.class, "Java");
+  f.putFavorite(Integer.class, 0xcafebabe);
+  f.putFavorite(Class.class, Favorites.class);
+
+  String favoriteString = f.getFavorite(String.class);
+  int favoriteInteger = f.getFavorite(Integer.class);
+  Class<?> favoriteClass = f.getFavorite(Class.class);
+
+  System.out.println("%s %x%n", favoriteString, favoriteInteger, favoriteClass.getName());
+}
+```
+
+```bash
+Java cafebabe Favorites
+```
+
+`Favorites` 인스턴스는 String 을 요청했는데 Integer 를 반환하는 일은 절대 없다.  
+이는 모든 키의 타입이 각각 분리되어 있어 일반적인 백과 달리 여러가지 타입의 원소를 담을 수 있다.
+
+따라서 _**`Favorites` 을 타입 안전 이종컨테이너**_ 라고 한다.
+
+아래는 `Favorites` 의 구현이다.
+
+```java
+public class Favorites {
+    private Map<Class<?>, Object> favorites = new HashMap<>();
+
+    public <T> void putFavorite(Class<T> type, T instance) {
+      favorites.put(Objects.requireNonNull(type), instance);
+    }
+
+    public <T> T getFavorite(Class<T> type) {
+      return type.cast(favorites.get(type));
+    }
+}
+```
+
+:::tip 참고자료
+<https://sjh836.tistory.com/171>
+:::
+
+## Chapter 6 열거 타입과 애너테이션
+
+열거 (enum) 타입과 애너테이션 (annotation) 을 올바르게 사용하는 방법을 알아보자.
+
+### Item 34 int 상수대신 열거타입을 사용하라
+
+정수형 혹은 문자열 열거타입은 오타 혹은 프로그램 작성상에 하드코딩 때문에 깨지기 쉽다.
