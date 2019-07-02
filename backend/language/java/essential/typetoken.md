@@ -168,6 +168,12 @@ TypeSaftyMap map = new TypeSaftyMap();
 map.put(new TypeReference<Integer>(){}, 3);
 map.put(new TypeReference<String>(){}, "ABC");
 
+// java.lang.Integer
+System.out.println(new TypeReference<Integer>(){});
+
+// java.lang.String
+System.out.println(new TypeReference<String>(){});
+
 // 3
 System.out.println(map.get(new TypeReference<Integer>(){}));
 // ABC
