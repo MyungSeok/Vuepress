@@ -1650,7 +1650,7 @@ public enum Operation {
 
 위와 같은 코드는 동작은 되지만 깨지기 쉬우며 불편하다.
 
-때문에 아래와 같이 리펙토링이 가능하다.
+때문에 아래와 같이 _**상수별 메서드 구현 (constrant-specific method implementation)**_ 리펙토링이 가능하다.
 
 ```java
 public enum Operation {

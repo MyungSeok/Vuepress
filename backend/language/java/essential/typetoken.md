@@ -64,7 +64,9 @@ map.put(List<String>.class, Arrays.asList("1", "2", "3"));
 
 ## Super Type Token
 
-제네릭클래스를 상속받은 클래스에 리플렉션은 이용하여 부모 클래스의 정보를 얻어올수 있는데 이 정보에는 제네릭 정보가 그대로 들어있다.
+일반적으로 제네릭 타입은 컴파일 시점 (Byte Code 로 변환) 에 _**Type Erasure**_ 에 의해 타입 정보가 소거되는데
+
+부모 클래스 (Super Class) 를 제네릭 타입을 통해 상속이 되면 컴파일 (Byte Code 로 변환) 해도 제네릭 정보 (실 타입 인자) 가 보존되어 런타임 시에 [Reflection](/backend/language/java/essential/reflection) 은 이용하여 타입 정보를 얻어올 수 있다.
 
 ```java
 // 제네릭 부모 클래스
