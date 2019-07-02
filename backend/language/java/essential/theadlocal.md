@@ -46,7 +46,7 @@ ThreadLocal thread = new ThreadLocal<String>() {
 * Transection 컨텍스트 전파
 * Thread Safe 한 데이터의 보관
 
-## 주의사항
+## Warning
 
 TheadPool 환경에서 `ThreadLocal` 을 사용하는 경우 ThreadLocal 변수에 보관된 데이터의 사용이 끝나면 반드시 해당 데이터를 삭제해주어야 한다.
 

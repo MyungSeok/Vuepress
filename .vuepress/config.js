@@ -251,7 +251,6 @@ module.exports = {
         {
           title: 'Expert', 
           children: [
-            '/backend/language/java/expert/variant',
             '/backend/language/java/expert/gc',
             '/backend/language/java/expert/jvm',
             '/backend/language/java/expert/jpa',
