@@ -231,6 +231,7 @@ module.exports = {
         {
           title: 'Essential',
           children: [
+            '/backend/language/java/essential/reflection',
             {
               title: 'Generics', 
               children: [
@@ -238,17 +239,18 @@ module.exports = {
                 '/backend/language/java/essential/generic/type',
                 '/backend/language/java/essential/generic/method',
                 '/backend/language/java/essential/generic/bounded_type_parameters',
+                '/backend/language/java/essential/generic/pecs',
                 '/backend/language/java/essential/generic/wildcards',
                 '/backend/language/java/essential/generic/type_erasure'
               ]
-            }
+            }, 
+            '/backend/language/java/essential/typetoken',
+            '/backend/language/java/essential/theadlocal'
           ]
         },
         {
           title: 'Expert', 
           children: [
-            '/backend/language/java/expert/typetoken',
-            '/backend/language/java/expert/pecs',
             '/backend/language/java/expert/variant',
             '/backend/language/java/expert/gc',
             '/backend/language/java/expert/jvm',

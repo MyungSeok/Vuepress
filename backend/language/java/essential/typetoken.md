@@ -8,7 +8,7 @@
 
 ```java
 static class TypeSaftyMap {
-  Map <Class <?>, Object> map = new HashMap<>();
+  Map <Class<?>, Object> map = new HashMap<>();
 
   <T> void put(Class<T> clazz, T value) {
     map.put(clazz, value);
@@ -38,6 +38,10 @@ System.out.println(List.class);
 
 ## Type Erasure
 
+제네릭에서 사용하는 Type Variable 을 제거하고 기반타입 (모든 객체의 기반타입인 `Object`) 을 삽입한다.
+
+하위 호환성 (Java SE 1.4 이하) 을 위해서 Byte Code 로 전환하는 과정에서 제네릭 타입을 제거한다.
+
 ```java
 map.put(List.class, Arrays.asList(1, 2, 3));
 map.put(List.class, Arrays.asList("1", "2", "3"));
@@ -53,6 +57,10 @@ map.put(List.class, Arrays.asList("1", "2", "3"));
 map.put(List<Integer>.class, Arrays.asList(1, 2, 3));
 map.put(List<String>.class, Arrays.asList("1", "2", "3"));
 ```
+
+이와 같이 타입 소거에 의해 런타임 시점에 타입안정성이 보장되지 않기 때문에 [Super Type Token](?#super-type-token) 이 출현하였다.
+
+추가 자세한 설명은 [Type Erasure](/backend/language/java/essential/generic/type_erasure) 에서 확인 가능하다.
 
 ## Super Type Token
 
