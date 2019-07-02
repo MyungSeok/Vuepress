@@ -1628,3 +1628,37 @@ SATURN에서의 무게는 197.120111이다.
 URANUS에서의 무게는 167.398264이다.
 NEPTUNE에서의 무게는 210.208751이다.
 ```
+
+상수별 메서드를 구현하는 열거 타입 형태로도 사용 가능하다.
+
+```java
+public enum Operation {
+  PLUS, MINUS, TIMES, DIVIDE;
+
+  public double apply(double x, double y) {
+    switch(this) {
+      case PLUS: return x + y;
+      case MINUS: return x - y;
+      case TIMES: return x * y;
+      case DIVIDE: return x / y;
+    }
+
+    throw new AssertionError("알 수 없는 에러 : " + this);
+  }
+}
+```
+
+위와 같은 코드는 동작은 되지만 깨지기 쉬우며 불편하다.
+
+때문에 아래와 같이 리펙토링이 가능하다.
+
+```java
+public enum Operation {
+  PLUS {public double apply(double x, double y) { return x + y; }},
+  MINUS {public double apply(double x, double y) { return x - y; }},
+  TIMES {public double apply(double x, double y) { return x * y; }},
+  DIVIDE {public double apply(double x, double y) { return x / y; }};
+
+  public abstract double apply(double x, double y);
+}
+```
