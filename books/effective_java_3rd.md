@@ -1662,3 +1662,35 @@ public enum Operation {
   public abstract double apply(double x, double y);
 }
 ```
+
+### Item 35 ordinal 메서드 대신 인스턴스 필드를 사용하라
+
+대부분의 열거 타입 상수는 자연스럽게 하나의 정수값에 대응된다.
+
+이는 해당 열거타입의 상수가 몇번째인지 반환하는 `ordinal` 이라는 메서드를 제공한다.
+
+```java
+public enum Ensemble {
+  SOLO, DUET, TRIO, QUARTET, QUINTET, SEXTET, SEPTET, OCTET, NONET, DECTET;
+
+  public int numberOfMusicians() { return ordinal() + 1;}
+}
+```
+
+위 코드는 상수의 선언 순서를 바꾸면 바로 에러가 나는 위함한 코드이다.
+
+따라서 열거 타입 상수의 값을 ordinal 메서드로 얻지 말고 인스턴스 필드에 저장하자.
+
+```java
+public enum Ensemble {
+  SOLO(1), DUET(2), TRIO(3), QUARTET(4), QUINTET(5), SEXTET(6), SEPTET(7), OCTET(8), NONET(9), DECTET(10);
+
+  private final int numberOfMusicians;
+  
+  Ensemble(int size) { this.numberOfMesicians = size; }
+  
+  public int numberOfMusicians() { return numberOfMusicians; }
+}
+```
+
+### Item 36 비트대신 EnumSet 을 사용하라

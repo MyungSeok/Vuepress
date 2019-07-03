@@ -38,9 +38,31 @@ System.out.println(List.class);
 
 ## Type Erasure
 
+제네릭은 타입 소거자 (Type Erasure) 에 의해 자신의 타입 요소 정보를 삭제한다.
+
+때문에 아래와 같이 실 타입 매개변수 형태의 선언을 컴파일 과정에서 다음과 같이 변경한다.
+
+**Before**
+
+```java
+List<String> list = new ArrayList<>();
+```
+
+**After**
+
+```java
+ArrayList list = new ArrayList();
+```
+
+타입 파라메터는 물론이고 슈퍼클래스위 타입 파라메터 및 _**해당 클래스의 정의된 모든 타입 파라메터가 지워진다.**_
+
 제네릭에서 사용하는 Type Variable 을 제거하고 기반타입 (모든 객체의 기반타입인 `Object`) 을 삽입한다.
 
-하위 호환성 (Java SE 1.4 이하) 을 위해서 Byte Code 로 전환하는 과정에서 제네릭 타입을 제거한다.
+_**Java SE 5 이전 제네릭이 사용되지 않는 코드의 호환성을 보장하기 위해여 지원되는 마이그레이션 기능**_ 중의 하나이다.
+
+이는 제네릭 출현 이전 하위 호환성 (Java SE 1.4 이하) 을 위해서 _**Byte Code**_ 로 전환하는 과정에서 제네릭 타입을 제거한다.
+
+위 코드를 예시로 아래와 같이 작성해보자
 
 ```java
 map.put(List.class, Arrays.asList(1, 2, 3));
@@ -61,6 +83,13 @@ map.put(List<String>.class, Arrays.asList("1", "2", "3"));
 이와 같이 타입 소거에 의해 런타임 시점에 타입안정성이 보장되지 않기 때문에 [Super Type Token](?#super-type-token) 이 출현하였다.
 
 추가 자세한 설명은 [Type Erasure](/backend/language/java/essential/generic/type_erasure) 에서 확인 가능하다.
+
+:::tip 타입 구체화 (Type Reification)
+Java 와는 다르게 _**C#**_ 에서는 제네릭 사용시 타입소거가 아닌 타입 구체화 방식을 통해 제네릭을 구현했다.
+이는 컴파일시 _**Byte Code**_ 변환시에도 타입이 소거가 되지 않고 실 타입정보를 _**Byte Code**_ 안에 보존하는것인데
+
+이로 인해 _**C#**_ 은 제네릭 출현 이전의 하위호환성을 포기하는 방식을 채택한 것이다.
+:::
 
 ## Super Type Token
 
@@ -207,6 +236,8 @@ class TypeSaftyMap {
 }
 ```
 
+> 익명 클래스를 사용하는 이유는 _**제네릭 타입 파라메터를 전달하기 위한 용도**_ 이다.
+
 **서브 제네릭 클래스 확인**
 
 ```java
@@ -222,5 +253,6 @@ System.out.println(map.get(new TypeReference<List<String>>(){}));
 ```
 
 :::tip 참고자료
-<https://www.bsidesoft.com/?p=2903>
+<https://www.bsidesoft.com/?p=2903>  
+<https://multifrontgarden.tistory.com/135>
 :::

@@ -241,10 +241,9 @@ module.exports = {
                 '/backend/language/java/essential/generic/bounded_type_parameters',
                 '/backend/language/java/essential/generic/pecs',
                 '/backend/language/java/essential/generic/wildcards',
-                '/backend/language/java/essential/generic/type_erasure'
+                '/backend/language/java/essential/generic/typetoken'
               ]
             }, 
-            '/backend/language/java/essential/typetoken',
             '/backend/language/java/essential/theadlocal'
           ]
         },
