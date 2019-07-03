@@ -304,6 +304,7 @@ module.exports = {
           children: [
             '/backend/language/java/tip/log4j',
             '/backend/language/java/tip/anti',
+            '/backend/language/java/tip/gson_adapter'
           ]
         },
       ],
