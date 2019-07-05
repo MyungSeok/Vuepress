@@ -1,5 +1,16 @@
 # TIPS
 
+## IntelliJ IDEA
+
+### Plugins
+
+* [Lombok](https://plugins.jetbrains.com/plugin/6317-lombok)
+  * Lombok IDE 버전 제공
+* [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint)
+  * 문법 검사
+* [Key Promoter X](https://plugins.jetbrains.com/plugin/9792-key-promoter-x)
+  * 단축키 제시
+
 ## VSCode
 
 ### extension package
@@ -14,12 +25,10 @@
   * 에디터 아이콘
 * Material Icon Theme
   * 에디터 아이콘
-* Markdown lint
+* [Markdown lint](https://github.com/DavidAnson/vscode-markdownlint)
   * 마크다운 문법 검사
-  * <https://github.com/DavidAnson/vscode-markdownlint>
-* Bracket Pair Colorizer
+* [Bracket Pair Colorizer](https://github.com/CoenraadS/Bracket-Pair-Colorizer-2)
   * 코드 블럭 브라켓
-  * <https://github.com/CoenraadS/Bracket-Pair-Colorizer-2>
 
 ### usersetting.json
 
