@@ -337,6 +337,12 @@ module.exports = {
             '/backend/framework/spring/fundamental/dispatcherServlet'
           ]
         },
+        {
+          title: 'Reference',
+          children: [
+            '/backend/framework/spring/reference/resolvable_type'
+          ]
+        },
         '/backend/framework/spring/boot',
         '/backend/framework/spring/batch',
         '/backend/framework/spring/security'

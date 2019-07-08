@@ -1694,3 +1694,159 @@ public enum Ensemble {
 ```
 
 ### Item 36 비트대신 EnumSet 을 사용하라
+
+```java
+public class Text {
+  public enum Style { BOLD, ITALIC, UNDERLINE, STRIKETHROUGH }
+  public void applyStyles(Set<Style> style) { ... }
+}
+```
+
+```java
+text.applyStyles(EnumSet.of(Style.BOLD, Style.ITALIC));
+```
+
+### Item 37 ordinal 인덱싱 대신 EnumMap을 사용하라
+
+### Item 38 확장할 수 있는 열거 타입이 필요하면 인터페이스를 사용하라
+
+### Item 39 명명 패턴보다 애너테이션을 사용하라
+
+### Item 40 @Override 애너테이션을 일관되게 사용하라
+
+### Item 41 정의하려는 것이 타입이라면 마커 인터페이스를 사용하라
+
+## Chapter 7 람다와 스트림
+
+### Item 42 익명 클래스보다는 람다를 사용하라
+
+* 익명 클래스의 인스턴스를 함수 객체로 사용
+
+```java
+Collections.sort(words, new Comparator<String>() {
+  public int compare(String s1, String s2) {
+    return Integer.compare(s1.length(), s2.length());
+  }
+});
+```
+
+```java
+Collections.sort(words,
+  (s1, s2) -> Integer.compare(s1.length(), s2.length());
+);
+```
+
+```java
+Collections.sort(words, comparingInt(String::length));
+```
+
+```java
+words.sort(comparingInt(String::length));
+```
+
+* Operation 열거 타입 리팩토링
+
+```java
+public enum Operation {
+  PLUS("+") {
+    public double apply(double x, double y) { return x + y; }
+  },
+  MINUS("-") {
+    public double apply(double x, double y) { return x - y; }
+  },
+  TIMES("*") {
+    public double apply(double x, double y) { return x * y; }
+  },
+  DIVIDE("/") {
+    public double apply(double x, double y) { return x / y; }
+  };
+
+  private final String symbol;
+  
+  Operation(String symbol) { this.symbol = symbol; }
+
+  @Override public String toString() { return symbol; }
+  public abstract double apply(double x, double y);
+}
+```
+
+```java
+public enum Operation {
+  PLUS("+", (x, y) -> x + y),
+  MINUS("-", (x, y) -> x - y),
+  TIMES("*", (x, y) -> x * y),
+  DIVIDE("/", (x, y) -> x / y);
+
+  private final String symbol;
+  private final DoubleBinaryOperator op;
+
+  Operation(String symbol, DoubleBinaryOperator op) {
+    this.symbol = symbol;
+    this.op = op;
+  }
+
+  @Override public String toString() { return symbol; }
+  
+  public double apply(double x, double y) {
+    return op.applyAsDouble(x, y);
+  }
+}
+```
+
+> 익명 클래스는 함수형 인터페이스가 아닌 타입의 인스턴스로 만들 때만 사용하라.
+
+### Item 43 람다보다는 메서드 참조를 이용하라
+
+Java SE 8 에 Map 에 추가된 [`merge`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html#merge-K-V-java.util.function.BiFunction-) 메서드를 살펴보자
+
+```java
+map.merge(key, 1, (count, increment) -> count + increment);
+```
+
+위 코드의 merge 메서드는 키, 값, 함수를 인수로 받으며 주어진 키가 없으면 주어진 값을 그대로 저장하며 키가 있다면 세번째 인수로 받은 함수의 결과 값을 저장한다.
+
+이는 아래와 같이 더 보기 좋은 코드로 수정 가능하다.
+
+```java
+map.merge(key, 1, Integer::sum);
+```
+
+Integer 클래스의 정적 메서드인 [`sum`](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#sum-int-int-) 을 이용하여 메서드 참조 형태로 작성하였다.
+
+_**람다로 할 수 없는 일이라면 메서드 참조로도 할 수 없다.**_ (대부분의 경우를 말하며 일부 예외사항을 제외한다)
+
+다음은 다섯가지 유형의 메서드 참조를 하는 경우이다.
+
+|Method Reference Type|Sample Example|Same Feature|
+|:-:|:-:|:-:|
+|static|`Integer::parseInt`|`str -> Integer.parseInt(str)`|
+|bounded instance|`Instant.now()::isAfter`|`Instant then = Instance.now();`<br/>`t -> then.isAfter(t)`|
+|unbounded instance|`String::toLowerCase`|`str -> str.toLowerCase()`|
+|class constructor|`TreeMap<K, V>::new`|`() -> new TreeMap<K, V>()`|
+|array constructor|`int[]::now`|`len -> new int[len]`|
+
+> 메서드 참조는 람다의 간단명료한 대안이 될 수 있으며  
+> 메서드 참조쪽이 짧고 명확하다면 메서드 참조를 사용하고 그렇지 않으면 람다를 사용하라.
+
+:::danger 람다로 불가능하나 메서드 참조로 가능한 예
+제네릭 함수 타입 (Generic Function Type) 의 구현이다.  
+
+```java
+interface G1 {
+  <E extends Exception> Object m() throws E;
+}
+
+interface G2 {
+  <F extends Exception> String m() throws Exception;
+}
+```
+
+위 코드를 함수형 인터페이스 G 로 작성하면 다음과 같다.
+
+```java
+<F extends Exception> () -> String throws F
+```
+
+함수형 인터페이스를 위한 제네릭 함수 타입은 메서드 참조 표현식으로는 구현할 수 있지만 람다식으로는 불가능하다.  
+_**제네릭 람다식이라는 문법은 존재하지 않는다.**_
+:::

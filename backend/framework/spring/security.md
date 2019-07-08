@@ -44,7 +44,7 @@ Spring Security 의 인증구조는 _**세션-쿠키**_ 방식으로 진행된�
 ### 1. 의존성 추가
 
 ```xml
-<!-- Properties --> 
+<!-- Properties -->
 <security.version>4.2.7.RELEASE</security.version>
 
 <!-- Security -->
@@ -88,7 +88,7 @@ Spring Security 의 인증구조는 _**세션-쿠키**_ 방식으로 진행된�
   <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 </listener>
 <filter>
-  <filter-name>springSecurityFilterChain</filter-name> <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> 
+  <filter-name>springSecurityFilterChain</filter-name> <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 </filter>
 <filter-mapping>
   <filter-name>springSecurityFilterChain</filter-name>
