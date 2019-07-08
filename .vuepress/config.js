@@ -59,7 +59,7 @@ module.exports = {
           {
             text: 'Language', 
             items: [
-              { text: 'JAVA', link: '/backend/language/java/' },
+              { text: 'JAVA', link: '/backend/language/java/basic/' },
               { text: 'PHP', link: '/backend/language/php/' },
             ]
           }, 
@@ -116,7 +116,7 @@ module.exports = {
       },
       { text: 'Books', 
         items: [
-          { text: 'Effective Java 3rd',  link: '/books/effective_java_3rd' }, 
+          { text: 'Effective Java 3rd',  link: '/books/effective_java_3rd/chapter_1' }, 
           { text: '자바스크립트 성능 최적화',  link: '/books/js_high_performance' }
         ]
       }
@@ -219,7 +219,6 @@ module.exports = {
         '/frontend/framework/vue/store'
       ],
       '/backend/language/java/': [
-        '',
         {
           title: 'Basic', 
           children: [
@@ -350,7 +349,18 @@ module.exports = {
       '/backend/devops/docker/': [
         '', 
         '/backend/devops/docker/cli'
+      ], 
+      '/books/effective_java_3rd/': [
+        '/books/effective_java_3rd/chapter_1',
+        '/books/effective_java_3rd/chapter_2',
+        '/books/effective_java_3rd/chapter_3',
+        '/books/effective_java_3rd/chapter_4',
+        '/books/effective_java_3rd/chapter_5',
+        '/books/effective_java_3rd/chapter_6',
+        '/books/effective_java_3rd/chapter_7'
       ]
+
+
     }
   }
 };
