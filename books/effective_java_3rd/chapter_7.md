@@ -179,3 +179,62 @@ _**제네릭 람다식이라는 문법은 존재하지 않는다.**_
 _**기존 코드는 스트림을 사용하도록 리팩토링 하되, 새 코드가 더 나아보일때만 반영하자.**_
 
 ## Item 46 스트림에서는 부작용 없는 함수를 사용하라
+
+스트림 패러다임의 핵심은 계산의 일련의 변환 (transformation) 으로 재구성 하는 부분이다.
+
+각 변환 단계는 가능한 한 이전 단계의 결과를 받아 처리하는 순수 함수여야 한다.
+
+> _**순수함수란 ?**_  
+> 오직 입력만이 결과에 영향을 주는 함수  
+> 다른 가변상태를 참조하지 않고 함수 스스로도 다른 상태를 변경하지도 않는다.
+
+`forEach` 연산은 스트림 계산 결과를 보고할 때만 사용하고 계산하는 용도로는 사용하지 말자.
+
+스트림을 올바르게 사용하려면 수집기 (collector) 를 잘 알아둬야 하며 가장 빈번하게 사용되는 수집기 유형은 다음 다섯가지이다.
+
+* `toList`
+* `toSet`
+* `toMap`
+* `groupingBy`
+* `joining`
+
+## Item 47 반환 타입으로는 스트림보다 컬렉션이 낫다
+
+`Collection` 인터페이스는 `Iterable` 하위 타입이고 스트림 메서드도 제공하니 반복과 스트림을 동시에 지원한다.  
+따라서 원소 시퀀스를 반환하는 공개 API 의 반환 타입에는 `Collection` 이나 그 하위 타입을 쓰는 것이 일반적으로 최선이다.
+
+## Item 48 스트림의 병렬화는 주의해서 적용하라
+
+자바는 동시성 측면에서 처음 릴리즈 했을 때부터 스레드, 동기화, wait/notify 를 지원 했다.
+
+Java SE 5 부터는 동시성 컬렉션인 java.util.concurrent 라이브러리와 실행자 (Excutor) 프레임워크를 지원했다.  
+Java SE 7 부터는 고성능 병렬 분해 (parallel decom-position) 프레임워크인 포크-조인 (fork-join) 패키지를 추가했다.
+
+Java SE 8 부터는 `parallel` 메서드만 한번 호출하면 파이프라인을 병렬 실행할 수 있는 스트림을 지원한다.
+
+데이터 소스가 Stream.iterate거나 중간 연산으로 `limit` 를 쓰면 파이프라인 병렬화로는 성능 개선을 기대할 수 없다.  
+때문에 스트림 파이프라인을 함부로 병렬화하면 성능이 더 나빠질 수 있다.
+반면에 조건이 잘 갖춰지면 `parallel` 메서드 호출 하나로 거의 모든 프로세서 코어 수에 비례하는 성능 향상을 만끽할 수 있다.
+
+대체적으로 스트림 소스가 `ArrayList` `HashMap` `HashSet` `ConcurrentHashMap` 의 인스턴스이거나 배열, int 범위, long 범위일 때 병렬화의 효과각 가장 좋다.
+
+아래는 소스 계산 스트림 파이프라인으로 병렬화에 적합한 코드이다.
+
+```java
+static long pi(long) {
+  return LongStream.rangClosed(2, n)
+    .mapToObj(BigInteger::valueOf)
+    .filter(i -> i.isProbablePrime(50))
+    .count();
+}
+```
+
+```java {3}
+static long pi(long) {
+  return LongStream.rangClosed(2, n)
+    .parallel()
+    .mapToObj(BigInteger::valueOf)
+    .filter(i -> i.isProbablePrime(50))
+    .count();
+}
+```
