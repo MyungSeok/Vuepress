@@ -40,8 +40,7 @@ class SampleDtoAdapter extends TypeAdapter<SampleDto> {
               fieldName = in.nextName();
           }
 
-          if (("d" +
-                  "ate").equals(fieldName)) {
+          if (("date").equals(fieldName)) {
               token = in.peek();
               sample.setDate(in.nextString());
           }

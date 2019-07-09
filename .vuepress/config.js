@@ -357,7 +357,8 @@ module.exports = {
         '/books/effective_java_3rd/chapter_4',
         '/books/effective_java_3rd/chapter_5',
         '/books/effective_java_3rd/chapter_6',
-        '/books/effective_java_3rd/chapter_7'
+        '/books/effective_java_3rd/chapter_7',
+        '/books/effective_java_3rd/chapter_8'
       ]
     }
   }
