@@ -82,8 +82,6 @@ map.put(List<String>.class, Arrays.asList("1", "2", "3"));
 
 이와 같이 타입 소거에 의해 런타임 시점에 타입안정성이 보장되지 않기 때문에 [Super Type Token](?#super-type-token) 이 출현하였다.
 
-추가 자세한 설명은 [Type Erasure](/backend/language/java/essential/generic/type_erasure) 에서 확인 가능하다.
-
 :::tip 타입 구체화 (Type Reification)
 Java 와는 다르게 _**C#**_ 에서는 제네릭 사용시 타입소거가 아닌 타입 구체화 방식을 통해 제네릭을 구현했다.
 이는 컴파일시 _**Byte Code**_ 변환시에도 타입이 소거가 되지 않고 실 타입정보를 _**Byte Code**_ 안에 보존하는것인데
