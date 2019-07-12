@@ -62,6 +62,19 @@ public class DateCheckLogin implements CheckLogic {
 **의존화 (Dependency)**
 
 * 클래스들 간의 가장 약한 관계유형
+* 어떤 클래스가 특정 클래스를 참조하는 것을 말한다.
+
+```java
+public class User {
+  public Schedual createSchdule() {
+    return new Schedule();
+  }
+
+  public void useSchedule(Schedule schedule) {
+    Schedule schedule(2019) = schedule.getScheduleByYear(2019);
+  }
+}
+```
 
 :::tip 참고자료
 <http://www.nextree.co.kr/p6753/>
