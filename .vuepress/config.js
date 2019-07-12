@@ -154,6 +154,7 @@ module.exports = {
             '/general/interview/backend',
           ]
         }, 
+        '/general/uml',
         '/general/tips'
       ], 
       '/frontend/html/general/': [
