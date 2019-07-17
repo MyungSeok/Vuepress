@@ -3,3 +3,4 @@ node_modules
 .vuepress/dist
 
 package-lock.json
+node_modules

@@ -61,8 +61,8 @@ ex = null;
 
 이를 _**weakly reachable 상태 객체**_ 라고 한다.
 
-> ### Reference Object
-> Java 스팩에서 `SoftReference`, `WeakReference`, `PhantomReference` 3가지 클래스로 생성된 객체를 말한다.
+> **Reference Object**  
+> Java 스팩에서 `SoftReference`, `WeakReference`, `PhantomReference` 3가지 클래스로 생성된 객체를 말한다.  
 > Reference Object 에 의해 참조된 객체를 _**referent**_ 라고 한다.
 
 ### Reference와 Reachability
@@ -197,7 +197,7 @@ Old 영역은 데이터가 가득차면 GC 를 실행한다.
   * 가장 최신의 가장 성능이 좋은 GC (JDK 7 이상)
 
 :::tip 참고자료
-<https://d2.naver.com/helloworld/1329>
-<https://yckwon2nd.blogspot.com/2014/04/garbage-collection.html>
+<https://d2.naver.com/helloworld/1329>  
+<https://yckwon2nd.blogspot.com/2014/04/garbage-collection.html>  
 <https://yckwon2nd.blogspot.com/2015/03/java8-permanent.html>
 :::
