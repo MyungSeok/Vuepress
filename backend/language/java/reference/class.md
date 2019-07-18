@@ -6,8 +6,6 @@
 
 > HEAP 영역에서의 값이 바뀌는건 아니다.
 
-불변클래스의 예시는 아래가 대표적이다.
-
 :::tip String / StringBuffer / StringBuilder 의 사용
 문자열을 더하는 식에는 `String` 보다는 `StringBuffer` 나 `StringBuilder` 을 사용해야 한다.
 

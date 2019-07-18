@@ -182,3 +182,26 @@ static int min (int firstArg, int... remainingArgs) {
 인수의 개수가 일정하지 않을때에도 메서드를 정의해야 한다면 가변인수가 반드시 필요하다.
 
 메서드를 정의할때는 필수 매개변수는 가변인수 앞에 두고, 가변인수를 사용할 때는 성능문제까지 고려하자
+
+## Item 54 null이 아닌, 빈 컬렉션이나 배열을 반환하라
+
+특정 메서드 사용시 컬렉션이나 배열과 같은 컨테이너가 비었을 때 `null` 을 반환 하였을때  
+이 메서드를 사용하는 클라이언트 코드는 이 상황을 처리 가능한 방어코드를 항상 넣어줘야 한다.
+
+때문에 빈 컨테이너를 반환하는 쪽이 더 안전하다.
+
+```java
+public List<Cheese> getCheeses() {
+  return cheesesInStock.isEmpty() ? Collections.emptyList() : new ArrayList<>(cheesesInStock);
+}
+```
+
+```java
+private static final Cheese[] EMPTY_CHEESE_ARRAY = new Cheese[0];
+
+public Cheese[] getCheeses() {
+  return cheesesInStock.toArray(EMPTY_CHEESE_ARRAY);
+}
+```
+
+## Item 55 옵셔널 반환은 신중히 하라
