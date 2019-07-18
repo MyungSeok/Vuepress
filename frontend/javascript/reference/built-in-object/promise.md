@@ -145,6 +145,10 @@ Promise.all([promise1, promise2])
 
 ES8 에서 Promise 사용을 쉽게 해주는 `async` 와 `await` 을 도입 하였다.
 
+이는 비동기 코드를 더 쉽게 작성 가능하게 하며 마치 동기형 코드처럼 작성되어 가독성을 높인다.
+
+`async` / `await` 는 Promise 구문 처럼 non-blocking 방식이다.
+
 **async**
 
 비동기 함수를 정의하며 `AsyncFunction` 객체를 반환 합니다.
@@ -177,5 +181,6 @@ loadData()
 :::tip 참고자료
 <https://programmingsummaries.tistory.com/325>  
 <https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise>  
-<https://joshua1988.github.io/web-development/javascript/promise-for-beginners/>
+<https://joshua1988.github.io/web-development/javascript/promise-for-beginners/>  
+<https://medium.com/@constell99/자바스크립트의-async-await-가-promises를-사라지게-만들-수-있는-6가지-이유-c5fe0add656c>
 :::

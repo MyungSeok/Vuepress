@@ -1,41 +1,5 @@
 # React JS
 
-## ESLint
-
-`.eslintrc.json` 파일에 다음과 같이 추가해준다.  
-es6 문법과 jsx 를 혼용하기 때문에 아래와 같은 lint 설정을 추가해준다.
-
-```javascript
-{
-    ...
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    }
-    ...
-}
-```
-
-## React Development Tools
-
-손쉬운 디버그 환경을 위하여 _**크롬 확장프로그램**_ \(Chrome Extension\) 에서 해당 플러그인을 설치한다.
-
-![React Development Tools](/img/A004.png)
-
-:::tip 참고자료
-
-* React
-  * [https://d2.naver.com/helloworld/1848131](https://d2.naver.com/helloworld/1848131)
-  * [https://reactjs.org/docs/getting-started.html](https://reactjs.org/docs/getting-started.html)
-  * [https://velopert.com/3613](https://velopert.com/3613)
-* Redux
-  * [https://deminoth.github.io/redux/](https://deminoth.github.io/redux/)
-
-:::
-
 ## 왜 가상 돔 (Virtual DOM) 이 빠른이유
 
 DOM 구조상의 Node 변경점이 생기면 레이아웃을 만들고 페인팅을 하는 과정에서 리소스가 발생된다.  

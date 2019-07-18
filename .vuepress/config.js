@@ -199,25 +199,28 @@ module.exports = {
       ],
       '/frontend/javascript/performance/': [
         '', 
-        '/frontend/javascript/performance/event-loop',
-        '/frontend/javascript/performance/memory-leak',
-        '/frontend/javascript/performance/scope-closure',
-        '/frontend/javascript/performance/netfunnel'
+        'event-loop',
+        'memory-leak',
+        'scope-closure',
+        'netfunnel'
       ],
       '/frontend/framework/node/': [
         '', 
-        '/frontend/framework/node/express',
-        '/frontend/framework/node/http-transection'
+        'express',
+        'http-transection'
       ],
       '/frontend/framework/react/': [
         '', 
-        '/frontend/framework/react/lifecycle',
-        '/frontend/framework/react/redux'
+        'lifecycle',
+        'redux',
+        'saga',
+        'next',
+        'tips'
       ],
       '/frontend/framework/vue/': [
         '', 
-        '/frontend/framework/vue/lifecycle',
-        '/frontend/framework/vue/store'
+        'lifecycle',
+        'store'
       ],
       '/backend/language/java/': [
         {
