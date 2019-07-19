@@ -54,3 +54,97 @@ API 호출자가 예외 상황에서 복수할 방법이 없다면 비검사 예
 |UnsupportedOperationException|호출한 메서드를 지원하지 않을 때|
 
 ## Item 73 추상화 수준에 맞는 예외를 던지라
+
+메서드가 저수준의 예외를 처리하지 않고 바깥으로 전파해버릴 때 내부구현 방식을 드러내어 윗 레벨의 API 를 오염시킨다.
+
+이 문제를 피하려면 상위 계층에서는 저수준의 예외를 잡아 자신의 추상화 수준에 맞는 예외로 던져야 한다. (Exception translation : 예외 번역)
+
+하지만 예외번역은  우수한 방법이나 무턱대고 예외를 전파하는것은 위험하니 명심하도록 하자.
+
+## Item 74 메서드가 던지는 모든 예외를 문서화 하라
+
+검사 예외는 항상 따로따로 선언하고, 각 예외가 발생하는 상황을 자바독의 `@throw` 태그를 사용하여 정확히 문서화 하자
+
+메서드가 던질 수 있는 예외를 @throws 태그로 문서화하되 비검사 예외는 메서드 선언의 throws 목록에 넣지 말자
+
+한 클래스에 정의된 많은 메서드가 같은 이유로 같은 예외를 던진다면 그 예외를 각각의 메서드가 아닌 클래스 설명에 추가하는 방법도 있다.  
+이는 `NullPointerException` 이 가장 흔한 사례이다.
+
+## Item 75 예외의 상세 메시지에 실패 관련 정보를 담으라
+
+실패 순간을 포착하려면 발생한 예외에 관련된 모든 매개변수와 필드값을 실패 메세지에 담아야 한다.
+
+예를 들면 `IndexOutOfBoundsException` 의 상세 메세지는 범위의 최솟값과 최대값, 그리고 그 범위를 벗어났다는 인덱스 값등을 제공해줘야 한다. (물론 보안정보같은 것들은 예외다)
+
+실패의 메시지를 적절히 포착하려면 필요한 정보를 예외 생성자에서 모두 받아서 상세 메세지까지 미리 생성해 놓는 방법도 괜찮다.
+
+예를들면 현재의 `IndexOutOfBoundsException` 생성자는 String 도 받지만 다음과 같이 구현해도 좋다.
+
+```java
+/**
+ * IndexOutOfBoundsException을 생성한다. *
+ * @param lowerBound 인덱스의 최솟값
+ * @param upperBound 인덱스의 최댓값 + 1 * @param index 인덱스의 실젯값
+ */
+public IndexOfOutOfBoundsException(int lowerBound, int upperBound, int index) {
+  // 실패를 포착하는 상세 메시지를 생성한다.
+  super(String.format("최솟값: %d, 최댓값: %d, 인덱스: %d", lowerBound, upperBound, index));
+
+  // 프로그램에서 이용할 수 있도록 실패 정보를 저장해둔다.
+  this.lowerBound = lowerBound;
+  this.upperBound = upperBound;
+  this.index = index;
+}
+```
+
+## Item 76 가능한 한 실패 원자적으로 만들라
+
+호출된 메서드가 실패하더라도 해당 객체는 메서드 호출 전 상태를 유지해야 한다.
+
+이러한 특성을 실패 원자적 (failure-atomic) 이라고 한다.
+
+메서드를 실패 원자적으로 만드는 방법은 불변 객체로 설계하는 것이다.  
+_**불변 객체는 태생적으로 실패 원자적**_ 이며 _**메서드가 실패하면 새로운 객체가 만들어지지는 않을수 잇으나 기존의 객체가 불안정한 상태에 빠지는 일은 없다.**_
+
+또한 가변 객체의 메서드를 실패 원자적으로 만드는 방법은 아래와 같이 작업수행에 앞서 매개변수의 유효성을 검증하는 것이다.
+
+```java
+public Object pop() {
+  if (size == 0)
+    throw new EmptyStackException();
+  
+  Object result = elements[--size];
+  elements[size] = null;
+  return result;
+}
+```
+
+임시 복사본에서 작업을 수행한 후 작업이 성공적으로 완료되면 원래 객체와 교체하는 것이다.
+
+메서드 명세에 기술한 예외라면 설령 예외가 발생하더라도 객체의 상태는 메서드 호출전과 똑같이 유지되어야 한다는것이 기본 규칙이다.  
+이 규칙이 지켜지지 않는다면 API 설명에 명시해야 한다.
+
+## Item 77 예외를 무시하지 말라
+
+간혹 아래 코드 처럼 `try-catch` 구문에서 `catch` 블럭을 비워두는 경우가 많다.
+
+```java
+try {
+  /* statement */
+} catch(SomeException e) {
+}
+```
+
+이는 `catch` 블럭을 비워두면 존재할 이유가 없으며 에러가 발생해도 알지 못하게 하는것과 같으니 반드시 수정해야 한다.
+
+예외를 무시하기로 했다면 `catch` 블럭 안에 그렇게 결정한 이유에 대해서 주석으로 남기고 예외 변수의 이름도 `ignored` 로 바꿔놓도록 하자.
+
+```java
+Future<Integer> f = exec.submit(planarMap::chromaticNumber);
+int numColor = 4 // 기본값. 어떤 지도라도 이 값이면 충분하다.
+try {
+  numColor = f.get(1L, TimeUnit.SECONDS);
+} catch (TimeoutException | ExcutionException ignored) {
+  // 기본값을 사용한다 (색상 수를 최소화하면 좋지만, 필수는 아니다.)
+}
+```
