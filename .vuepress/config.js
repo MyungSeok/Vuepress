@@ -272,7 +272,14 @@ module.exports = {
         {
           title: 'Reference Docs',
           children: [
-            '/backend/language/java/reference/class',
+            {
+              title: 'Class', 
+              children: [
+                '/backend/language/java/reference/clazz/immutable',
+                '/backend/language/java/reference/clazz/exception',
+                '/backend/language/java/reference/clazz/string'
+              ]
+            },
             '/backend/language/java/reference/interface',
             '/backend/language/java/reference/operation',
             '/backend/language/java/reference/collection',
@@ -362,7 +369,8 @@ module.exports = {
         '/books/effective_java_3rd/chapter_5',
         '/books/effective_java_3rd/chapter_6',
         '/books/effective_java_3rd/chapter_7',
-        '/books/effective_java_3rd/chapter_8'
+        '/books/effective_java_3rd/chapter_8',
+        '/books/effective_java_3rd/chapter_9'
       ]
     }
   }

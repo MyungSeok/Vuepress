@@ -1,63 +1,6 @@
-# Class
+# String
 
-## Immutable
-
-생성후 변경 불가능한 객체로서 대표적으로 _`String`_, _`Boolean`_, _`Integer`_, _`Float`_, _`Long`_ 등등이 있다.
-
-> HEAP 영역에서의 값이 바뀌는건 아니다.
-
-:::tip String / StringBuffer / StringBuilder 의 사용
-문자열을 더하는 식에는 `String` 보다는 `StringBuffer` 나 `StringBuilder` 을 사용해야 한다.
-
-`String` 은 새로운 값을 할당할 때마다 새로 생성되기 때문 \(클래스의 메모리 참조 주소가 바뀜\)
-
-`StringBuffer` 나 `stringBuilder` 는 값을 메모리에 append 하는 방식으로 클래스를 별도로 생성하지 않는다.
-
-`StringBuilder` 는 변경 가능한 문자열로 synchronization 이 적용되지 않는다.
-
-`StringBuffer` 는 _**멀티쓰레드 환경에서 안정적**_ 이다.
-:::
-
-## Exception
-
-Java 에서는 기본적으로 2가지의 에러 유형이 있다.
-
-### Checked Exception
-
-`Checked Exception` 는 외부 환경에 의해 미리 예상 되는 오류이다.
-
-예를 들면 `IOException` `ClassNotFoundException` 등과 같이 _**반드시 예외처리가 필요하다.**_
-
-* IOException
-* SQLException
-
-### Unchecked Exception (Runtime Exception)
-
-`Unchecked Exception` 는 프로그램 로직상의 문제로 일어나는 로직상의 오류로써 미리 예상할 수 없다.
-
-대표적으로 `RuntimeException` 과 같이 프로그램 실행중에 일어나며 _**반드시 예외처리를 필요로 하지 않는다.**_
-
-* NullPointerException
-* IllegalArgumentException
-* IndexOutOfBoundException
-* SystemException
-
-> 예외처리한 객체는 작업이 끝난후 모드 GC 의 대상이 된다.
-
-||Checked Exception|Unchecked Exception|
-|:--:|--|--|
-|처리여부|반드시 예외처리가 필요|명시적인 처리를 강제하지 않음|
-|확인시점|컴파일 단계|실행단계|
-|예외 발생 시<br>트랜잭션 여부|roll-back 하지 않음|roll-back 처리|
-|대표적인 예외|`Exception` 의 상속을 받는 하위 클래스 중<br>`Runtime Exception`을 제외한 모든 예외|`Runtime Exception` 의 하위 예외 클래스|
-
-:::tip 참고자료
-<http://www.nextree.co.kr/p3239/>
-:::
-
-## String
-
-### String.format()
+## String.format()
 
 문자열 포맷을 제공하는 메서드
 
@@ -150,11 +93,11 @@ System.out.printf("%1$tY.%1$tm.%1$td %1$tH:%1$tM:%1$tS.%1$tL", new Date().getTim
 <https://micropai.tistory.com/48>
 :::
 
-### replace vs replaceAll
+## replace vs replaceAll
 
 `replace` 과 `replaceAll` 의 차이점은 `replace` 인자를 문자열 값으로 받고 `replaceAll` 은 인자를 정규식으로 받는다.
 
-#### 정규식
+**정규식**
 
 `replaceAll` 함수로 특수문자를 사용시에 문자로 인식하는 방법
 

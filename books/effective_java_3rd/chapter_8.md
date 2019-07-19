@@ -205,3 +205,43 @@ public Cheese[] getCheeses() {
 ```
 
 ## Item 55 옵셔널 반환은 신중히 하라
+
+`Java SE 8` 에서 추가된 `Optional<T>` 는 원소를 최대 1개를 가질 수 있는 _**불변**_ 컬랙션이다.
+
+옵셔널을 반환하는 메서드에서는 반드시 `null` 을 반환하지 말자.
+
+다음은 컬렉션에서 최댓값을 구해 `Optional<E>` 로 반환하는 코드이다.
+
+```java
+public static <E extends Comparable<E>> Optional<E> max(Collection<E) c) {
+  if (c.isEmpty()) {
+    return Optional.empty();
+  }
+
+  E result = null;
+
+  for (E e : c) {
+    if (result = null || e.compareTo(result) > 0) {
+      result = Objects.requireNonNull(e);
+    }
+
+    return Optional.of(result);
+  }
+}
+```
+
+옵셔널을 받는 클라이언트는 그에 맞는 정책들 (기본값 혹은 예외 등등) 을 세워두고 해당 정책에 맞게 값을 설정한다.
+
+박싱된 기본 타입을 담은 옵셔널을 반환하는 일은 없도록 하자 (아래와 같은 박싱된 옵셔널 타입을 사용)
+
+* `OptionalInt`
+* `OptionalLong`
+* `OptionalDouble`
+
+## Item 56 공개된 API 요소에는 항상 문서화 주석을 작성하라
+
+작성한 API 를 올바르게 문서화 하려면 공개된 모든 클래스, 인터페이스, 메서드 필드 선언에 문서화 주석을 달아야 한다.
+
+문서화 주석이 없다면 API 가 쓰기 어려우며 오류를 내기 쉽다.
+
+전제조건 및 사후조건, 오류사항 같은 부작용 또한 문서화 해야 한다.
