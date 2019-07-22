@@ -205,7 +205,7 @@
 * Vector : 방향기반 (SVG)
 * Bitmap : 화소기반 (Canvas)
 
-## SPA 에서의 뒤로가기
+## [SPA 에서의 뒤로가기](https://blog.outsider.ne.kr/1276)
 
 * 앵커나 해시뱅 (#!) 를 통한 히스토리 조작
 * `pushState` 를 이용한 히스토리 조작 방법
