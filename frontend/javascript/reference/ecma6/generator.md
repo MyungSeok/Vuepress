@@ -2,7 +2,7 @@
 
 _**Iterator Interface**_ 를 구현한 확장형 함수
 
-```javascript
+```javascript {10}
 function* foo() {
   yield '첫번째 호출';
   yield '두번째 호출';
@@ -18,7 +18,7 @@ for (var i = 0; i < 10; ++i) {
 
 네번째 까지만 정상 로그가 찍히며 이후로는 `{ value: undefined, done: true }` 로 나온다.
 
-```javascript
+```javascript {1,2,3,4}
 // Object { value: '첫번째 호출', done: false }
 // Object { value: '두번째 호출', done: false }
 // Object { value: '세번째 호출', done: false }

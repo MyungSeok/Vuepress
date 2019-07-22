@@ -213,6 +213,7 @@ module.exports = {
         '', 
         'lifecycle',
         'redux',
+        'immutable',
         'saga',
         'next',
         'tips'
