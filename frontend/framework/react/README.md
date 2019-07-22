@@ -20,7 +20,8 @@ _**Virtual DOM 은 DOM fragment 를 관리하는 과정을 수동으로 하나�
 
 :::tip 참고자료
 <https://velopert.com/3236>  
-<https://okky.kr/article/395781>
+<https://okky.kr/article/395781>  
+<https://blog.hanumoka.net/2018/08/15/web-20180815-web-virtual-dom/>
 :::
 
 ## Class Constructor 에서 `super()`
