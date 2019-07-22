@@ -41,3 +41,27 @@ _**메모리 누수**_, _**메모리 팽창**_, _**잦은 가비지 수집**_ �
 <https://developers.google.com/web/tools/chrome-devtools/memory-problems/?hl=ko>
 <https://developers.google.com/web/fundamentals/performance/rail?hl=ko>
 :::
+
+## Chrome Heap Snapshot
+
+Google Chrome Browser 에서 제공되는 개발자 도구에서 Heap Snapshot 을 찍으며 아래와 같은 뷰 선택기를 통한 분석 환경이 제공된다.
+
+* Summary View
+  * 생성자 이름을 기준으로 그룹화된 객체를 보여준다.
+  * 생성자 기준으로 각각의 메모리 사용량으로 객체 추적이 가능하다.
+  * DOM 누수 추적에 유용하다.
+* Comparison View
+  * 두 스냅샷간의 차이점을 표시한다.
+  * 두개 혹은 작업 이전과 이후의 스냅샷 비교가 가능하다.
+  * 비워진 메모리 델타와 참조 카운트를 검사하면 메모리 누수 존재 원인과 이유를 확인 가능하다.
+* Containment View
+  * Heap Content 탐색이 가능하다.
+  * 객체 구조를 좀더 자세히 볼 수 있으며 전역 네임스페이스 부터 참조된 객체를 분석하여 무엇인지 알아낼 수 있다.
+  * 클로져 분석이 가능하고 객체를 심층적으로 탐색 및 접근이 가능하다.
+* Dominators View
+  * 도미네이터 트리를 표시하여 누적 지점을 찾는데 유용하다.
+  * 실행되고 있는 예상치 않는 객체에 대한 참조가 있는지 혹은 삭제/가비지 수집이 되고 있는지 확인이 가능하다.
+
+:::tip 참고자료
+<https://developers.google.com/web/tools/chrome-devtools/memory-problems/heap-snapshots?hl=ko>
+:::
