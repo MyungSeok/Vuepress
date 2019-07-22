@@ -16,8 +16,11 @@ _**Virtual DOM 은 DOM fragment 를 관리하는 과정을 수동으로 하나�
 
 즉 각각의 변화들을 동기화 작업을 거치지 않으면서 하나의 작업으로 묶을수 있는것이다.
 
+> 한번의 상태변경으로 가상화한 DOM 에서 일괄적으로 적용하고 진짜 돔과 비교해서 변경된 부분을 한번에 적용시키는 방법으로 DOM 랜더링 횟수를 줄이게 된다.
+
 :::tip 참고자료
-<https://velopert.com/3236>
+<https://velopert.com/3236>  
+<https://okky.kr/article/395781>
 :::
 
 ## Class Constructor 에서 `super()`
