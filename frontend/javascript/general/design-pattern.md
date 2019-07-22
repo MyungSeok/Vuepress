@@ -37,6 +37,70 @@ var module2 = {}
 
 ## 모듈 패턴 (Module Pattern)
 
+### Common JS
+
+사용이 대체적으로 간편하며 대부분의 로컬 디스크에 위치해 바로 불러서 사용한다.
+
+서버사이드 방식에서 많이 사용하며 그 대표적인 예가 _**Node JS**_ 이다.
+
+```java
+const $ = require('jquery');
+
+module.exports = {
+    jQuery: $
+}
+```
+
+헌데 모든파일이 다 로드될때 까지 사용할 수 없으며 파일단위의 스코프가 없어 기타 사이드이팩트도 발생한다.
+
+### AMD (Asynchronous Moudle Definition)
+
+_**비동기적 모듈 선언**_ 으로 대표적인게 _**Require JS**_ 이다.
+
+```javascript
+define(['a', 'b', 'c'], function (a, b, c) {
+    /* statement */
+});
+```
+
+Common JS 보다는 비동기 환경에서 매우 잘 동작하며 서버사이드에서도 문제 없이 동작된다.
+
+이는 Lazy-Load 기법을 응용하여 더욱 더 유연한 사용이 가능하다.
+
+### UMD (Universal Module Definition)
+
+AMD 와 Common JS 방식을 모두 사용가능하게 호환되는 방식을 UMD 라고 한다.
+
+```javascript
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['b'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(require('b'));
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory(root.b);
+  }
+}(this, function (b) {
+  //use b in some fashion.
+
+  // Just return a value to define the module export.
+  // This example returns an object, but the module
+  // can return a function as the exported value.
+  return {};
+}));
+```
+
+:::tip 참고자료
+<https://d2.naver.com/helloworld/12864>  
+<https://www.zerocho.com/category/JavaScript/post/5b67e7847bbbd3001b43fd73>  
+<https://github.com/codepink/codepink.github.com/wiki/자바스크립트-모듈,-모듈-포맷,-모듈-로더와-모듈-번들러에-대한-10분-입문서>
+:::
+
 ### 기본 모듈 패턴
 
 `public` 과 `private` 의 접근 권한을 가능하게 한다.
