@@ -2,7 +2,7 @@
 
 ## Integer 의 바이트는 ?
 
-* 4Byte
+* 4 Byte
 
 ## short integer 의 최하 / 최상 값은 ?
 
