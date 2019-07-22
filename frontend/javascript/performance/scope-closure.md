@@ -1,4 +1,4 @@
-# Scope & Closure
+# Scope
 
 ## Scope
 
@@ -35,8 +35,8 @@ baz();
 blue
 ```
 
-* ES5는 함수레벨의 렉시컬 스코프를 가진다.
-* ES6는 함수레벨과 블록레벨의 렉시컬 스코프를 가진다.
+* ES5는 함수레벨의 **렉시컬 스코프**를 가진다.
+* ES6는 **함수레벨과 블록레벨의 렉시컬 스코프**를 가진다.
 
 ### 동적 스코프 (Dynamic Scope)
 
@@ -73,6 +73,43 @@ bar();
 
 :::tip 참고자료
 <https://bestalign.github.io/2015/07/12/Lexical-Scope-and-Dynamic-Scope/>
+:::
+
+## Closer
+
+외부함수의 변수에 접근할 수 있는 내부함수를 말한다.
+
+일반적으로 스코프 체인에 표현되는데 대표적으로 3가지의 스코프 체인을 가진다.
+
+* 자기 자신에 대한 접근 (자기 블럭)
+* 외부 함수 (부모 및 상위 함수) 에 대한 접근
+* 전역 변수에 대한 접근
+
+```javascript
+function celebrityID() {
+    var celebrityID = 999;
+    // 우리는 몇개의 내부 함수를 가진 객체를 리턴할것입니다.
+    // 모든 내부함수는 외부변수에 접근할 수 있습니다.
+    return {
+        getID: function() {
+            // 이 내부함수는 갱신된 celebrityID변수를 리턴합니다.
+            // 이것은 changeThdID함수가 값을 변경한 이후에도 celebrityID의 현재값을 리턴합니다.
+            return celebrityID;
+        },
+        setID: function(theNewID) {
+            // 이 내부함수는 외부함수의 값을 언제든지 변경할 것입니다.
+            celebrityID = theNewID;
+        }
+    }
+}
+var mjID = celebrityID(); // 이 시점에, celebrityID외부 함수가 리턴됩니다.
+mjID.getID(); // 999
+mjID.setID(567); // 외부함수의 변수를 변경합니다.
+mjID.getID(); // 567; 변경된 celebrityID변수를 리턴합니다.
+```
+
+:::tip 참고자료
+<http://chanlee.github.io/2013/12/10/understand-javascript-closure/>
 :::
 
 ## 순환참조

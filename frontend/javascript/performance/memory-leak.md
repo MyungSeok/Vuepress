@@ -37,11 +37,6 @@ _**메모리 누수**_, _**메모리 팽창**_, _**잦은 가비지 수집**_ �
 * 분리된 DOM 트리 (일반적인 메모리 누수 원인) 을 힙 스냅샷으로 식별할 수 있다.
 * JS 힙에 새 메모리가 할당될 때 할당 타임라인 기록을 확인하여 알아낼 수 있다.
 
-:::tip 참고자료
-<https://developers.google.com/web/tools/chrome-devtools/memory-problems/?hl=ko>
-<https://developers.google.com/web/fundamentals/performance/rail?hl=ko>
-:::
-
 ## Chrome Heap Snapshot
 
 Google Chrome Browser 에서 제공되는 개발자 도구에서 Heap Snapshot 을 찍으며 아래와 같은 뷰 선택기를 통한 분석 환경이 제공된다.
@@ -63,5 +58,6 @@ Google Chrome Browser 에서 제공되는 개발자 도구에서 Heap Snapshot �
   * 실행되고 있는 예상치 않는 객체에 대한 참조가 있는지 혹은 삭제/가비지 수집이 되고 있는지 확인이 가능하다.
 
 :::tip 참고자료
-<https://developers.google.com/web/tools/chrome-devtools/memory-problems/heap-snapshots?hl=ko>
+<https://developers.google.com/web/tools/chrome-devtools/memory-problems/?hl=ko>
+<https://developers.google.com/web/fundamentals/performance/rail?hl=ko>
 :::
