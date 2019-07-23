@@ -55,3 +55,40 @@
 * 여러 사용자가 `DAO` 의 인터페이스를 사용하여 필요한 자료에 접근 하도록 하는 것이 개념이다.
 * DB 에 대한 `insert` `update` `delete` `select` 를 처리한다.
 * 단일 책임의 원칙 개념의 성격을 가지며 대부분의 데이터베이스에 적용이 가능하다.
+
+## PreparedStatement 와 Statement 차이
+
+가장 큰 차이점은 캐시 (Cache) 사용여부이다.
+
+**Statement 실행 순서**
+
+1. Query Statement 분석
+2. Compile
+3. Excute
+
+Statement 를 사용하게 되면 매번 Query 를 수행할 때마다 1 ~ 3 단계를 수행하게 되고 PreparedStatement 는 처음 한번만 세 단계를 수행하고 나머지는 캐시에 담아 재사용을 한다.
+
+**Statement**
+
+```java
+String sqlStr = "SELECT name, memo FROM TABLE WHERE num = " + num;
+Statement stmt = conn.createStatement();
+ResultSet result = stmt.executeQuery(sqlStr);
+```
+
+**Preparedstatement**
+
+```java
+String sqlStr = "SELECT name, memo FROM TABLE WHERE num = ?";
+PreparedStatement stmt = conn.prepareStatement(sqlStr);
+pstmt.setInt(1, num);
+ResultSet result = pstmt.exceuteQuery();
+```
+
+동일한 Query 를 반복적으로 사용할 때는 _**PreparedStatement**_ 가 DB 에 훨씬 적은 부담을 주며 성능도 우수하다.
+
+만약 _**Dynamic SQL 을 사용할 경우**_ 매번 조건절이 틀려지게 됨으로 Statement 가 낫다. (캐싱의 장점을 잃어버림)
+
+:::tip 참고자료
+<https://devbox.tistory.com/entry/Comporison>
+:::

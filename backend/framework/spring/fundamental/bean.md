@@ -1,20 +1,43 @@
 # Bean
 
-스프링 (정확히는 스프링 컨테이너) 에서 생성 및 및 관계 설정, 사용등을 제어해주는 객체
+스프링 프레임워크에서 사용하는 POJO 모델을 기반으로 하며 이는 IoC 역활을 해주는 기능을 한다.
+
+이 Bean 은 _**Bean Factory**_ 와 밀접한 관련이 있다.
+
+Bean Factory 는 Bean 의 생명주기를 관리하며 대체로 Bean Factory 의 기능을 확장한 Application Context 를 사용한다.
+
+Spring Bean 은 특별한 경우를 제외하고는 _**Singleton**_ 으로 생성된다.
+
+## Bean Container (= IoC Container)
+
+* 객체를 관리하는 컨테이너로써 컨테이너에 객체를 담아두고 필요할 때에 컨테이너에서 객체를 가져와 사용할 수 있도록 한다.
+* IoC 방식으로 Bean 을 관리한다는 의미에서 _**Bean Factory**_ 나 _**Application Context**_ 를 가르킨다.
 
 ## Bean Factory
 
 * 스프링이 IoC 를 담당하는 핵심 컨테이너
-* 빈을 등록/생성/조회/반환/관리 하는 기능으로 bean factory 와 같지만 여기에 spring 의 각종 부가서비스를 추가로 제공해야 한다.
+* Bean 을 등록/생성/조회/반환/관리 하는 기능으로 Bean Factory 와 같지만 여기에 스프링의 각종 부가서비스를 추가로 제공해야 한다.
 
 ## Application Context
 
-* bean factory 를 확장한 IoC 컨테이너
+* 인스턴스화 시점이 상이하다.
+  * Application Context 는 즉시 인스턴스를 만드는 Pre-loading 을 하고  
+  * Bean Factory 는 lazy-loading 을 하여 실제로 요청 받는 시점에 인스턴스를 만든다.
 
-## Bean Container (IoC Container)
+* Bean Factory 를 확장한 IoC 컨테이너이며 일반적으로 엔터프라이즈한 어플리케이션은 Application Context 를 사용하는게 낫다고 한다.
+  * `BeanPostProcessor` 확장 포인트를 사용할 수 있고 트랜잭션과 AOP 와 같은 상당한 양의 지원을 받을 수 있다고 한다.
 
-* 객체를 관리하는 컨테이너로써 컨테이너에 객체를 담아두고 필요할 때에 컨테이너에서 객체를 가져와 사용할 수 있도록 한다.
-* IoC 방식으로 Bean 을 관리한다는 의미에서 Bean Factory 나 Application Context 를 가르킨다.
+|Feature|BeanFactory|ApplicationContext|
+|:-|:-:|:-:|
+|Bean instantiation/wiring|Yes|Yes|
+|Automatic BeanPostProcessor registration|No|Yes|
+|Automatic BeanFactoryPostProcessor registration|No|Yes|
+|Convenient MessageSource access (for i18n)|No|Yes|
+|ApplicationEvent publication|No|Yes|
+
+:::tip 참고자료
+<http://wonwoo.ml/index.php/post/1571>
+:::
 
 ## POJO (Plain Old Java Object)
 

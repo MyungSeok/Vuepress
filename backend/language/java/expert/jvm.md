@@ -30,7 +30,7 @@ Java 로 작성한 코드는 _**Class Loader 가 컴파일된 Java Byte Code 를
 
 ## Class Loader
 
-자바는 Runtime 시에 Class 를 로드하고 링크하는 Dynamic Loading 특징이 있다.
+자바는 _**Runtime 시에 Class 를 로드하고 링크하는 Dynamic Loading 특징**_ 이 있다.
 
 이 Dynamic Loading 특징을 담당하는 부분이 _**Class Loader**_ 이다.  
 
