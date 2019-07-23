@@ -309,9 +309,9 @@ const value = 'outer scope';
 }());
 ```
 
-:::tip **TDZ (Temporal Dead Zone) ?**
-초기화 (선언\ 가 되지 않는 객체들을 참조 할 수 없다.  
-(호이스팅이 되지 않는것은 아님 - ES5 처럼 `undefined` 로 선 할당이 안됨)
+:::tip TDZ (Temporal Dead Zone) ?
+초기화 (선언) 가 되지 않는 객체들을 참조 할 수 없다.  
+호이스팅이 되지 않는것은 아님 - ES5 처럼 `undefined` 로 선 할당이 안됨
 :::
 
 ## 함수의 선언과 표현식

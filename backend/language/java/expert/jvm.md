@@ -104,7 +104,7 @@ Bootstrap Class Loader 까지 확인해도 없으면 요청 받은 클래스 로
 * 이 영역은 _**GC (Garbage Collector) 를 통해서만 메모리 해제가 가능**_하다. (GC 의 실제적인 대상)
 * Method 영역이 클래스 정보를 참고하여 인스턴스를 생성하는 곳 이다.
 
-### JVM Stack Area
+### Stack Area
 
 * Method 가 호출될 때마다 `Stack Frame` 이라는 데이터 영역이 생성하여 구성
   * Method 에 사용되는 Thread 의 수행 정보를 `Stack Frame` 을 통해서 저장

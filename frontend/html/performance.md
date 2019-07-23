@@ -19,7 +19,7 @@ HTML 속도 개선을 위해서는 기본적인 먼저 랜더링 순서를 파�
 4. 다운로드 된 HTML 및 CSS 문서를 해석하는 과정을 거친다
     1. HTML 을 해석하여 DOM Tree 구성을 한다.
     2. CSS 를 해석하여 `CSSOM` (Cascading Style Sheets Object Model) 을 구성한다.
-    3. 위 두 구성이 모두 완료 하여야만 다음 진행이 가능하다. (CSS : 랜더링 블라킹 요소)
+    3. 위 두 구성이 모두 완료 하여야만 다음 진행이 가능하다. (CSS : 랜더링 블록킹 요소)
     4. 이후 자바스크립트 태그 혹은 구문을 만나면 약속된 프로세스 (비차단 스크립트) 대로 진행 한다.
 5. `DOM Tree` & `CSSOM` 이 완료 되면 `Render Tree` 구성을 진행한다.
     1. CSS 규칙중 `{display:none}` 을 만나면 `Render Tree` 구성에서는 빠진다. (`DOM Tree` 에는 존재)

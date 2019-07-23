@@ -185,7 +185,7 @@
 * `Symbol.Iterator` 속성을 갖는 객체를 Iterable 한 객체라고 한다.
 * Array.Prototype.forEach : 모든 엘리먼트를 callback 에 넘겨 실행
 * Array.Prototype.map : 인자로 넘겨진 엘리먼트를 새로운 배열로 리턴
-* Array.Prototype.filter : 조건에 맞는 값들로 새로은 배열로 리턴
+* Array.Prototype.filter : 조건에 맞는 값들로 새로운 배열로 리턴
 
 ## 자바스크립트에서 var 를 사용하지 않으면 발생되는 현상 ?
 
