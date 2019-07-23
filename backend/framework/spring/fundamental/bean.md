@@ -20,10 +20,11 @@ Spring Bean 은 특별한 경우를 제외하고는 _**Singleton**_ 으로 생�
 
 ## Application Context
 
+대부분의 기능들은 Bean Factory 와 동일한 역활과 기능들을 수행하나 부가적으로 제공되는 기능들이 있다. (Bean Factory 인터페이스를 상속한다)
+
 * 인스턴스화 시점이 상이하다.
   * Application Context 는 즉시 인스턴스를 만드는 Pre-loading 을 하고  
   * Bean Factory 는 lazy-loading 을 하여 실제로 요청 받는 시점에 인스턴스를 만든다.
-
 * Bean Factory 를 확장한 IoC 컨테이너이며 일반적으로 엔터프라이즈한 어플리케이션은 Application Context 를 사용하는게 낫다고 한다.
   * `BeanPostProcessor` 확장 포인트를 사용할 수 있고 트랜잭션과 AOP 와 같은 상당한 양의 지원을 받을 수 있다고 한다.
 
@@ -82,22 +83,23 @@ public class SimpleBean {
 
 ## Spring Bean Life Cycle
 
-@flowstart
-stage1=>operation: 빈 설정 파일 정보 초기화
-stage2=>operation: POJO 빈 초기화 상태
-stage3=>operation: POJO 빈 준비 상태
-stage4=>operation: POJO 빈 소멸 상태
+Spring Bean Life Cycle 은 최초에 Bean Object 가 생성되고  
+DI 의존성 주입후 초기화 작업이 끝나면 Bean 서비스가 가능한 준비 상태가 완료된다.
 
-stage1->stage2->stage3->stage4
+이후 컨테이너가 종료될때 호출되서 사용중인 빈 리소스를 반환하거나 종료전에 처리되야 할 작업들도 별도 지정이 가능하다.
+
+@flowstart
+stage1=>operation: Bean Object 생성
+stage2=>operation: 의존성 주입 (DI)
+stage3=>operation: Bean 설정 파일 정보 초기화
+stage4=>operation: Bean 초기화 상태
+stage5=>operation: Bean 준비 상태
+stage6=>operation: Bean 소멸 상태
+
+stage1->stage2->stage3->stage4->stage5->stage6
 @flowend
 
-:::tip 참고자료
-<http://javaslave.tistory.com/48>  
-<https://gmlwjd9405.github.io/2018/11/10/spring-beans.html>  
-<https://unabated.tistory.com/entry/Spring-Bean-초기화-및-생명주기>
-:::
-
-### POJO (Plain Old Java Object) 초기화 과정
+### 초기화 메서드 (initalization-method)
 
 1. Spring Framework 는 먼저 `Bean` 설정파일의 POJO 빈을 Instance 화 하지 않은 상태로 `Bean` 설정 파일의 정보를 초기화 한다.
     1. 빈 설정 파일의 정보를 초기화 하면서 XML DTD 에 대하여 유효한지 체크한다.
@@ -105,20 +107,27 @@ stage1->stage2->stage3->stage4
     1. 의존 관계가 없는 Bean 인 경우 초기화가 실패 한다.
 3. 의존 관계가 있는 빈의 체크가 완료되면 `setter Method` 를 호출하거나 생성자의 인자로 실질적인 값을 추가하거나 다른 Bean 에 대한 Reference 로 전달한다.
 4. Application Context 를 이용하여 초기화를 실행한다.
-    1. 생성한 Bean 이 BeanNameAware Instance 이면 setBeanName() Method 를 호출한다.
-    2. 생성한 Bean 이 BeanFactoryAware Instance 이면 setBeanFactory() Method 를 호출한다.
-    3. 생성한 Bean 이 ApplicationContextAware Instance 이면 setApplicationContext() Method 를 호출한다.
-    4. 생성한 Bean 이 InitalizingBean 인스턴스이면 afterProperties() Method 를 호출한다.
+    1. 생성한 Bean 이 BeanNameAware Instance 이면 `setBeanName()` Method 를 호출한다.
+    2. 생성한 Bean 이 BeanFactoryAware Instance 이면 `setBeanFactory()` Method 를 호출한다.
+    3. 생성한 Bean 이 ApplicationContextAware Instance 이면 `setApplicationContext()` Method 를 호출한다.
+    4. 생성한 Bean 이 InitalizingBean 인스턴스이면 `afterProperties()` Method 를 호출한다.
 5. 생성한 Bean 의 설정파일에 init-method 가 설정되어 있다면 init-method 에 해당하는 Method 를 호출한다.
 
-### 종료 Method 를 호출하는 과정
+### 종료 메서드 (destruction-method) 를 호출하는 과정
 
 1. 생성한 Bean 이 DisposableBean Instance 이면 `distory` Method 를 호출한다.
 2. 생성한 Bean 설정파일에 distory-method 가 설정되어 있으면 `destory` Method 에 해당하는 메소드를 호출한다.
 
 > Bean Life Cycle 을 커스터마이징 하여 제어 할 수 있다.
 
-### Bean 로드 순서를 결정짓는 방법
+:::tip 참고자료
+<http://javaslave.tistory.com/48>  
+<https://gmlwjd9405.github.io/2018/11/10/spring-beans.html>  
+<https://unabated.tistory.com/entry/Spring-Bean-초기화-및-생명주기>  
+<https://cornswrold.tistory.com/100>
+:::
+
+## Bean 로드 순서를 결정짓는 방법
 
 Bean 내부적으로도 생성 순서에 따라 에러가 나올수 있기 때문에 해당 상황에서는 빈 생성 순서를 정해주는 것이 낫다
 
@@ -133,7 +142,7 @@ Bean 내부적으로도 생성 순서에 따라 에러가 나올수 있기 때�
 <https://jeong-pro.tistory.com/167>
 :::
 
-### `@Bean` vs `@Component` 차이
+## `@Bean` vs `@Component` 차이
 
 * `@Bean`
   * 외부 라이브러리들의 사용을 Bean 으로 등록하고 싶은 경우
@@ -146,7 +155,7 @@ Bean 내부적으로도 생성 순서에 따라 에러가 나올수 있기 때�
 <https://effectivesquid.tistory.com/entry/Bean-과-Component의-차이>
 :::
 
-### Bean Scope
+## Bean Scope
 
 _**eGov**_ 및 _**Spring Reference (4.2.5)**_ 에서 발췌한 Bean Scope 의 종류이다.
 
