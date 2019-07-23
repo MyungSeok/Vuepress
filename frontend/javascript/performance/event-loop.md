@@ -41,7 +41,7 @@ setTimeout(() => {
 13. `cb1` 이 실행되고 `console.log('cb1')` 이 콜스택에 추가된다.
 14. `console.log('cb1')` 이 실행된다.
 15. `console.log('cb1')` 이 콜 스택에서 제거된다.
-16. 'cb1` 이 콜스택에서 제거된다.
+16. `cb1` 이 콜스택에서 제거된다.
 
 :::tip 참고자료
 <https://engineering.huiseoul.com/자바스크립트는-어떻게-작동하는가-이벤트-루프와-비동기-프로그래밍의-부상-async-await을-이용한-코딩-팁-다섯-가지-df65ffb4e7e>
