@@ -94,6 +94,10 @@ public @interface CustomAnnotation {
 
 ## Spring 에서 제공
 
+### `@ComponentScan`
+
+
+
 ### `@Transactional`
 
 코드기반 트랜잭션 처리 (Programmatic Transaction) 뿐만이 아니라 **선언적 트랜잭션 (Declarative Transaction) 을 지원**
@@ -102,5 +106,6 @@ public @interface CustomAnnotation {
 
 :::tip 참고자료
 <https://crosstheline.tistory.com/96>  
-<https://snoopy81.tistory.com/335>
+<https://snoopy81.tistory.com/335>  
+<https://jeong-pro.tistory.com/151>
 :::
