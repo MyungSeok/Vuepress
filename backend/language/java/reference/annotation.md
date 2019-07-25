@@ -96,8 +96,6 @@ public @interface CustomAnnotation {
 
 ### `@ComponentScan`
 
-
-
 ### `@Transactional`
 
 코드기반 트랜잭션 처리 (Programmatic Transaction) 뿐만이 아니라 **선언적 트랜잭션 (Declarative Transaction) 을 지원**
