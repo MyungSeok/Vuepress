@@ -124,8 +124,9 @@ module.exports = {
     sidebar: {
       '/about/': [
         '',
-        '/about/install',
-        '/about/syntax'
+        'install',
+        'syntax',
+        'study'
       ], 
       '/general/': [
         '', 
