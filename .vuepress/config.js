@@ -302,13 +302,14 @@ module.exports = {
           ]
         },
         {
-          title: 'Java 8', 
+          title: 'Modern Java', 
           children: [
-            '/backend/language/java/java8/lamda',
-            '/backend/language/java/java8/functional',
-            '/backend/language/java/java8/method_reference',
-            '/backend/language/java/java8/stream',
-            '/backend/language/java/java8/optional',
+            '/backend/language/java/modern-java/',
+            '/backend/language/java/modern-java/lamda',
+            '/backend/language/java/modern-java/functional',
+            '/backend/language/java/modern-java/method_reference',
+            '/backend/language/java/modern-java/stream',
+            '/backend/language/java/modern-java/optional'
           ]
         },
         {

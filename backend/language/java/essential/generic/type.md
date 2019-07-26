@@ -111,7 +111,7 @@ public class Message<T> {
 
 이는 _**제네릭의 타입 소거로 인하여**_ `List<String>` 이 아닌 Raw Type `List` 로 된것이다.
 
-타입 소거는 Java SE 5 제네릭 출현 이전의 코드의 호환성을 보장하기 위한 것으로 Raw Type 을 사용하지 말아야 한다.
+타입 소거는 J2SE 5 제네릭 출현 이전의 코드의 호환성을 보장하기 위한 것으로 Raw Type 을 사용하지 말아야 한다.
 
 :::tip 참고자료
 <https://docs.oracle.com/javase/tutorial/java/generics/types.html>  

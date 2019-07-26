@@ -207,7 +207,7 @@ _**기존 코드는 스트림을 사용하도록 리팩토링 하되, 새 코드
 
 자바는 동시성 측면에서 처음 릴리즈 했을 때부터 스레드, 동기화, wait/notify 를 지원 했다.
 
-`Java SE 5` 부터는 동시성 컬렉션인 java.util.concurrent 라이브러리와 실행자 (Excutor) 프레임워크를 지원했다.  
+`J2SE 5` 부터는 동시성 컬렉션인 java.util.concurrent 라이브러리와 실행자 (Excutor) 프레임워크를 지원했다.  
 `Java SE 7` 부터는 고성능 병렬 분해 (parallel decom-position) 프레임워크인 포크-조인 (fork-join) 패키지를 추가했다.
 
 `Java SE 8` 부터는 `parallel` 메서드만 한번 호출하면 파이프라인을 병렬 실행할 수 있는 스트림을 지원한다.
