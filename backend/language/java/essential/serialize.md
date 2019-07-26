@@ -21,22 +21,58 @@ Serializable 이라는 마커 인터페이스를 상속하여 구현한다.
 `java.io.Serializable` 인터페이스를 구현한 형태로 작업한다.
 
 ```java
-public class Member implements Serializable {
-  private String name;
-  private String email;
-  private int age;
+public void serializable() {
+  Member member = new Member("김명석", 10);
 
-  public Member(String name, String email, int age) {
-    this.name = name;
-    this.email = email;
-    this.age = age;
+  byte[] serializable;
+
+  String serialStr = null;
+
+  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+  try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+
+      oos.writeObject(member);
+
+      serializable = baos.toByteArray();
+
+      serialStr = Base64.getEncoder().encodeToString(serializable);
+
+      System.out.println(serialStr);
+
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
+
+  byte[] seraialDecode = Base64.getDecoder().decode(serialStr);
+
+  ByteArrayInputStream bais = new ByteArrayInputStream(seraialDecode);
+
+  try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+
+      Object objMember = ois.readObject();
+
+      Member om = (Member) objMember;
+
+      System.out.println(om.toString());
+
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
+}
+
+static class Member implements Serializable {
+  private static String name;
+  private static int age;
+
+  public Member(String name, int age) {
+      this.name = name;
+      this.age = age;
   }
 
   @Override
   public String toString() {
-    return String.format
+      return String.format("이름 : %s, 나이 : %d", name, age);
   }
-
 }
 ```
 
