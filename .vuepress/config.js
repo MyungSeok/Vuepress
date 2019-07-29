@@ -249,6 +249,8 @@ module.exports = {
                 '/backend/language/java/essential/generic/typetoken'
               ]
             }, 
+            '/backend/language/java/essential/serialize',
+            '/backend/language/java/essential/intersection',
             '/backend/language/java/essential/theadlocal'
           ]
         },
