@@ -42,7 +42,7 @@ public class IntersectionType {
 
 하나의 클래스를 기준으로 데이터를 공유하며 비지니스 로직 사용이 가능하게끔 구현하였다.
 
-```java
+```java {58,59,60,61,62,63,64,66,67,68,69,70}
 public class IntersectionType {
   interface Pair<T> {
       T getFirst();
