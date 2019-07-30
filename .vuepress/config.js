@@ -222,7 +222,8 @@ module.exports = {
       '/frontend/framework/vue/': [
         '', 
         'lifecycle',
-        'store'
+        'store',
+        'directives'
       ],
       '/backend/language/java/': [
         {

@@ -74,7 +74,7 @@ func.call(thisArg, [argsArray];
 target.addEventListener(type, listener [, useCapture]);
 ```
 
-#### Parameter
+**Parameter**
 
 * type
   * 등록할 이벤트 타입

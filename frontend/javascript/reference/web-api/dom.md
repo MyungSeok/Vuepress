@@ -2,6 +2,23 @@
 
 DOM (Document Object Model : 문서 객체 모델) 은 스크립트와 같은 프로그래밍 언어를 웹 페이지에 연결하는 역활을 한다.
 
+## Event
+
+`Event` 인터페이스는 DOM 내에 위치한 이벤트를 나타낸다.
+
+### `stopPropagation()` vs `preventDefault()`
+
+`stopPropagation()` 는 이벤트 버블링 (자식에서 부모로 전파) 되는 것을 막는 것이고
+
+`preventDefault()` 는 현재 이벤트의 기본동작을 중단하는것이다. (a tag 의 href 속성과 같은 동작)
+
+유사한것으로 `stopImmediatePropagation()` 이나 `return false` 와 같은 것들이 있다.
+
+:::tip 참고자료
+<https://ismydream.tistory.com/98>
+<https://programmingsummaries.tistory.com/313>
+:::
+
 ## onload 이벤트
 
 페이지 리소스가 로드되었을때 발생되는 이벤트로 대표적으로 다음 3가지로 나뉜다.
