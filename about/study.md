@@ -11,3 +11,7 @@
 ## Hibernate-SpringBoot <Badge text="Spring Boot" /> <Badge text="Hibernate" type="warn"/> <Badge text="Jpa" type="error"/>
 
 <https://github.com/AnghelLeonard/Hibernate-SpringBoot>
+
+## jQuery Plugin Responsive Carousel Slider
+
+<https://owlcarousel2.github.io/OwlCarousel2/>
