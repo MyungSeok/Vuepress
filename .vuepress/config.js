@@ -68,6 +68,7 @@ module.exports = {
             items: [
               { text: 'Linux', link: '/backend/server/linux/' },
               { text: 'NGINX', link: '/backend/server/nginx/' },
+              { text: 'Tomcat', link: '/backend/server/tomcat/' }
             ]
           }, 
           {
@@ -331,6 +332,10 @@ module.exports = {
       '/backend/server/nginx/': [
         '', 
         '/backend/server/nginx/install'
+      ], 
+      '/backend/server/tomcat/': [
+        '', 
+        'options'
       ], 
       '/backend/network/http/': [
         '',
