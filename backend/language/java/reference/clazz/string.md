@@ -208,3 +208,82 @@ System.out.println(오호대장군);
 :::tip 참고자료
 <https://futurecreator.github.io/2018/06/02/java-string-joiner/>
 :::
+
+## String.intern
+
+```java
+String test = "test";
+
+System.out.println(test == "test");
+System.out.println(test == new String("test"));
+```
+
+위 코드를 Java SE 6 에서는 아래와 같이 결과가 나온다.
+
+```java
+true
+false
+```
+
+위 현상을 해결하기 위해서는 아래와 같이 사용해야 한다.
+
+```java
+System.out.println(test == new String("test").intern());
+```
+
+이는 `new` 연산자를 통해 `String` 을 생성하기 되면 Heap 영역에 존재하게 되고 리터럴을 이용할 경우에는 **String Constant Pool** 에 존재하게 된다.
+
+**리터럴로 선언할 경우 내부적으로 `String` 의 `intern()` 메서드가 호출**되게 된다.  
+이는 String Constant Pool 에 존재하는지 검색하며 만약 있다면 그 주소값을 반환하고 없다면 String Constrant Pool 에 넣고 새로운 주소값을 반환하게 된다.
+
+`Java SE 7` 에서는 String Constrant Pool 이 기존에 `Perm` 영역에서 `Heap` 영역으로 위치를 변경하였다.
+
+아래와 같이 해시코드를 확인해보면 알 수있다.
+
+```java
+String a = "Keyword";
+String b = new String("Keyword");
+String c = b.intern();
+String d = "Keyword";
+
+// Keyword
+System.out.println(a);
+// Keyword
+System.out.println(b);
+// Keyword
+System.out.println(c);
+// Keyword
+System.out.println(d);
+
+// false
+System.out.println(a == b);
+// false
+System.out.println(b == c);
+// true
+System.out.println(a == c);
+// true
+System.out.println(a == d);
+
+// true
+System.out.println(a.equals(b));
+// true
+System.out.println(b.equals(c));
+// true
+System.out.println(a.equals(c));
+// true
+System.out.println(a.equals(d));
+
+// 708049632
+System.out.println(System.identityHashCode(a));
+// 1887400018
+System.out.println(System.identityHashCode(b));
+// 708049632
+System.out.println(System.identityHashCode(c));
+// 708049632
+System.out.println(System.identityHashCode(d));
+```
+
+:::tip 참고자료
+<https://medium.com/@joongwon/string-의-메모리에-대한-고찰-57af94cbb6bc>  
+<https://hoit89.tistory.com/entry/String-Stringintern-String-poolequals>
+:::

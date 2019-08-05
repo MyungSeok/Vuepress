@@ -209,7 +209,8 @@ module.exports = {
       '/frontend/framework/node/': [
         '', 
         'express',
-        'http-transection'
+        'http-transection',
+        'pm2'
       ],
       '/frontend/framework/react/': [
         '', 
