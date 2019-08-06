@@ -304,6 +304,7 @@ module.exports = {
             '/backend/language/java/design-pattern/strategy',
             '/backend/language/java/design-pattern/factory-method',
             '/backend/language/java/design-pattern/template-method',
+            '/backend/language/java/design-pattern/proxy',
             '/backend/language/java/design-pattern/refactoring'
           ]
         },
