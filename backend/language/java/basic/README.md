@@ -127,6 +127,92 @@ System.out.println(set.size());  // 2
 <https://jeong-pro.tistory.com/172>
 :::
 
+### `hashCode()` 에 대해
+
+일반적으로 `Hash` 를 사용한 `Collection` (`HashMap`, `HashTable`, `HashSet`, `LinkedHashSet` ... ) 에서 객체의 **Key 를 결정**할때 **HashCode** 를 사용한다.
+
+이는 서로 다른 객체의 비교를 위해서도 사용되는데 `==` 가 대표적이며 Hash 값을 강제적으로 주입시켜 객체를 같게끔 설정할수도 있다.
+
+아래는 대표적인 HashCode 의 생성로직이다.
+
+```java {2}
+public int hashCode() {
+  final int prime = 31;
+  int hashCode = 1;
+
+  hashCode = prime * hashCode + ((name == null) ? 0 : name.hashCode());
+  hashCode = prime * hashCode + age;
+
+  return hashCode;
+}
+```
+
+> `31` 값은 소수 이면서 홀수인 값중에 작으면서 곱셈을 Shift 와 뺄셈의 조합으로 바꾸면 더 좋은 성능을 낼수 있는 최적의 수 이다.
+
+HashCode 의 결정은 `hashCode()` 메서드에서 native call 을 하여 Memory 에서 가진 Hash Address 값을 출력한다.  
+**특별하게 설정이 없는 경우에는 기본값으로 `System.identityHashCode()` 와 동일한 값**을 나타낸다.
+
+`String` 의 클래스의 `hashCode()` 메서드는 `Object` 클래스의 `hashCode()` 와 달리 `@Override` 되어 있는 상태이다.
+
+```java
+String a = "a";
+String _a = new String("a");
+
+// a
+System.out.println(a);
+// a
+System.out.println(_a);
+
+// false
+System.out.println(a == _a);
+// true
+System.out.println(a.equals(_a));
+
+// true
+System.out.println(a == _a.intern());
+
+// 97
+System.out.println(a.hashCode());
+// 97
+System.out.println(_a.hashCode());
+// 97
+System.out.println(_a.intern().hashCode());
+
+// 708049632
+System.out.println(System.identityHashCode(a));
+// 1887400018
+System.out.println(System.identityHashCode(_a));
+// 708049632
+System.out.println(System.identityHashCode(_a.intern()));
+```
+
+때문에 실제 테스트 결과 String 클래스와 Object 클래스의 `hashCode()` 메서드의 결과가 상이하다.
+
+```java
+Object a = new Object();
+Object _a = new Object();
+
+// false
+System.out.println(a == _a);
+// false
+System.out.println(a.equals(_a));
+
+// 708049632
+System.out.println(a.hashCode());
+// 1887400018
+System.out.println(_a.hashCode());
+
+// 708049632
+System.out.println(System.identityHashCode(a));
+// 1887400018
+System.out.println(System.identityHashCode(_a));
+```
+
+:::tip 참고자료
+<https://nesoy.github.io/articles/2018-06/Java-equals-hashcode>  
+<http://blog.naver.com/PostView.nhn?blogId=travelmaps&logNo=220931531769&redirect=Dlog&widgetTypeCall=true>
+:::
+
 ## 객체 재사용
 
 대표적으로 `Singleton` 디자인 패턴과 같이 미리 사전에 생성된 `Instance` 를 재사용하는 방식으로 일반적으로 `ThreadPool` 이나 `Connection Pool` 등의 방식으로 주로 사용한다.
