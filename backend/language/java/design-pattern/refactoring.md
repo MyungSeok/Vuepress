@@ -1,6 +1,6 @@
 # Refactoring
 
-## Componse Method Pattern
+## Compose Method Pattern
 
 함수의 의도가 잘 드러나도록 동등한 수준의 작업을 하는 여러 단계로 나눈다.
 
@@ -50,4 +50,22 @@ public class GameRanking {
 
 :::tip 참고자료
 <https://jojoldu.tistory.com/412>
+:::
+
+## 객체지향생활체조
+
+![소트웍스 앤솔러지](/img/A080.png)
+
+1. 하나의 메서드에 한단계의 들여쓰기만 허용한다.
+2. `else` 예약어를 사용하지 않는다.
+3. 모든 원시값과 문자열을 포장한다.
+4. 한줄에 점 하나만 찍는다.
+5. 줄여쓰지 않는다.
+6. 모든 엔티티를 작게 유지한다.
+7. 2개 이상의 인스턴스 변수를 가진 클래스를 사용하지 않는다.
+8. 일급 컬렉션을 사용한다.
+9. `getter` / `setter` / `property` 을 사용하지 않는다.
+
+:::tip 참고자료
+<https://elaia.tistory.com/3>
 :::
