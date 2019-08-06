@@ -79,3 +79,57 @@ static class Member implements Serializable {
 :::tip 참고자료
 <https://nesoy.github.io/articles/2018-04/Java-Serialize>
 :::
+
+## `transient` 키워드
+
+`transient` 키워드를 붙이 변수는 직렬화 대상에서 제외된다.
+
+데이터를 디스크에 저장하거나 디비에 저장할때 Http Request 를 통해 통신하는 경우 민감정보 (개인정보를 포함한 비밀번호와 같은 정보들) 을 제외하고 싶으면 `transient` 을 붙여서 사용하면 된다.
+
+JPA 모델의 경우 `@transient` 어노테이션을 통해 DB 값과 매핑 시키지 않는다.
+
+```java
+public class User implements Serializable {
+    private static final long serialVersionUID = 100000000000000001L;
+
+    private String username;
+    private transient String passWord;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+```
+
+```java
+public class UserTest {
+    @Test
+    public void transientField() throws IOException, ClassNotFoundException {
+        final User user = new User("rrest", "1234");
+
+        final FileOutputStream fos = new FileOutputStream("/tmp/user");
+        final ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        oos.writeObject(user);
+        oos.flush();
+        oos.close();
+        fos.close();
+
+        final FileInputStream fis = new FileInputStream("/tmp/user");
+        final ObjectInputStream ois = new 
+    }
+}
+```
+
+:::tip 참고자료
+<https://nakjunizm.github.io/2017/12/10/Serialization_And_Transient/>
+:::
