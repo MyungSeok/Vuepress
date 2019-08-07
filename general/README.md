@@ -109,3 +109,17 @@
 :::tip 참고자료
 <https://m.blog.naver.com/PostView.nhn?blogId=jerrypop&logNo=40117130140&proxyReferer=https%3A%2F%2Fwww.google.com%2F>
 :::
+
+## Mutex vs Semaphore
+
+뮤텍스 (Mutex) 란 ?
+
+상호배제라고 하며 Critical Section 을 가진 Thread 들이 Running Time 이 겹치지 않게 각각 단독으로 실행되게 하는 기술
+
+세마포어 (Semaphore) 란 ?
+
+리소스의 상태를 나타내는 카운터로 세마포어 카운터로 키를 가진 Thread 만 접근을 허용하고 나머지는 기다리는것이다.
+
+:::tip 참고자료
+<https://sycho-lego.tistory.com/11>
+:::
