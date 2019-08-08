@@ -27,10 +27,16 @@ console.log(-1 ? 'A' : 'B')             // A
 
 ## 반복문
 
-비트 연산 `~` 을 활용한 반복문
+* 비트 연산 `~` 을 활용한 반복문
 
 ```javascript
 for (let len = array.length; ~len; --len) {
   /* statement */
 }
+```
+
+* `<<` 을 사용한 승수 계산
+
+```javascript
+console.log(2 << 2); // 2 * 2 * 2 => 8
 ```

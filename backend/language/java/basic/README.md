@@ -127,7 +127,7 @@ System.out.println(set.size());  // 2
 <https://jeong-pro.tistory.com/172>
 :::
 
-### `hashCode()` 에 대해
+## `hashCode()` 에 대해
 
 일반적으로 `Hash` 를 사용한 `Collection` (`HashMap`, `HashTable`, `HashSet`, `LinkedHashSet` ... ) 에서 객체의 **Key 를 결정**할때 **HashCode** 를 사용한다.
 
@@ -147,7 +147,13 @@ public int hashCode() {
 }
 ```
 
-> `31` 값은 소수 이면서 홀수인 값중에 작으면서 곱셈을 Shift 와 뺄셈의 조합으로 바꾸면 더 좋은 성능을 낼수 있는 최적의 수 이다.
+:::tip 31 을 승수로 사용하는 이유 ?
+`31` 값은 소수이며 어떤수에 `31` 을 곱하는것 또한 빠르게 연산 가능하다.  
+특정 값에 `31N = 32N - N` 인데 특정 값에 32을 곱한값은 shift 연산으로 쉽게 구현 가능하다.  
+따라서 특정값 N 은 `N << 5 - N` 과 같으므로 31을 곱한 연산은 최적화된 머신 코드로 생성 가능하다.  
+
+따라서 String 클래스에서 해시값을 계산할 때에는 31을 승수로 사용한다.
+:::
 
 HashCode 의 결정은 `hashCode()` 메서드에서 native call 을 하여 Memory 에서 가진 Hash Address 값을 출력한다.  
 **특별하게 설정이 없는 경우에는 기본값으로 `System.identityHashCode()` 와 동일한 값**을 나타낸다.

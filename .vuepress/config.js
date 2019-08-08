@@ -237,6 +237,21 @@ module.exports = {
           ]
         },
         {
+          title: 'Data Structure',
+          children: [
+            '/backend/language/java/data-structure/array',
+            {
+              title: 'Java Collection Framework', 
+              children: [
+                '/backend/language/java/data-structure/jcf/',
+                '/backend/language/java/data-structure/jcf/list',
+                '/backend/language/java/data-structure/jcf/set',
+                '/backend/language/java/data-structure/jcf/map',
+              ]
+            }
+          ]
+        },
+        {
           title: 'Essential',
           children: [
             '/backend/language/java/essential/reflection',
@@ -289,7 +304,6 @@ module.exports = {
             },
             '/backend/language/java/reference/interface',
             '/backend/language/java/reference/operation',
-            '/backend/language/java/reference/collection',
             '/backend/language/java/reference/enum',
             '/backend/language/java/reference/method',
             '/backend/language/java/reference/thread',
@@ -304,6 +318,7 @@ module.exports = {
             '/backend/language/java/design-pattern/strategy',
             '/backend/language/java/design-pattern/factory-method',
             '/backend/language/java/design-pattern/template-method',
+            '/backend/language/java/design-pattern/decorator',
             '/backend/language/java/design-pattern/proxy',
             '/backend/language/java/design-pattern/refactoring'
           ]
@@ -323,6 +338,7 @@ module.exports = {
           title: 'Tip', 
           children: [
             '/backend/language/java/tip/log4j',
+            '/backend/language/java/tip/junit',
             '/backend/language/java/tip/anti',
             '/backend/language/java/tip/gson_adapter'
           ]
