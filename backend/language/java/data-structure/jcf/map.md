@@ -6,6 +6,8 @@
 
 ## Hashtable <Badge text="1.0"/>
 
+가장 처음에 나온 해시테이블을 가진 맵 클래스
+
 * Key & Value 에 `null` 이 허용된다.
 * 확장성이 떨어진다.
 * 동시성 보장이 된다.
@@ -117,6 +119,13 @@ Java HashMap 에서 사용중인 대표적인 방식으로 일반적으로 **개
 때문에 `HashMap` 은 Key & Value 의 쌍 데이터가 일정 개수 이상 되면 해시 버킷의 개수를 두배로 늘린다.
 
 이 일정 개수는 기본 약 75% 정도로 `load factor` 로 `HashMap` 의 생성자에서 지정가능하다.
+
+```java
+/**
+ * The load factor used when none specified in constructor.
+ */
+static final float DEFAULT_LOAD_FACTOR = 0.75f;
+```
 
 ### 해시의 단점
 

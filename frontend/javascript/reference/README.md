@@ -38,5 +38,13 @@ for (let len = array.length; ~len; --len) {
 * `<<` 을 사용한 승수 계산
 
 ```javascript
-console.log(2 << 2); // 2 * 2 * 2 => 8
+console.log(2 << 2); // 2 * (2 * 2) => 8
+
+console.log(3 << 3); // 3 * (2 * 3) => 8
+
+console.log(4 << 2); // 4 * (2 * 2) => 16
 ```
+
+:::tip 참고자료
+<https://m.blog.naver.com/PostView.nhn?blogId=yuyyulee&logNo=221114544260&proxyReferer=https%3A%2F%2Fwww.google.com%2F>
+:::
