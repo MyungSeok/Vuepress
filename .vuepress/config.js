@@ -320,6 +320,7 @@ module.exports = {
             '/backend/language/java/design-pattern/template-method',
             '/backend/language/java/design-pattern/decorator',
             '/backend/language/java/design-pattern/proxy',
+            '/backend/language/java/design-pattern/visitor',
             '/backend/language/java/design-pattern/refactoring'
           ]
         },
