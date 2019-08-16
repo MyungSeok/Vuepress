@@ -81,15 +81,15 @@ public class Dispatch {
 
 다이나믹 디스패칭은 리시버 파라메터에 의한 _**메소드 호출을 사용하는 객체 변수에 의해 결정**_ 되는것으로 _**파라메터 타입에 의해 결정되는 것이 아니다.**_
 
-**Method Signature (메서드 시그니처)**
+#### Method Signature (메서드 시그니처)
 
-메서드의 이름 (Method Name) 과 매개변수의 타입 (Parameter Types) 이 같으면 메서드 시그니쳐가 같다고 한다.
+_**메서드의 이름 (Method Name) 과 매개변수의 타입 (Parameter Types)**_ 이 같으면 메서드 시그니처가 같다고 한다.
 
 :::warning
-반환값의 타입 (Return Type) 은 메서드 시그니쳐에 포함되지 않는다.
+반환값의 타입 (Return Type) 은 메서드 시그니처에 포함되지 않는다.
 :::
 
-**Function Signature (함수 시그니처)**
+#### Function Signature (함수 시그니처)
 
 함수의 원형에 명시되는 매개변수의 리스트를 가르킨다.  
 두 함수의 _**매개변수의 갯수**_ 와 _**타입**_ 이 같으면 두 함수의 시그니처는 같다고 할 수 있습니다.

@@ -1,4 +1,4 @@
-# 보안
+# Security
 
 ## 대칭형 / 비 대칭형 알호 알고리즘
 
@@ -82,4 +82,19 @@ public class SHA256Password {
 :::tip 참고자료
 <https://yoo-hyeok.tistory.com/41>  
 <https://jusungpark.tistory.com/35>
+:::
+
+## CRC
+
+순환 중복 계산 (Cycle Redundancy Check) 이라고 하며 파일 (데이터) 의 손상을 확인하는 방식이다.
+
+최근 사용하는 CRC 방식은 모두 **CRC-32** 이며 HEX 값을 이용하여 8글자로 표시한다.
+
+이는 00000000 ~ FFFFFFFF 까지 2^32 (약 43억) 개의 경우의 수가 있지만 확률적으로 중복 가능하다.  
+따라서 MD5(Message-Digest Algorithm 5) 와 같은 알고리즘이 사용되며 이는 32비트가 아닌 128비트이다.
+
+ZIP 이나 RAR 같은 파일 압축 프로그램이 압축할때 CRC 값을 함께 저장하는데 압축파일이 손상되었는지 혹은 변조되었는지를 확인하며 만약 CRC-32 값이 불일치 하면 CRC 에러와 함께 파일이 깨졋다고 판단된다.
+
+:::tip 참고자료
+<https://12bme.tistory.com/395>
 :::

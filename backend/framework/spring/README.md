@@ -92,3 +92,44 @@ ResultSet result = pstmt.exceuteQuery();
 :::tip 참고자료
 <https://devbox.tistory.com/entry/Comporison>
 :::
+
+## `ajax` 에서 넘긴 `JSON.stringify` 파라메터 `@RequestBody` 로 받기
+
+```javascript
+$.ajax({
+  method: 'post',
+  url: '/api/encrypt',
+  data: JSON.stringify(data),
+  contentType:'application/json; charset=utf-8',
+  success: function (data) {
+    if (data && data.url) {
+      var returnUrl = (location.protocol + '//' + location.host + '/' + data.url);
+
+      $('.alert-success > p > span').html($('#encryptUrl').val());
+
+      $('.alert-success > p > a').html(returnUrl);
+      $('.alert-success > p > a').attr('href', returnUrl);
+    }
+
+    callback();
+  },
+  error: function (e) {
+    console.error(e);
+    callback();
+  }
+});
+```
+
+```java
+@ResponseBody
+@PostMapping(value = { "/encrypt" })
+public Object getEncrypt(@RequestBody Shorten shorten) {
+    return new HashMap<String, String>() {{
+        put("url",ShortenCrypto.set(shorten.getUrl()));
+    }};
+}
+```
+
+:::tip 참고자료
+<https://zorba91.tistory.com/16>
+:::

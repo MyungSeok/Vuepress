@@ -7,6 +7,15 @@
 * 구조의 수정 없이 **새로운 동작을 기존 객체 구조에 추가** 가능
 
 ```java
+interface CarElementVisitor {
+    void visit(Wheel wheel);
+    void visit(Engine engine);
+    void visit(Body body);
+    void visit(Car car);
+}
+```
+
+```java
 interface CarElement {
   void accept(CarElementVisitor visitor);
 }
@@ -100,12 +109,14 @@ class CarElementDoVisitor implements CarElementVisitor {
       System.out.println("Starting my car");
   }
 }
+```
 
-  public class VisitorDemo {
-    static public void main(String[] args) {
-      CarElement car = new Car();
-      car.accept(new CarElementPrintVisitor());
-      car.accept(new CarElementDoVisitor());
+```java
+public class VisitorDemo {
+  static public void main(String[] args) {
+    CarElement car = new Car();
+    car.accept(new CarElementPrintVisitor());
+    car.accept(new CarElementDoVisitor());
   }
 }
 ```

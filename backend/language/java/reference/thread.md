@@ -221,9 +221,42 @@ public static void add(int value) {
 }
 ```
 
+## `Callable` <Badge text="1.5" /> vs `Runnable` <Badge text="1.0" />
+
+Callable 은 Runnable 처럼 바로 Thread 에 인자로 전달 불가하며  
+ExecutorService 객에체 `submit()` 메서드를 사용하여 전달한다. (ThreadPool 사용)
+
+```java
+ExecutorService mPool = Executors.newFixedThreadPool(5);
+Future<String> mFuture = mPool.submit(new Callable<String>() {
+  @Override
+  public String call() throws Exception {
+    Thread.sleep(500);
+    return "JustTest";
+  }
+});
+```
+
+Runnable 은 Callable 과 달리 Thread 에 바로 인자를 전달 가능하다.
+
+```java
+new Thread(new Runnable() {
+  @Override
+  public void run() {
+    Log.d(Tag, "Thread Test");
+  }
+});
+```
+
+||Callable|Runnable|
+|:-:|:-:|:-:|
+|Return|Generic 으로 받은 타입을 반환|void|
+|Exception|Exception 을 가질수 있다.|없음|
+
 :::tip 참고자료
 <http://parkcheolu.tistory.com/15>  
 <http://blog.eomdev.com/java/2016/04/06/Multi-Thread.html>  
 <https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CountDownLatch.html>  
-<https://www.baeldung.com/java-countdown-latch>
+<https://www.baeldung.com/java-countdown-latch>  
+<https://developer88.tistory.com/87>
 :::
