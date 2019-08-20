@@ -10,7 +10,7 @@ public interface Action {
 }
 ```
 
-## 전략 객체를 사용하는 컨텍스트 (소비)
+## 전략 객체의 구현
 
 ```java
 public class Walking implements Action {
@@ -29,6 +29,8 @@ public class Running implements Action {
   }
 }
 ```
+
+## 전략 객체를 사용하는 컨텍스트 (소비)
 
 ```java
 public class Human {
