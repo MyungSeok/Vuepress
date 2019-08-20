@@ -152,8 +152,8 @@ module.exports = {
         {
           title: 'Interview', 
           children: [
-            '/general/interview/frontend',
-            '/general/interview/backend',
+            '/general/interview/frontend/',
+            '/general/interview/backend/',
           ]
         }, 
         '/general/uml',
