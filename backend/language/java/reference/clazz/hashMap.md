@@ -2,7 +2,7 @@
 
 ## `putIfAbsent()`
 
-Map 객체에 해당 키값으로 조회하여 값이 있으면 넣지 않고 없으면 넣는다.
+Map 객체에 Key 에 해당하는 값이 없으면 값을 넣는다.
 
 ```java
 default V putIfAbsent(K key, V value) {
@@ -16,6 +16,8 @@ default V putIfAbsent(K key, V value) {
 ```
 
 ## `computeIfAbsent()`
+
+Map 객체에 Key 에 해당하는 값이 없으면 **매핑 함수를 호출**한다.
 
 `putIfAbsent()` 와 유사하지만 함수 인터페이스를 통한 결과값을 삽입한다.
 
@@ -38,7 +40,19 @@ default V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunctio
 
 ## `compute()`
 
+Map 객체에 Key 에 해당하는 값의 존재우무와 상관없이 매핑 함수를 호출한다.
+
 ## `computeIfPresent()`
+
+Map 객체에 Key 에 해당하는 값이 있으면 매핑 함수를 호출한다.
+
+## `getOfDefault`
+
+Map 객체에 값이 없으면 지정한 default 값 (2번째 인자) 을 가져온다.
+
+```java
+productPriceMap.getOrDefault("Fish", 29.4);
+```
 
 :::tip 참고자료
 <http://tech.javacafe.io/2018/12/03/HashMap/>
