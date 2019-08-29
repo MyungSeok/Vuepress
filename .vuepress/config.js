@@ -146,7 +146,8 @@ module.exports = {
           title: 'Algorithm', 
           children: [
             '/general/algorithm/security',
-            '/general/algorithm/sort'
+            '/general/algorithm/sort', 
+            '/general/algorithm/graph/dfs'
           ]
         },
         {

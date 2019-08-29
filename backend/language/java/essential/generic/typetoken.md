@@ -170,24 +170,28 @@ abstract class TypeReference<T> {
   Type type;
 
   public TypeReference() {
-    Type parentType = getClass().getGenericSuperclass();
-    if (parentType instanceof ParameterizedType) {
-      this.type = ((ParameterizedType) parentType).getActualTypeArguments()[0];
-    } else throw new RuntimeException();
+      Type parentType = getClass().getGenericSuperclass();
+
+      if (parentType instanceof ParameterizedType) {
+          this.type = ((ParameterizedType) parentType).getActualTypeArguments()[0];
+      } else throw new RuntimeException();
   }
 
   public int hashCode() {
-    // type 을 기준으로 식별 (type은 class 이므로 Class 레벨만 식별됨)
-    return type.hashCode();
+      return type.hashCode();
   }
 
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass()) return false;
-    TypeReference<?> that = (TypeReference<?>) obj;
+      if (this == obj) return true;
+      if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass()) return false;
 
-    // 두 객체의 type 을 비교
-    return type.equals(that.type);
+      TypeReference<?> that = (TypeReference<?>) obj;
+
+      return type.equals(that.type);
+  }
+
+  public String toString() {
+      return type.getTypeName();
   }
 }
 ```
