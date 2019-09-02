@@ -147,7 +147,14 @@ module.exports = {
           children: [
             '/general/algorithm/security',
             '/general/algorithm/sort', 
-            '/general/algorithm/graph/dfs'
+            {
+              title: 'Graph', 
+              children: [
+                '/general/algorithm/graph/dfs',
+                '/general/algorithm/graph/bfs'
+              ]
+            },
+            '/general/algorithm/prime'
           ]
         },
         {
