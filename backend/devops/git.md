@@ -65,6 +65,18 @@ $ git revert {COMMIT_NUMBER}
 $ git checkout -b feature/CNST-001
 ```
 
+### 로컬 브랜치 삭제
+
+```bash
+$ git branch -d feature/LIVEDEV-2901
+```
+
+**일괄삭제**
+
+```branch
+$ git branch | grep 'feature' | xargs git branch -d
+```
+
 ### 로컬 상태 보기 (변경 파일)
 
 ```bash
