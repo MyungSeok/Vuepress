@@ -155,7 +155,7 @@ JAVA 프로그램 코드에서는 메모리를 명시적으로 지정하여 해�
 Young 영역은 다음 3개의 영역으로 구성된다.
 
 * Eden Area (1개)
-* Suvivor Area (2개)
+* Survivor Area (2개)
 
 ![Young 영역 GC 전후](/img/A013.png)
 
