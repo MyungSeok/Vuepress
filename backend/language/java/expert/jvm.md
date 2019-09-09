@@ -101,7 +101,7 @@ Bootstrap Class Loader 까지 확인해도 없으면 요청 받은 클래스 로
   * _**Method Area**_ 에 로드된 클래스만 생성 가능
   * `class` 를 이용하여 `instance` 를 생성하면 해당 영역에 저장하여 사용
 * _**여러 Thread 가 이 영역을 공유**_ 한다.
-* 이 영역은 _**GC (Garbage Collector) 를 통해서만 메모리 해제가 가능**_하다. (GC 의 실제적인 대상)
+* 이 영역은 _**GC (Garbage Collector) 를 통해서만 메모리 해제가 가능**_ 하다. (GC 의 실제적인 대상)
 * Method 영역이 클래스 정보를 참고하여 인스턴스를 생성하는 곳 이다.
 
 ### Stack Area
