@@ -177,6 +177,10 @@ String 오호대장군 = sj.toString();
 System.out.println(오호대장군);
 ```
 
+```md
+관우-장비-조운-황충-마초
+```
+
 **StringJoiner 로 `prefix` 와 `suffix` 사용하기**
 
 ```java
