@@ -159,8 +159,8 @@ Young 영역은 다음 3개의 영역으로 구성된다.
 
 ![Young 영역 GC 전후](/img/A013.png)
 
-* 새로 생성한 대부분의 객체는 `Edan` 영역에 위치한다.
-* `Edan` 영역에서 GC 가 한번 발생한 후 살아남은 객체는 `Survivor` 영역 중 하나로 이동된다.
+* 새로 생성한 대부분의 객체는 `Eden` 영역에 위치한다.
+* `Eden` 영역에서 GC 가 한번 발생한 후 살아남은 객체는 `Survivor` 영역 중 하나로 이동된다.
 * 하나의 `Survivor` 영역이 가득 차게되면 그중 살아남은 객체를 다른 `Survivor` 영역으로 이동하고 가득찬 `Survivor` 영역은 아무데이터도 없는 상태가 된다.
 * 이 과정을 반복하며 살아남은 객체는 Old 영역으로 이동하게 된다.
 
@@ -177,7 +177,7 @@ Young 영역에는 객체의 이동이 빈번하기 때문에 개선된 메모�
   * 마지막 객체는 TOP 에 위치하고 있기 때문에 삽입하려는 객체의 크기가 `Eden` 영역에 넣기에 적당한지 확인하여 추가한다.
   * 새로운 객체를 생성할때 마지막에 추가된 객체만 점검하면 되므로 매우 빠르게 메모리 할당이 이루어진다.
 * TLABs (Thread Local Allocation Buffers)
-  * Multi Thread 환경에서 Tread-Safe 하기 위해서 Edan 영역에 Lock 이 발생 할수 밖에 없는데 이를 해결하기 위해서 HotSpot VM 에서 지원하는 `TLABs` 기술이 있다.
+  * Multi Thread 환경에서 Tread-Safe 하기 위해서 Eden 영역에 Lock 이 발생 할수 밖에 없는데 이를 해결하기 위해서 HotSpot VM 에서 지원하는 `TLABs` 기술이 있다.
 
 ### Old 영역의 GC
 
