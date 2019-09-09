@@ -151,7 +151,7 @@ $ git branch -r
 
 ### 원격 브랜치 다운로드 & 체크아웃
 
-원격 브랜치랑 동잃한 이름으로 체크아웃 한다.
+원격 브랜치랑 동일한 이름으로 체크아웃 한다.
 
 ```bash
 $ git checkout -t origin/feature/CNST-001
