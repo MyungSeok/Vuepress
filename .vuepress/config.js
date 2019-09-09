@@ -337,7 +337,7 @@ module.exports = {
           title: 'Modern Java', 
           children: [
             '/backend/language/java/modern-java/',
-            '/backend/language/java/modern-java/lamda',
+            '/backend/language/java/modern-java/lambda',
             '/backend/language/java/modern-java/functional',
             '/backend/language/java/modern-java/method_reference',
             '/backend/language/java/modern-java/stream',
