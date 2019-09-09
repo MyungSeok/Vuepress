@@ -142,7 +142,8 @@ Bootstrap Class Loader 까지 확인해도 없으면 요청 받은 클래스 로
 <http://limkydev.tistory.com/51>  
 <http://postitforhooney.tistory.com/entry/JavaJVM-JVM-이해를-통한-Java-작동원리-이해하기>  
 <https://m.blog.naver.com/PostView.nhn?blogId=choigohot&logNo=40192701035&proxyReferer=https%3A%2F%2Fwww.google.com%2F>  
-<https://medium.com/@lazysoul/jvm-이란-c142b01571f2>
+<https://medium.com/@lazysoul/jvm-이란-c142b01571f2>  
+<http://blog.jamesdbloom.com/JVMInternals.html>
 :::
 
 ## Excution Engine
