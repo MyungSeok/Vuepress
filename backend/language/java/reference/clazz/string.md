@@ -165,15 +165,15 @@ System.out.println(오호대장군);
 **StringJoiner**
 
 ```java
-StringJoiner sj = new StringJoiner("-");
+StringJoiner strJoiner = new StringJoiner("-");
 
-sj.add(first);
-sj.add(second);
-sj.add(third);
-sj.add(fourth);
-sj.add(fifth);
+strJoiner.add(first);
+strJoiner.add(second);
+strJoiner.add(third);
+strJoiner.add(fourth);
+strJoiner.add(fifth);
 
-String 오호대장군 = sj.toString();
+String 오호대장군 = strJoiner.toString();
 System.out.println(오호대장군);
 ```
 
@@ -184,15 +184,15 @@ System.out.println(오호대장군);
 **StringJoiner 로 `prefix` 와 `suffix` 사용하기**
 
 ```java
-StringJoiner sj = new StringJoiner("-", "[", "]");
+StringJoiner strJoiner = new StringJoiner("-", "[", "]");
 
-sj.add(first);
-sj.add(second);
-sj.add(third);
-sj.add(fourth);
-sj.add(fifth);
+strJoiner.add(first);
+strJoiner.add(second);
+strJoiner.add(third);
+strJoiner.add(fourth);
+strJoiner.add(fifth);
 
-String 오호대장군 = sj.toString();
+String 오호대장군 = strJoiner.toString();
 System.out.println(오호대장군);
 ```
 
