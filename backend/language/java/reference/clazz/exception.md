@@ -2,6 +2,13 @@
 
 Java 에서는 기본적으로 2가지의 에러 유형이 있다.
 
+:::tip `Error` 와 `Exception` 의 차이
+Error와 Exception은 같다고 생각할 수도 있지만, 사실 큰 차이가 있다.  
+
+에러는 메모리 부족이나 스택오버플로우와 같이 발생하면 복구할 수 없는 심각한 오류이고,  
+예외는 발생하더라도 수습할 수 있는 비교적 덜 심각한 오류이다.
+:::
+
 ## Checked Exception
 
 `Checked Exception` 는 외부 환경에 의해 미리 예상 되는 오류이다.
@@ -51,5 +58,6 @@ Java 에서는 기본적으로 2가지의 에러 유형이 있다.
 |대표적인 예외|`Exception` 의 상속을 받는 하위 클래스 중<br>`Runtime Exception`을 제외한 모든 예외|`Runtime Exception` 의 하위 예외 클래스|
 
 :::tip 참고자료
-<http://www.nextree.co.kr/p3239/>
+<http://www.nextree.co.kr/p3239/>  
+<https://jdh5202.tistory.com/103>
 :::
