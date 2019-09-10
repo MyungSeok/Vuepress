@@ -52,6 +52,12 @@ module.exports = {
               { text: 'THREE', 'link': '/frontend/library/three' },
               { text: 'Graph QL', link: '/frontend/library/graphql' }
             ]
+          }, 
+          { text: 'Etc', 
+            items: [
+              { text: 'Flux', link: '/frontend/etc/flux' },
+              { text: 'Graph QL', link: '/frontend/etc/graphql' }
+            ]
           }
         ]
       },
