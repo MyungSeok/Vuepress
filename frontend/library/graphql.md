@@ -3,6 +3,8 @@ sidebar: auto
 ---
 # Graph QL
 
+![Graph QL](/img/A086.png)
+
 Graph QL 은 Server API 를 구성하기 위해 **Facebook 에서 만든 Query Language** 이다.
 
 기존에 일반적으로 사용중인 RESTful API 와 유사하지만 조금더 유연하게 운영가능하며 하나의 API 로 다양한 정보들을 필터링 해서 데이터를 제공 받을수 있는 질의어를 제공한다.
