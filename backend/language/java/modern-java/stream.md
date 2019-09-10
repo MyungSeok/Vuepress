@@ -473,6 +473,20 @@ Map<Boolean, List<Product>> mapPartitioned = productList.stream()
 }
 ```
 
+n 까지의 자연수를 소수와 비 소수로 분할
+
+```java
+private boolean isPrime(int candidate) {
+  int candidateRoot = (int) Math.sqrt((double) candidate);
+  return IntStream.rangeClosed(2, candidateRoot).noneMatch(i -> candidate % i == 0);
+}
+
+public Map<Boolean, List<Integer>> partitionPrimes(int n) {
+  return IntStream.rangeClose(2, n).boxed().collect(Collectors.partitioningBy(candidate -> isPrime(candidate)));
+}
+
+```
+
 **Collectors.collectingAndThen()**
 
 특정 타입의 결과를 `collect` 한 이후에 추가적인 작업이 필요할때 사용가능하다.
