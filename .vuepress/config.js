@@ -42,14 +42,15 @@ module.exports = {
               { text: 'Node', 'link': '/frontend/framework/node/' },
               { text: 'React', 'link': '/frontend/framework/react/' },
               { text: 'Vue', 'link': '/frontend/framework/vue/' },
-              { text: 'Angular', 'link': '/frontend/framework/angular' }
+              { text: 'Angular', 'link': '/frontend/framework/angular' },
             ]
           },
           { text: 'Library', 
             items: [
-              { text: 'jQuery', 'link': '/frontend/javascript/library/jquery' },
-              { text: 'D3', 'link': '/frontend/javascript/library/d3' },
-              { text: 'THREE', 'link': '/frontend/javascript/library/three' }
+              { text: 'jQuery', 'link': '/frontend/library/jquery' },
+              { text: 'D3', 'link': '/frontend/library/d3' },
+              { text: 'THREE', 'link': '/frontend/library/three' },
+              { text: 'Graph QL', link: '/frontend/library/graphql' }
             ]
           }
         ]
