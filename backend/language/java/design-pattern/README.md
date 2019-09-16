@@ -12,36 +12,37 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 
 객체 인스턴스 생성을 위한 패턴
 
-* Singleton (싱글톤)
-* Prototype (프로토타입)
-* 빌더
+* [팩토리 메서드 (Factory Method)](./creational/factory-method)
+* [싱글톤 (Singleton)](./creational/singleton)
 * 추상 팩토리
+* 프로토타입
+* 빌더
+
+## 구조관련 패턴
+
+* [어댑터 (Adapter)](./structural/adapter)
+* [데코레이터 (Decorator)](./structural/decorator)
+* [프록시 (Proxy)](./structural/proxy)
+* 컴포지트
+* 퍼사드
+* 브릿지
 
 ## 행동관련 패턴
 
 클래스와 객체들이 상호작용하는 방법 및 역활을 분담
 
-* Strategy (전략)
+* 인터프리터
+* [템플릿 메소드(Template Method)](./behavioral/template-method)
+* [전략 (Strategy)](./behavioral/strategy)
+* [방문자 (Visitor)](./behavioral/visitor)
+* 커맨드
+* 역활변경
+* 이터레이터
+* 미디에이터
+* 메멘토
+* 플라이웨이트
 * 옵저버
 * 스테이트
-* 커맨드
-* 이터레이터
-* 템플릿 메소드
-* 인터프리터
-* 미디에이터
-* 역활변경
-* 메멘토
-* 비지터
-
-## 구조관련 패턴
-
-* 데토레이터
-* 어댑터
-* 컴포지트
-* 퍼사드
-* 프록시
-* 브릿지
-* 플라이웨이트
 
 클래스와 객체들의 구성을 통해서 더 큰 구조로 확장 가능한 패턴
 

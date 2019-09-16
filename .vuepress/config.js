@@ -330,13 +330,29 @@ module.exports = {
           title: 'Design Pattern', 
           children: [
             '/backend/language/java/design-pattern/',
-            '/backend/language/java/design-pattern/singleton',
-            '/backend/language/java/design-pattern/strategy',
-            '/backend/language/java/design-pattern/factory-method',
-            '/backend/language/java/design-pattern/template-method',
-            '/backend/language/java/design-pattern/decorator',
-            '/backend/language/java/design-pattern/proxy',
-            '/backend/language/java/design-pattern/visitor',
+            {
+              title: 'Creational',
+              children: [
+                '/backend/language/java/design-pattern/creational/factory-method',
+                '/backend/language/java/design-pattern/creational/singleton'
+              ]
+            },
+            {
+              title: 'Structural',
+              children: [
+                '/backend/language/java/design-pattern/structural/adapter',
+                '/backend/language/java/design-pattern/structural/decorator',
+                '/backend/language/java/design-pattern/structural/proxy'
+              ]
+            },
+            {
+              title: 'Behavioral',
+              children: [
+                '/backend/language/java/design-pattern/behavioral/template-method',
+                '/backend/language/java/design-pattern/behavioral/strategy',
+                '/backend/language/java/design-pattern/behavioral/visitor'
+              ]
+            },
             '/backend/language/java/design-pattern/refactoring'
           ]
         },
