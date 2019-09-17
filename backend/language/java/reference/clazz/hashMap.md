@@ -15,6 +15,8 @@ default V putIfAbsent(K key, V value) {
 }
 ```
 
+> 값이 없는 상태에서 `putIfAbsent` 를 사용하면 `null` 을 반환한다.
+
 ## `computeIfAbsent()`
 
 Map 객체에 Key 에 해당하는 값이 없으면 **매핑 함수를 호출**한다.
