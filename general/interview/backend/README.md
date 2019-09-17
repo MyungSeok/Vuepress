@@ -97,3 +97,12 @@ sb.append(“data1”);
 System.out.println(sb);
 sb.setLength(0);
 ```
+
+:::tip 참고자료
+<https://lkhlkh23.tistory.com/103?category=833712>  
+<https://lkhlkh23.tistory.com/107?category=833712>  
+<https://lkhlkh23.tistory.com/106>  
+<https://lkhlkh23.tistory.com/122?category=833712>  
+<https://lkhlkh23.tistory.com/123?category=833712>  
+<https://lkhlkh23.tistory.com/124?category=833712>
+:::
