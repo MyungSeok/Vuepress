@@ -505,7 +505,7 @@ Set<Product> unmodifiableSet = productList
 `reduce` 메서드를 동적으로 사용하여 `collect` 하는 코드이다.
 
 ```java
-Collector<Product, ?, LinkedList<Product>> toLinkedList = Collector.of(LinkedList::new, 
+Collector<Product, ?, LinkedList<Product>> toLinkedList = Collector.of(LinkedList::new,
   LinkedList::add,
   (first, second) -> {
     first.addAll(second);
