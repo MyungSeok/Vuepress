@@ -411,6 +411,13 @@ module.exports = {
           ]
         },
         {
+          title: 'View Template',
+          children: [
+            '/backend/framework/spring/template/',
+            '/backend/framework/spring/template/jstl'
+          ]
+        },
+        {
           title: 'Reference',
           children: [
             '/backend/framework/spring/reference/resolvable_type'
