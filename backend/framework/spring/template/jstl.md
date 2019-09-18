@@ -33,7 +33,7 @@
 **`List`, `Map` 객체값이 비어있지 않는 경우**
 
 ```jsp
-<c:if test="${!empty obj}">
+<c:if test="${not empty obj}">
 ```
 
 ### not equals (!=)
