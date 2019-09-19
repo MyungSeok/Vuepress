@@ -1,6 +1,6 @@
 # Chapter 1 들어가기
 
-## 새로운 기능 목록
+## New Feature
 
 |기능|아이템 번호|JDK Version|
 |:-:|:-:|:-:|
