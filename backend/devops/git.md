@@ -73,7 +73,7 @@ $ git branch -d feature/LIVEDEV-2901
 
 **일괄삭제**
 
-```branch
+```bash
 $ git branch | grep 'feature' | xargs git branch -d
 ```
 
