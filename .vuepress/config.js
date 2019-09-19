@@ -149,6 +149,7 @@ module.exports = {
             '/general/data-structure/queue'
           ]
         },
+        '/general/dictionary',
         {
           title: 'Algorithm', 
           children: [
