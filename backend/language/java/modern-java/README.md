@@ -48,6 +48,18 @@ J2SE -> Java SE 로 변경
 
 간단한 기능을 가지는 인터페이스를 통하여 **유틸리티성 인터페이스**를 만들며 확장 가능하게끔 했다.
 
+```java {4,5,6}
+public interface Calculator {
+  public int plus(int i, int j);
+  public int multiple(int i, int j);
+  default int exec(int i, int j) {
+    return i + j;
+  }
+}
+```
+
+위와 같이 인터페이스에서도 메서드 구현가능
+
 :::tip 참고자료
 <https://programmers.co.kr/learn/courses/5/lessons/241>
 :::

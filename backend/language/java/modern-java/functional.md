@@ -63,6 +63,47 @@ public static void main(String[] args) {
 5
 ```
 
+---
+
+```java
+@FunctionalInterface
+public interface Scoreable {
+  int getScore();
+}
+```
+
+```java
+@FunctionalInterface
+public class ScoreCollection {
+  private List<Scoreable> scores = new ArrayList<>();
+
+  public void add (Scoreable scoreable) {
+    scores.add(scoreable);
+  }
+
+  public int arithmeticMean() {
+    int total = scores.stream().mapToInt(Scoreable::getScore).sum();
+    return total / scores.size();
+  }
+}
+```
+
+```java
+class ScroeCollectionTest {
+  @Test
+  public void answerArithmeticMeanOfTwoNumbers() {
+    ScoreCollection collection = new ScoreCollection();
+
+    collection.add(() -> 5);
+    collection.add(() -> 7);
+
+    int actualResult = collection.arithmeticMean();
+
+    assertEquals(actualResult, 6);
+  }
+}
+```
+
 :::tip 참고자료
 <https://palpit.tistory.com/671>
 :::
