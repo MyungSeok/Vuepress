@@ -184,5 +184,6 @@ entityManager.contains(mergedKim);  // true
 
 :::tip 참고자료
 <http://wonwoo.ml/index.php/post/997>  
-<https://hyeooona825.tistory.com/87>
+<https://hyeooona825.tistory.com/87>  
+<https://gmlwjd9405.github.io/2019/02/01/orm.html>
 :::
