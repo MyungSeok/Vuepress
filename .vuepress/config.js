@@ -155,6 +155,7 @@ module.exports = {
           children: [
             '/general/algorithm/security',
             '/general/algorithm/sort', 
+            '/general/algorithm/greedy', 
             {
               title: 'Graph', 
               children: [
