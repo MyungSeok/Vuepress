@@ -182,3 +182,20 @@ $ git revert -m 1 {COMMIT_NUMBER}
 ```bash
 $ ssh-add -K ~/.ssh/id_rsa
 ```
+
+### `.gitignore` 가 제대로 동작하지 않을때
+
+git 의 캐시가 문제되는 것이라 아래 명령어로 전부 삭제후 커밋 해야 한다.
+
+```bash
+$ git rm -r --cached .
+```
+
+```bash
+$ git add .
+$ git commit -m "fixed untracked files"
+```
+
+:::tip 참고자료
+<https://jojoldu.tistory.com/307?category=740343>
+:::
