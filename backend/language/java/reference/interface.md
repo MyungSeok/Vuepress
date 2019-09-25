@@ -149,3 +149,39 @@ Collections.sort(pointList);
 :::tip 참고자료
 <https://gmlwjd9405.github.io/2018/09/06/java-comparable-and-comparator.html>
 :::
+
+## Default Method 지원<Badge text="Java SE 8+"/>
+
+Interface 에서도 메서드 구현이 가능하게 되었다.
+
+참조 변수로 함수를 호출할 수 있다.
+
+`implements` 한 클래스에서 재정의가 가능하다.
+
+```java
+interface MyInterface {
+  default void defaultMethod() {
+    System.out.println("Default Method");
+  };
+}
+```
+
+## Static Method 지원<Badge text="Java SE 8+"/>
+
+Interface 에서도 메서드 구현이 가능하다.
+
+반드시 클래스 명으로 메서드를 호출해야 한다. (static 성격을 가지기 때문)
+
+**재 정의가 불가능 하다.**
+
+```java
+interface MyInterface {
+  static void staticMethod() {
+    System.out.println("Static Method");
+  };
+}
+```
+
+:::tip 참고자료
+<https://dahyeee.tistory.com/entry/JAVA-interface-default-static메소드>
+:::
