@@ -66,7 +66,7 @@ public static void main(String[] args) throw IOException {
 
 ## Item 60 정확한 답이 필요하다면 float 와 double 은 피하라
 
-금융계산시 `float` 와 `double` 은 지양하고 `BigDecimal` 혹은 `int` 혹은 `long` 을 사용해야 한다.
+금융계산시 `float` 와 `double` 은 지양하고 `BigDecimal` `int` `long` 을 사용해야 한다.
 
 단 `BigDecimal` 은 기본타입보다 훨씬 불편하고 느리다 (`int` 혹은 `long` 의 대안이 있다.)
 
