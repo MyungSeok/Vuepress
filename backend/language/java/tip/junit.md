@@ -115,3 +115,10 @@ public class 동시성_테스트Test {
 :::tip 참고자료
 <http://antkorwin.com/junit5/junit5_parallel_execution.html>
 :::
+
+## Spring MVC 테스트하기
+
+:::tip 참고자료
+<https://engkimbs.tistory.com/768>  
+<https://jojoldu.tistory.com/226>
+:::
