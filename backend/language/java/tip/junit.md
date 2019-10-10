@@ -121,5 +121,6 @@ public class 동시성_테스트Test {
 :::tip 참고자료
 <https://engkimbs.tistory.com/768>  
 <https://www.tutorialspoint.com/spring_boot/spring_boot_rest_controller_unit_test.htm>  
-<https://jojoldu.tistory.com/226>
+<https://jojoldu.tistory.com/226>  
+<https://effectivesquid.tistory.com/entry/Spring-Boot-starter-test-와-Junit5를-이용한-테스트>
 :::
