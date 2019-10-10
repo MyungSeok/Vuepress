@@ -113,6 +113,12 @@ void isValid(String candidate) {
 
 `@MockBean` 이나 `@SpyBean` 과 같이 더미 객체 혹은 실제 생성 객체를 사용하여 테스트 하는 방법이 있으나 추후에 정리하기로 함
 
+:::tip 참고자료
+<https://engkimbs.tistory.com/768>  
+<https://www.tutorialspoint.com/spring_boot/spring_boot_rest_controller_unit_test.htm>  
+<https://jojoldu.tistory.com/226>
+:::
+
 ## 동시성 테스트 하기
 
 ### Fork Join Pool
@@ -208,12 +214,4 @@ public class 동시성_테스트Test {
 
 :::tip 참고자료
 <http://antkorwin.com/junit5/junit5_parallel_execution.html>
-:::
-
-## Spring MVC 테스트하기
-
-:::tip 참고자료
-<https://engkimbs.tistory.com/768>  
-<https://www.tutorialspoint.com/spring_boot/spring_boot_rest_controller_unit_test.htm>  
-<https://jojoldu.tistory.com/226>
 :::
