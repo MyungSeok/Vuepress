@@ -1,6 +1,6 @@
 # JUnit
 
-## Junit 5 설정하기
+## Junit 5 for String Boot
 
 ### Gradle 파일에 추가
 
@@ -18,6 +18,100 @@ dependencies {
   testCompile 'org.junit.jupiter:junit-jupiter:5.5.2';
 }
 ```
+
+### Spring MockMvc 세팅
+
+**SpringTestUpport.java**
+
+```java
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = ShortenApplication.class)
+public abstract class SpringTestSupport { }
+```
+
+**SpringMockMvcTestSupport.java**
+
+`@AutoConfigureMockMvc` 어노테이션을 이용하여 자동으로 구성한다.
+
+```java {5}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
+
+@AutoConfigureMockMvc
+public class SpringMockMvcTestSupport extends SpringTestSupport{
+
+    @Autowired
+    public MockMvc mockMvc;
+}
+```
+
+:::tip 참고자료
+<https://effectivesquid.tistory.com/entry/Spring-Boot-starter-test-와-Junit5를-이용한-테스트>
+:::
+
+## 기본 사용법
+
+### MVC 테스트하기
+
+아래와 같이 `SpringMockMvcTestSupport` 을 상속받아 사용
+
+`mockMvc` 객체에 `perform` 메서드를 이용하여 확인한다.
+
+```java
+class ShortenWebControllerTest extends SpringMockMvcTestSupport {
+  /**
+  * Get으로 호출하면 다음과 같이 동작
+  * <pre> - HTTP 코드는 200</pre>
+  * <pre> - 반환될 뷰는 index</pre>
+  * @see ShortenWebController#getPage()
+  * @throws Exception ResultMatcher
+  */
+  @Test
+  @DisplayName("인덱스 페이지 요청")
+  void getPage_001() throws Exception {
+      mockMvc.perform(
+          get("/")
+      ).andExpect(
+          status().isOk()
+      ).andExpect(
+          view().name("index")
+      );
+  }
+}
+```
+
+`@ParameterizedTest` 어노테이션을 이용하여 입력값을 변화하여 테스트 가능하다.
+
+```java
+/**
+ * 정규식을 이용하여 유효한 URL 검증함
+ * @param candidate 검증할 URL 항목
+ */
+@ParameterizedTest
+@ValueSource(strings = {
+    "1",
+    "http:",
+    "http://",
+    "httpx://www.google.com",
+    "httpz://www.google.com",
+    "http://com",
+    "www.com",
+    "google.com",
+    "www.google.com"
+})
+@DisplayName("URL 유효성 검증")
+@Description("HTTP 프로토콜 및 3차 도메인도 필수로 포함하여야 함")
+void isValid(String candidate) {
+    assertFalse(URLValidator.isValid(candidate));
+}
+```
+
+`@MockBean` 이나 `@SpyBean` 과 같이 더미 객체 혹은 실제 생성 객체를 사용하여 테스트 하는 방법이 있으나 추후에 정리하기로 함
 
 ## 동시성 테스트 하기
 
@@ -121,6 +215,5 @@ public class 동시성_테스트Test {
 :::tip 참고자료
 <https://engkimbs.tistory.com/768>  
 <https://www.tutorialspoint.com/spring_boot/spring_boot_rest_controller_unit_test.htm>  
-<https://jojoldu.tistory.com/226>  
-<https://effectivesquid.tistory.com/entry/Spring-Boot-starter-test-와-Junit5를-이용한-테스트>
+<https://jojoldu.tistory.com/226>
 :::
