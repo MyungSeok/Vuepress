@@ -1,5 +1,41 @@
 # Generator
 
+ECMA6 에서 도입된 함수로써 이터러블을 생성하는 함수이다.
+
+제너레이터 함수를 사요하면 이터레이션 프로토콜을 준수하여 이터러블을 생성하는 방식보다 _**간편하게 이터러블을 구현**_ 할 수 있다.
+
+일반적인 함수의 실행 구조와는 다르게 함수의 코드 블럭을 한꺼번에 실행하지 않고 일시 중지 했다가 필요한 시점에 재시작 할 수 잇는 특징이 있다.
+
+## 함수의 정의
+
+제너레이터 함수는 `function*` 키워드로 선언한다. 또한 하나이상의 `yield` 문을 포함한다.
+
+```javascript
+// 제너레이터 함수 선언문
+function* genDec() {
+  yield 1;
+}
+
+// 제너레이터 함수 표현식
+const genExp = function* () {
+  yield 1;
+};
+
+// 제네레이터 메서드
+const obj = {
+  * genObjMethod() {
+    yield 1;
+  }
+}
+
+// 제네레이터 클래스 메서드
+const MyClass {
+  * genClazzMethod() {
+    yield 1;
+  }
+}
+```
+
 _**Iterator Interface**_ 를 구현한 확장형 함수
 
 ```javascript {10}
