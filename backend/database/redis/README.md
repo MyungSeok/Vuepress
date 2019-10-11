@@ -94,6 +94,6 @@ OK
 
 :::tip 참고자료
 <https://hanee24.github.io/2018/01/05/how-to-install-redis-on-ubuntu-16-04/>  
-<https://zetawiki.com/wiki/우분투16_redis_설치>
+<https://zetawiki.com/wiki/우분투16_redis_설치>  
 <http://hyunalee.tistory.com/17>
 :::
