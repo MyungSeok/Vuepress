@@ -34,6 +34,7 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 * 인터프리터
 * [템플릿 메소드(Template Method)](./behavioral/template-method)
 * [전략 (Strategy)](./behavioral/strategy)
+* [행동 (State)](./behavioral/state)
 * [방문자 (Visitor)](./behavioral/visitor)
 * 커맨드
 * 역활변경
@@ -42,7 +43,7 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 * 메멘토
 * 플라이웨이트
 * 옵저버
-* 스테이트
+
 
 클래스와 객체들의 구성을 통해서 더 큰 구조로 확장 가능한 패턴
 

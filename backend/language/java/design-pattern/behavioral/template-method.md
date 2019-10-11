@@ -1,4 +1,4 @@
-# Template Method
+# 템플릿
 
 상위 추상 클래스가 대략적인 로직을 잡아두고 실제로 상세한 구현은 상속을 받아 구현을 강제하도록 하는것
 
@@ -10,7 +10,7 @@ public abstract class Car {
    play();
 
    runSomeThing();
- } 
+ }
 
  abstract void play();
 

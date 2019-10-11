@@ -1,4 +1,4 @@
-# Proxy Pattern
+# 프록시
 
 ![프록시 패턴](/img/A081.png)
 

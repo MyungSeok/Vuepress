@@ -1,4 +1,4 @@
-# Visitor Pattern
+# 방문자
 
 ![비지터 패턴](/img/A083.png)
 

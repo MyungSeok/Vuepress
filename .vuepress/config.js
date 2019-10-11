@@ -353,7 +353,8 @@ module.exports = {
               children: [
                 '/backend/language/java/design-pattern/behavioral/template-method',
                 '/backend/language/java/design-pattern/behavioral/strategy',
-                '/backend/language/java/design-pattern/behavioral/visitor'
+                '/backend/language/java/design-pattern/behavioral/visitor',
+                '/backend/language/java/design-pattern/behavioral/state'
               ]
             },
             '/backend/language/java/design-pattern/refactoring'
