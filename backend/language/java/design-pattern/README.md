@@ -44,11 +44,11 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 * 플라이웨이트
 * 옵저버
 
-
 클래스와 객체들의 구성을 통해서 더 큰 구조로 확장 가능한 패턴
 
 !["Java Design Pattern Map"](/img/A015.png)
 
 :::tip 참고자료
-<https://brunch.co.kr/@springboot/31>
+<https://brunch.co.kr/@springboot/31>  
+<https://victorydntmd.tistory.com/category/Design%20Pattern>
 :::
