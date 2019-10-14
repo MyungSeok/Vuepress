@@ -38,3 +38,9 @@ manifest 파일을 생성하여 등록 해야 한다.
 :::tip 참고자료
 <http://theeye.pe.kr/archives/2075>
 :::
+
+## Gradle Task
+
+:::tip 참고자료
+<https://kwonnam.pe.kr/wiki/gradle/task>
+:::
