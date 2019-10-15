@@ -29,7 +29,8 @@
 * `@Setter`
 * `@RequiredArgsConstructors`
 
-lombok 사용시 `@Data` 어노테이션을 사용하면 자동으로 `Setter` 를 포함한 다른 기능들도 자동으로 지원하게 된다.
+lombok 사용시 `@Data` 어노테이션을 사용하면 자동으로 `Setter` 를 포함한   
+다른 기능들도 자동으로 지원하게 된다.
 
 :::warning
 * 무분별하게 Setter 메서드를 사용시 객체의 일관성을 유지하기 어렵다.
