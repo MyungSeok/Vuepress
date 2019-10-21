@@ -10,7 +10,7 @@
 
 `build.gradle` 파일 내에 하기 의존 요소 추가
 
-```gradle {3}
+```json {3}
 dependencies {
   ...
   compile 'io.reactivex.rxjava2:rxjava:2.2.0';
