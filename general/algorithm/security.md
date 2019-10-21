@@ -99,7 +99,7 @@ ZIP 이나 RAR 같은 파일 압축 프로그램이 압축할때 CRC 값을 함�
 <https://12bme.tistory.com/395>
 :::
 
-## OAuth
+## OAuth 2.0
 
 웹 혹은 앱 서비스에서 _**제한적으로 권한을 요청**_ 하여 사용할 수 있는 _**키를 발급**_ 해주는 것이다.
 
@@ -121,6 +121,13 @@ ZIP 이나 RAR 같은 파일 압축 프로그램이 압축할때 CRC 값을 함�
 5. 클라이언트가 허용을 하게 되면 해당 사이트에서 이용가능한 `AccessToken` 을 받게 됩니다. `(C)` `(D)`
 6. 이 `AccessToken` 을 가지고 해당 사이트의 서비스를 이용하면서 expiration_date 까지 사용할 수 있게 됩니다. `(E)` `(F)`
 
+### OAuth 1.0 과의 차이점
+
+OAuth1 의 인증 플로우와 전반적인 목적은 공유하면서 새로 설계된 방식이다.
+
+웹 / 앱 / 데스크톱 어플리케이션등의 인증방식을 강화하고 개발을 간소화하도록 개발되었다.
+
 :::tip 참고자료
-<https://interconnection.tistory.com/76>
+<https://interconnection.tistory.com/76>  
+<https://minwan1.github.io/2018/02/24/2018-02-24-OAuth/>
 :::
