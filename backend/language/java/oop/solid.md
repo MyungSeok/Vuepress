@@ -223,6 +223,18 @@ public class MyClass {
 
 * 의존 관계를 맺을 때, 변화하기 쉬운것 (클래스) 보단 변화하기 어려운 것 (추상클래스, 인터페이스) 에 의존해야 한다는 원칙이다.
 
+```java
+Policy policy = new UrlPolicyImpl();
+
+new Factory(policy);
+```
+
+위와 같이 구상 클래스에 의존하는걸 추상클래스에 의존하는 것이다.
+
+`UrlPolicyImpl` 클래스는 `Policy` 인터페이스를 구현하는데 `new Factory(policy);` 와 같이 실제로 `Policy` 인터페이스에게 의존하여 초기화를 한다.
+
+이는 변화하기 쉬운 실제 구현 클래스 `UrlPolicyImpl` 보다 `Policy` 인터페이스에게 의존함으로써 안정적으로 가져갈 수 있다.
+
 :::tip 참고자료
 <http://www.nextree.co.kr/p6960/>  
 <http://limkydev.tistory.com/77>  
