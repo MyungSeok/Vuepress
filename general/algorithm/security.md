@@ -98,3 +98,29 @@ ZIP 이나 RAR 같은 파일 압축 프로그램이 압축할때 CRC 값을 함�
 :::tip 참고자료
 <https://12bme.tistory.com/395>
 :::
+
+## OAuth
+
+웹 혹은 앱 서비스에서 _**제한적으로 권한을 요청**_ 하여 사용할 수 있는 _**키를 발급**_ 해주는 것이다.
+
+![OAuth 2.0](/img/A103.png)
+
+### 원리
+
+* 클라이언트 (Client)
+* 외부 사용자 정보 (Resource Owner)
+* 인증 서버 (Authorization Server)
+* 리소스 서버 (Resource API Server)
+
+### 인증 절차
+
+1. 클라이언트가 특정 사이트를 이용하려 할때 Google 아이디로 가입할 수 있다는 정보를 발견합니다.
+2. Google 로그인 버튼을 누르면 Google 로그인 창이 나오면 로그인을 합니다. `(A)`
+3. 로그인이 완료되면 승인받은 로그인 정보가 정상적으로 수신됩니다. `(B)`
+4. 해당 로그인 정보로 사이트를 이용할 것인지 클라이언트에게 묻습니다.
+5. 클라이언트가 허용을 하게 되면 해당 사이트에서 이용가능한 `AccessToken` 을 받게 됩니다. `(C)` `(D)`
+6. 이 `AccessToken` 을 가지고 해당 사이트의 서비스를 이용하면서 expiration_date 까지 사용할 수 있게 됩니다. `(E)` `(F)`
+
+:::tip 참고자료
+<https://interconnection.tistory.com/76>
+:::
