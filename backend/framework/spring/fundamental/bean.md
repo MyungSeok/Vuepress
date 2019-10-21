@@ -124,7 +124,8 @@ stage1->stage2->stage3->stage4->stage5->stage6
 <http://javaslave.tistory.com/48>  
 <https://gmlwjd9405.github.io/2018/11/10/spring-beans.html>  
 <https://unabated.tistory.com/entry/Spring-Bean-초기화-및-생명주기>  
-<https://cornswrold.tistory.com/100>
+<https://cornswrold.tistory.com/100>  
+<https://howtodoinjava.com/spring-core/spring-bean-life-cycle/>
 :::
 
 ## Bean 로드 순서를 결정짓는 방법
