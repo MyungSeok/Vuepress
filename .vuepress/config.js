@@ -345,7 +345,8 @@ module.exports = {
               children: [
                 '/backend/language/java/design-pattern/structural/adapter',
                 '/backend/language/java/design-pattern/structural/decorator',
-                '/backend/language/java/design-pattern/structural/proxy'
+                '/backend/language/java/design-pattern/structural/proxy',
+                '/backend/language/java/design-pattern/structural/facade'
               ]
             },
             {
