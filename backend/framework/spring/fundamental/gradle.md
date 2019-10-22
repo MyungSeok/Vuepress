@@ -67,16 +67,11 @@ stage1(right)->stage2(right)->stage3
 |:-:|:-:|:-:|:-:|:-|
 |api|API 의존성 선언|N|N|컴파일을 위해서 필요한 의존성을 선언한다.|
 |implementation|구현화 의존성 선언|N|N|외부에 노출되지 않도록 의존성을 설정한다.|
-||||||
-||||||
-||||||
-||||||
-||||||
-||||||
-||||||
-||||||
-||||||
-||||||
+|compileOnly|||||
+|runtimeOnly|||||
+|testImplementation|||||
+|testCompileOnly|||||
+|testRuntimeOnly|||||
 
 :::tip 참고자료
 <https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_separation>
