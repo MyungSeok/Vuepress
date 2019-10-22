@@ -33,6 +33,6 @@ Child Run
 
 > 메서드의 공변 반환 타입이란 그 메서드가 오버라이딩 될때 더 좁은 (narrower) 타입으로 교체할 수 있다는 것이다.
 
-:::tip
-<http://blog.naver.com/PostView.nhn?blogId=bluerein_&logNo=221288112925&parentCategoryNo=&categoryNo=83&viewDate=&isShowPopularPosts=true&from=search>
+:::tip 참고자료
+[Naver 블로그 - Covariant Return Type](http://blog.naver.com/PostView.nhn?blogId=bluerein_&logNo=221288112925&parentCategoryNo=&categoryNo=83&viewDate=&isShowPopularPosts=true&from=search)
 :::
