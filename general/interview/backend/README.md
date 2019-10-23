@@ -22,7 +22,34 @@
 
 * 참조 변수가 **실제로 참조하고 있는 인스턴스의 실제 타입을 알아보기 위해** instanceof 연산자를 사용
 
-## Stack 과 Heap Memory 장단점과 해제 방법을 설명
+## JVM 과 Runtime Area 영역에 대해서 설명
+
+* Java Byte Code 를 실행할 수 있는 프로세스 가상 머신이다.
+* 가상머신의 특성으로 OS 에 종속적이지 않아 독립적으로 운영된다.
+* 실행 순서는 다음과 같다.
+  1. `Java File` 이 `Java Compiler` 에 의해 Class File 로 컴파일 된다.
+  2. `Class Loader` 에 의해 데이터들이 `Runtime Area` 에 로드된다.
+  3. `Runtime Area` 에서는 영역별로 기능을 분담하여 처리된다.
+     * `Method Area`
+       * Class, Interface, Method, Field 등의 정보가 보관된다.
+       * 임포트된 클래스가 로드되는 영역이다.
+       * 모든 Thread 가 공유하는 메모리 영역이다.
+     * `Heap Area`
+       * 어플리케이션 상에서 데이터를 저장하기 위해 동적으로 사용 및 할당되는 메모리 영역이다.
+       * `Method Area` 에 로드된 클래스만 생성 가능하며 클래스 정보를 참고하여 인스턴스를 생성하는 곳이다.
+       * Garbage Collection 이 일어나는 영역이다.
+     * `Stack Area`
+       * Method 가 호출될 때 마다 `Stack Frame` 이라는 데이터 영역이 생성하여 구성
+       * Method 의 정보, 지역변수, 파라메터 정보등의 임시데이터가 저장되는 공간이다.
+       * Thread 별로 각각 구성된다.
+       * Method 가 호출될 때 필요로 하는 변수를 Stack 에 저장하게 되고, Method 실행이 끝나면 Stack 을 반환한다.
+     * PC Register
+       * 실행중인 각각의 Thread 는 별도의 PC Register 를 가지며, 명령이 실행되면 현재 실행중인 명령의 주소를 유지한다.
+     * Native Method Stack
+       * JNI 를 통하여 C/C++ 등의 코드를 수행하기 위한 Stack
+
+* JVM 내에 Runtime Area 에 속하는 메모리 영역중이 하나이다.
+* `Java File` 이 `Java Compiler` 에 의해 Class File 로 컴파일 되면 `Class Loader` 에 의해 로드된 데이터들이 애플리케이션을 수행작업 하며 사용되는 저장 및 참조 메모리 영역이다.
 
 * Stack
   * 빠른접근, cpu 에 의해 관리, 지정된 크기, resize 불가
