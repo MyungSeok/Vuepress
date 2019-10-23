@@ -43,9 +43,9 @@
        * Method 의 정보, 지역변수, 파라메터 정보등의 임시데이터가 저장되는 공간이다.
        * Thread 별로 각각 구성된다.
        * Method 가 호출될 때 필요로 하는 변수를 Stack 에 저장하게 되고, Method 실행이 끝나면 Stack 을 반환한다.
-     * PC Register
+     * `PC Register`
        * 실행중인 각각의 Thread 는 별도의 PC Register 를 가지며, 명령이 실행되면 현재 실행중인 명령의 주소를 유지한다.
-     * Native Method Stack
+     * `Native Method Stack`
        * JNI 를 통하여 C/C++ 등의 코드를 수행하기 위한 Stack
 
 * JVM 내에 Runtime Area 에 속하는 메모리 영역중이 하나이다.
