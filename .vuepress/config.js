@@ -418,7 +418,8 @@ module.exports = {
             '/backend/framework/spring/fundamental/aop',
             '/backend/framework/spring/fundamental/ioc',
             '/backend/framework/spring/fundamental/bean',
-            '/backend/framework/spring/fundamental/dispatcherServlet'
+            '/backend/framework/spring/fundamental/dispatcherServlet',
+            '/backend/framework/spring/fundamental/gradle'
           ]
         },
         {
