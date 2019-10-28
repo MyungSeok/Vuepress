@@ -18,7 +18,9 @@ _**AOP 는 이 인프라 로직의 중복성을 제거하는것에 목표**_ 를
 
 ![AOP 횡단분리](/img/A009.png)
 
-## 장점
+## 특징
+
+### 장점
 
 * 중복되는 코드 제거
 * 효율적인 유지보수
@@ -26,11 +28,11 @@ _**AOP 는 이 인프라 로직의 중복성을 제거하는것에 목표**_ 를
 * 재활용성 극대화
 * 유연한 변화 수용
 
-## 사용
+### 단점
 
-다음은 사용 방법을 알아보자 (Spring Boot 기준)
+* AOP 가 많으면 관리가 어렵다.
 
-### 주요개념
+## 주요개념
 
 * Aspect
   * 여러 객체에 공통으로 적용되는 횡단 관심 모듈을 정의
@@ -59,7 +61,41 @@ _**AOP 는 이 인프라 로직의 중복성을 제거하는것에 목표**_ 를
 * Around
   * 대상 객체의 메서드 호출 전, 후 또는 `Exception` 발생 시점에 실행
 
-### Example
+## 적용
+
+### Weaving 방식
+
+Advice 를 Weaving 하는 방식에는 세가지 방식이 존재한다.
+
+1. 컴파일시에 `Weaving` 하기
+2. 클래스 로딩 시에 `Weaving` 하기
+3. 런타임시에 `Weaving` 하기
+
+### Spring AOP 란?
+
+![Spring AOP](/img/A106.png)
+
+스프링은 자체적으로 프록시 기반의 AOP 를 지원하고 있다.
+
+스프링 AOP 는 메서드 호출 `JoinPoint` 만 지원한다.
+
+스프링은 3가지 방식의 AOP 를 지원한다.
+
+1. XML 스키마 기반의 POJO 클래스를 이용한 AOP구현
+2. AspectJ 에서 정의한 `@Aspect` 어노테이션 기반의 AOP 구현
+3. 스프링 API 를 이용한 AOP 구현
+
+프록시 객체를 생성하는 방식은 대상 객체가 인터페이스를 구현하고 있는지 여부에 따라서 2가지 방식으로 나뉩니다.
+
+* JDK Dynamic Proxy
+  * 자바의 리플렉션 API 를 제공하는 `java.lang.reflect.Proxy` 를 이용하여 프록시 객체를 생성합니다.
+  * 인터페이스를 기반으로 프록시 객체를 생성하기 때문에 인터페이스에 정의되지 않는 메서드에 대해서는 AOP 가 적용되지 않는 점에 유의해야 한다.
+* CGLIB
+  * 대상 객체가 인터페이스를 구현하고 있지 않고 바로 클래스로 사용할 때 프록시 객체를 생성
+  * 대상 클래스를 바로 상속 받아 프록시를 구현한다.
+  * 클래스가 `final` 인 경우에는 프록시를 생성할 수 없다.
+
+### Spring Boot AOP 적용
 
 ```java
 package com.square.common.advice;
@@ -156,5 +192,6 @@ Logger Advice AfterReturning
 <https://heowc.github.io/2018/02/07/spring-boot-aop/>  
 <http://jyh1536.tistory.com/66>  
 <http://addio3305.tistory.com/86>  
-<https://jojoldu.tistory.com/27>
+<https://jojoldu.tistory.com/27>  
+<https://minwan1.github.io/2017/10/29/2017-10-29-Spring-AOP-Proxy/>
 :::
