@@ -90,7 +90,7 @@ Advice 를 Weaving 하는 방식에는 세가지 방식이 존재한다.
 * JDK Dynamic Proxy
   * 자바의 리플렉션 API 를 제공하는 `java.lang.reflect.Proxy` 를 이용하여 프록시 객체를 생성합니다.
   * 인터페이스를 기반으로 프록시 객체를 생성하기 때문에 인터페이스에 정의되지 않는 메서드에 대해서는 AOP 가 적용되지 않는 점에 유의해야 한다.
-* CGLIB
+* CGLIB (Code Generation Library)
   * 대상 객체가 인터페이스를 구현하고 있지 않고 바로 클래스로 사용할 때 프록시 객체를 생성
   * 대상 클래스를 바로 상속 받아 프록시를 구현한다.
   * 클래스가 `final` 인 경우에는 프록시를 생성할 수 없다.
@@ -193,5 +193,6 @@ Logger Advice AfterReturning
 <http://jyh1536.tistory.com/66>  
 <http://addio3305.tistory.com/86>  
 <https://jojoldu.tistory.com/27>  
-<https://minwan1.github.io/2017/10/29/2017-10-29-Spring-AOP-Proxy/>
+<https://minwan1.github.io/2017/10/29/2017-10-29-Spring-AOP-Proxy/>  
+<https://busy.org/@nhj12311/aop-cglib-java-aop-4>
 :::
