@@ -433,7 +433,7 @@ module.exports = {
           title: 'Reference',
           children: [
             '/backend/framework/spring/reference/resolvable_type',
-            '/backend/framework/spring/reference/transactional',
+            '/backend/framework/spring/reference/transaction',
             '/backend/framework/spring/reference/lombok'
           ]
         },
