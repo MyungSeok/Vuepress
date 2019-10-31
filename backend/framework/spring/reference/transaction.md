@@ -14,7 +14,7 @@
 
 `context-datasource.xml` 의 내용을 수정
 
-```xml
+```xml {7,8,9}
 <?xml version="1.0" encoding="UTF-8"?> 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd "> 
   
@@ -87,11 +87,123 @@
 [전자정부 프레임워크 트랜잭션](http://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte:psl:transaction:declarative_transaction_management)
 :::
 
+### Aspectj Expression
+
+`<aop:config>` 에서 트랜잭션에 적용할 대상을 설정한다.
+
+`* com.syaku.bbs.dao.BbsDao.*(..)` 라고 입력한 부분을 Aspectj 표현식이라고 한다.
+
+> execution(`접근제어자` `리턴타입` `패키지` `메서드이름` (`인자`))
+> * `*` 모두를 의미함
+> * `..` 0개 이상을 의미함
+
 ## 어노테이션을 이용한 선언적 트랜잭션
 
-## 문제점
+AOP 를 이용한 트랜잭션보다 더 간결하게 처리 가능한 방식
 
-<!-- TODO -->
+이전에 AOP 를 이용한 선언적 트랜잭션 방식의 설정을 모두 제거 혹은 주석 처리한다.
+
+단. bean transactionManager 는 남겨둔다.
+
+`context-datasource.xml` 수정
+
+```xml {26,27,28}
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd ">
+
+  <bean id="jdbcProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:jdbc.properties" />
+  </bean>
+
+  <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driver}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+  </bean>
+
+  <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+    <constructor-arg ref="dataSourceSpied" />
+    <property name="logFormatter">
+      <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+        <property name="loggingType" value="MULTI_LINE" />
+        <property name="sqlPrefix" value="SQL:::" />
+      </bean>
+    </property>
+  </bean>
+
+  <!-- Transaction Manager -->
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>
+```
+
+|속성|어노테이션 사용|
+|:-:|:-:|
+|isolation|`@Transactional(isolation=Isolation.DEFAULT`|
+|noRollbackFor|`@Transactional(noRollbackFor=NoRoleBackTx.class)`|
+|noRollbackForClassName|`@Transactional(noRollbackForClassName="NoRoleBackTx”)`|
+|propagation|`@Transactional(propagation=Propagation.REQUIRED)`|
+|readOnly|`@Transactional(readOnly = true)`|
+|rollbackFor|`@Transactional(rollbackFor=RoleBackTx.class)`|
+|rollbackForClassName|`@Transactional(rollbackForClassName="RoleBackTx”)`|
+|timeout|`@Transactional(timeout=10)`|
+
+BBSDao 에 트랜잭션을 위해 어노테이션을 추가하였다.
+
+```java {26,27,28,29,30}
+package com.syaku.bbs.dao;
+
+import java.util.*;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service(value = "bbsDao")
+@Transactional(readOnly=true)
+public class BbsDao {
+  @Resource=(name = "bbsMapper")
+  private BbsMapper bbsMapper;
+
+  public List<BbsVo> getSelect(Map map) {
+    return this.bbsMapper.select(map);
+  }
+
+  public void insert(BbsVo bbsVo) {
+    this.bbsMapper.insert(bbsVo);
+  }
+
+  public void update(BbsVo bbsVo) {
+    this.bbsMapper.update(bbsVo);
+  }
+
+  @Transactional
+  public void delete(int idx) {
+    this.bbsMapper.delete(idx);
+    throw new RuntimeException("강제로 오류를 발생 시켜봄 !! ");
+  }
+}
+```
+
+테스트로 글을 삭제해보면 삭제되지 않는다
+
+> 스프링 트랜잭션은 @Service 에 적용하는 것이 바람직하다.
+
+## 프로그램에 의한 트랜잭션
+
+프로그램에 의한 트랜잭션은 `try ~ catch` 문을 사용하여 작성한다.
+
+`context-datasource.xml` 을 하기와 같이 수정한다.
+
+```xml
+<!-- Transaction Manager -->
+<bean id="" class="">
+  <property name="dataSource" ref="dataSource">
+</bean>
+```
 
 :::tip 참고자료
 <https://goddaehee.tistory.com/167>  
