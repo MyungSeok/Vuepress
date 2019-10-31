@@ -205,6 +205,45 @@ public class BbsDao {
 </bean>
 ```
 
+```java {13,14,15,16}
+@Resource(name = "transactionManager")
+protected DataSourceTransactionManager txManager;
+
+public void insert(BbsVo bbsVo) {
+  DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+  def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+  TransactionStatus txStatus = txManager.getTransaction(def);
+
+  try {
+    this.bbsMapper.insert(bbsVo);
+    int a = 1 / 0;
+    txManager.commit(txStatus);
+  } catch(Exception e) {
+    txManager.rollback(txStatus);
+    throw new Exception(e.getMessage());
+  }
+}
+```
+
+상위 `@Controller` 소스
+
+```java
+try {
+  if (idx == null || idx == 0) {
+    this.bbsDao.insert(bbsVo);
+    xml.setMessage("추가되었습니다.");
+    xml.setError(false);
+  } else {
+    this.bbsDao.update(bbsVo);
+    xml.setMessage("수정되었습니다.");
+    xml.setError(false);
+  }
+} catch (Exception e) {
+  xml.setMessage(e.getMessage());
+  xml.setError(true);
+}
+```
+
 :::tip 참고자료
 <https://goddaehee.tistory.com/167>  
 <https://crosstheline.tistory.com/96>  
