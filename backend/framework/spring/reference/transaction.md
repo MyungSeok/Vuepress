@@ -15,7 +15,7 @@
 `context-datasource.xml` 의 내용을 수정
 
 ```xml {7,8,9}
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd "> 
   
   … 생략 …
@@ -97,7 +97,7 @@
 > * `*` 모두를 의미함
 > * `..` 0개 이상을 의미함
 
-## 어노테이션을 이용한 선언적 트랜잭션
+## Annotation 을 이용한 선언적 트랜잭션
 
 AOP 를 이용한 트랜잭션보다 더 간결하게 처리 가능한 방식
 
