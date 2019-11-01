@@ -23,8 +23,8 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 * [어댑터 (Adapter)](./structural/adapter)
 * [데코레이터 (Decorator)](./structural/decorator)
 * [프록시 (Proxy)](./structural/proxy)
+* [퍼사드 (Fecade)](./structural/facade)
 * 컴포지트
-* 퍼사드
 * 브릿지
 
 ## 행동관련 패턴
