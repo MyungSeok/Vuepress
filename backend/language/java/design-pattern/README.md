@@ -36,7 +36,7 @@ _**객체 지향 관점에서의 오브젝트의 의존관계를 다루는 방�
 * [전략 (Strategy)](./behavioral/strategy)
 * [행동 (State)](./behavioral/state)
 * [방문자 (Visitor)](./behavioral/visitor)
-* 커맨드
+* [커맨드 (Command)](./behavioral/command)
 * 역활변경
 * 이터레이터
 * 미디에이터
