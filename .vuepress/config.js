@@ -416,6 +416,7 @@ module.exports = {
         {
           title: 'Fundamental',
           children: [
+            '/backend/framework/spring/fundamental/di',
             '/backend/framework/spring/fundamental/aop',
             '/backend/framework/spring/fundamental/ioc',
             '/backend/framework/spring/fundamental/bean',

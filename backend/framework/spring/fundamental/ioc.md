@@ -1,4 +1,4 @@
-# IoC (Inversion of Control : 제어의 역전)
+# IoC
 
 _**프로그램의 제어의 흐름 구조가 바뀌는 것**_ 이다.
 
