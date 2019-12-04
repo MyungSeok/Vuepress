@@ -441,7 +441,8 @@ module.exports = {
         },
         '/backend/framework/spring/boot',
         '/backend/framework/spring/batch',
-        '/backend/framework/spring/security'
+        '/backend/framework/spring/security',
+        '/backend/framework/spring/tip'
       ],
       '/backend/devops/docker/': [
         '', 
