@@ -100,7 +100,7 @@ module.exports = {
             text: 'Framework', 
             items: [
               { text: 'Spring', link: '/backend/framework/spring/' },
-              { text: 'Hibernate', link: '/backend/framework/hibernate' },
+              { text: 'JPA', link: '/backend/framework/jpa/' },
               { text: 'Etc', link: '/backend/framework/etc' }
             ]
           }, 
@@ -295,8 +295,7 @@ module.exports = {
           children: [
             '/backend/language/java/expert/gc',
             '/backend/language/java/expert/jvm',
-            '/backend/language/java/expert/jpa',
-            '/backend/language/java/expert/ejb',
+            '/backend/language/java/expert/ejb'
           ]
         },
         {
@@ -443,6 +442,12 @@ module.exports = {
         '/backend/framework/spring/batch',
         '/backend/framework/spring/security',
         '/backend/framework/spring/tip'
+      ],
+      '/backend/framework/jpa/': [
+        '', 
+        '/backend/framework/jpa/hibernate',
+        '/backend/framework/jpa/jpql',
+        '/backend/framework/jpa/querydsl'
       ],
       '/backend/devops/docker/': [
         '', 

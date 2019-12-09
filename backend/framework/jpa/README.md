@@ -1,6 +1,6 @@
-# Java Persistence API
+# JPA
 
-## JPA 란 ?
+## Java Persistence API 란 ?
 
 ORM 의 표준 기술로 `Hibernate`, `OpenJPA`, `EclipseLink`, `TopLink` `Essentials`  과 같은 구현체가 있고, 이들의 대한 _**표준 인터페이스**_ 이다.
 
