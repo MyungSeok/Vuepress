@@ -43,7 +43,7 @@
 | Full Text Search Features | Language analysis based on Lucene, multiple suggesters, spell checkers, rich highlighting support | Language analysis based on Lucene, single suggest API implementation, highlighting rescoring |
 | DevOps Friendliness | Not fully there yet, but coming | Very good APIs |
 | Non-flat Data Handling | Nested documents and parent-child support | Natural support with nested and object types allowing for virtually endless nesting and parent-child support |
-| Query DSL | JSON \(limited\), XML \(limited\) or URL parameters | JSON |
+| QueryDSL | JSON \(limited\), XML \(limited\) or URL parameters | JSON |
 | Index/Collection Leader Control | Leader placement control and leader rebalancing possibility to even the load on the nodes | Not possible |
 | Join | Currently none | Parent\_type/Children\_type |
 | Machine Learning | Built-in – on top of streaming aggregations focused on logistic regression and learning to rank contrib module | Commercial feature, focused on anomalies and outliers and time-series data |
