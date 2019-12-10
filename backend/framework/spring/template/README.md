@@ -1,5 +1,7 @@
 # View Template
 
+스프링에서 사용가능한 템블릿 엔진이다.
+
 ||[JTwig](http://jtwig.org/)|[Velocity](http://velocity.apache.org/engine/devel/)|[JSTL](http://tomcat.apache.org/taglibs/standard/)|[Thymeleaf](https://www.thymeleaf.org/)|[Freemarker](https://freemarker.apache.org)|[Handlebars](https://handlebarsjs.com/)|[Vue](https://vuejs.org/) / [React](https://reactjs.org/)|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |랜더링 방식|서버 랜더링|서버 랜더링|서버 랜더링|서버 랜더링|서버 랜더링|클라이언트 랜더링|서버 및 클라이언트 랜더링|
@@ -9,3 +11,20 @@
 |Broswer Support||||||IE 7+|App : IE 9+<br/>SSR: Full Support|
 
 > 서버 사이드 랜더링 (SSR : Server Side Rendering) 방식은 대부분 브라우저에서 Full Support 이다.
+
+## 타임 리프 (Thymeleaf)
+
+스프링 부터에서 사용 가능한 뷰 (View) 들은 아래와 같은 종류가 있다.
+
+* FreeMarker
+* Groovy
+* Thymeleaf
+* Velocity
+* JSP
+
+이들 중에 `Thymeleaf` 에 관해서 알아보도록 하겠다.
+
+:::tip 참고자료
+<http://millky.com/@origoni/post/1144>  
+<https://github.com/ihoneymon/spring-boot-orm-learn/blob/master/THYMELEAF_TEMPLATE_ENGINE.md>
+:::

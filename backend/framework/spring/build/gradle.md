@@ -7,7 +7,7 @@
 Ant 빌드는 유연성이 뛰어난 빌드 툴로서 개발자가 자유롭게 빌드단위 (target) 을 지정하고 빌드 단위간의 의존관계를 자유롭게 설정할 수 있다는 것이다.  
 자유도가 높다는것은 좋은 도구이지만 제대로 쓰지 못하면 애물단지나 다름없다.
 
-Maven 의 가장 큰 장점은 Convention Over Configuration 의 전략에 따라 관례로 정해져 있다.
+Maven 의 가장 큰 장점은 _**Convention Over Configuration**_ 의 전략에 따라 관례로 정해져 있다.
 
 :::tip Convention Over Configuration ?
 

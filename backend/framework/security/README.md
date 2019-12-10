@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Security
 
 Java EE 기반의 Enterprise Software Application 을 위한 포괄적인 보안 서비스이다.

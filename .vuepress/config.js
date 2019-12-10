@@ -101,6 +101,7 @@ module.exports = {
             items: [
               { text: 'Spring', link: '/backend/framework/spring/' },
               { text: 'JPA', link: '/backend/framework/jpa/' },
+              { text: 'Security', link: '/backend/framework/security/' },
               { text: 'Etc', link: '/backend/framework/etc' }
             ]
           }, 
@@ -419,9 +420,15 @@ module.exports = {
             '/backend/framework/spring/fundamental/aop',
             '/backend/framework/spring/fundamental/ioc',
             '/backend/framework/spring/fundamental/bean',
-            '/backend/framework/spring/fundamental/dispatcherServlet',
-            '/backend/framework/spring/fundamental/gradle'
+            '/backend/framework/spring/fundamental/dispatcherServlet'
+            
           ]
+        },
+        {
+          title: 'Build', 
+          children: [
+            '/backend/framework/spring/build/gradle'
+          ]  
         },
         {
           title: 'View Template',
@@ -435,12 +442,12 @@ module.exports = {
           children: [
             '/backend/framework/spring/reference/resolvable_type',
             '/backend/framework/spring/reference/transaction',
-            '/backend/framework/spring/reference/lombok'
+            '/backend/framework/spring/reference/lombok',
+            '/backend/framework/spring/reference/actuator'
           ]
         },
         '/backend/framework/spring/boot',
         '/backend/framework/spring/batch',
-        '/backend/framework/spring/security',
         '/backend/framework/spring/tip'
       ],
       '/backend/framework/jpa/': [
