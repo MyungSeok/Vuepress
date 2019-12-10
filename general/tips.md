@@ -140,3 +140,44 @@
   }
 }
 ```
+
+## jenv 로 여러 버전의 Java 설치하기
+
+### jenv 설치
+
+```bash
+$ brew install jenv
+```
+
+```bash
+$ jenv versions
+```
+
+### jenv 초기화
+
+`~/.bash_profile` 의 스크립트에서 아래 코드를 추가하여 jenv 를 초기화시킨다.
+
+```bash
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+```
+
+`bash_profile` 적용
+
+```bash
+$ source ~/.bash_profile
+```
+
+### jenv 버전 선택
+
+```bash
+$ jenv local {버전 선택}
+```
+
+```bash
+$ jenv global {버전 선택}
+```
+
+:::tip 참고자료
+<https://junho85.pe.kr/736>  
+<https://jojoldu.tistory.com/329>
+:::
