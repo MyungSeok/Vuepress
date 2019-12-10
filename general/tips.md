@@ -153,6 +153,12 @@ $ brew install jenv
 $ jenv versions
 ```
 
+### jenv 로 자바 설치
+
+```bash
+$ jenv install java
+```
+
 ### jenv 초기화
 
 `~/.bash_profile` 의 스크립트에서 아래 코드를 추가하여 jenv 를 초기화시킨다.
