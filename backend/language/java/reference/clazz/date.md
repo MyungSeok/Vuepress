@@ -25,6 +25,23 @@ Java 에서 날짜/시간을 표시하는 방법으로 주로 사용되나 이�
 * `java.util.Date` 의 하위 클래스 문제
   * 오픈소스 라이브러리 `joda.time` 사용을 추천
 
+## 방어적 복사본
+
+Effective Java 3rd 에서는 _**적시에 방어적 복사본을 만들라**_ 라고 명시되어 있으며 다음은 사용예를 보여준다.
+
+```java
+public Period(Date start, Date end) {
+  this.start = new Date(start.getTime());
+  this.end = new Date(end.getTime());
+
+  if (this.start.compareTo(this.end) > 0) {
+    throw new IllegalArgumentException(this.start + " after " + this.end);
+  }
+}
+```
+
+이는 매개변수가 `Date` 처럼 _**제 3자에 의해 확장될수 있는 타입이라면 방어적 복사본을 만들때 clone 을 사용해서는 안된다.**_
+
 ## LocalDate, LocalTime, LocalDateTime <Badge text="Java SE 1.8+"/>
 
 이러한 문제를 사용하기 위해 Java SE 8 에서는 LocalDate, LocalTime, LocalDateTime 이라는 클래스를 만들었다.
