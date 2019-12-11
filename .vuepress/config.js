@@ -318,7 +318,8 @@ module.exports = {
                 '/backend/language/java/reference/clazz/immutable',
                 '/backend/language/java/reference/clazz/exception',
                 '/backend/language/java/reference/clazz/string',
-                '/backend/language/java/reference/clazz/hashMap'
+                '/backend/language/java/reference/clazz/hashMap',
+                '/backend/language/java/reference/clazz/date'
               ]
             },
             '/backend/language/java/reference/interface',
