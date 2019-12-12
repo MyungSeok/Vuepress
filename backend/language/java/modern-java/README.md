@@ -119,3 +119,35 @@ JDK 1.0 ~ 1.1 부터 제공된 `Date` 클래스 혹은 `Calendar` 클래스를 �
 ### JIT 컴파일러 추가
 
 ### 이전버전의 `@Deprecate` API 는 완전 삭제
+
+## Java SE 11 에서 추가
+
+### Nest 기반 접근 언어
+
+`Nest-based access controls` 의 Nest 는 접근 제어 컨텍스트로 논리적으로는 같은 클래스를 분리된 클래스로 컴파일할 수 있게 해준다.
+
+다른 클래스의 private 멤버의 getter/setter 없이 바로 접근이 가능하다.
+
+### 새로운 가비지 컬렉터
+
+성능을 향상시킨 새로운 가비지 컬렉터 (Garbage Collector)
+
+### Flight Recorder
+
+오버헤드가 낮은 데이터 수집 프레임워크이다.
+이전에는 유료였지만 오픈소스로 공개
+
+### TLS 1.3
+
+[Transport Layer Security (TLS) 1.3 TLS](https://openjdk.java.net/jeps/332) SSL 의 표준 이름 
+
+### 람다에서 var 변수
+
+Java SE 10 에서 도입된 `var` 타입 추론을 업데이트
+
+### 이외 다른 기능의 제거
+
+* Java EE and CORBA Modules
+* Web Start
+* Applets
+* Java FX

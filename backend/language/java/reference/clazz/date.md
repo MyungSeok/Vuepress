@@ -40,7 +40,7 @@ public Period(Date start, Date end) {
 }
 ```
 
-이는 매개변수가 `Date` 처럼 _**제 3자에 의해 확장될수 있는 타입이라면 방어적 복사본을 만들때 clone 을 사용해서는 안된다.**_
+이는 매개변수가 `Date` 처럼 _**제 3자에 의해 확장될수 있는 타입이라면 방어적 복사본을 만들때 `clone()` 메서드를 사용해서는 안된다.**_
 
 ## LocalDate, LocalTime, LocalDateTime <Badge text="Java SE 1.8+"/>
 
