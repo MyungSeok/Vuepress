@@ -127,7 +127,8 @@ module.exports = {
         items: [
           { text: 'Effective Java 3rd',  link: '/books/effective_java_3rd/chapter_1' }, 
           { text: '자바스크립트 성능 최적화',  link: '/books/js_high_performance' }, 
-          { text: '클린 아키텍처',  link: '/books/clean_architecture' }
+          { text: '클린 아키텍처',  link: '/books/clean_architecture' },
+          { text: '엘라스틱서치 실무 가이드',  link: '/books/elastic_search_guide/chapter_1' }
         ]
       }
     ],
@@ -474,6 +475,9 @@ module.exports = {
         '/books/effective_java_3rd/chapter_10',
         '/books/effective_java_3rd/chapter_11',
         '/books/effective_java_3rd/chapter_12'
+      ], 
+      '/books/elastic_search_guide/': [
+        '/books/elastic_search_guide/chapter_1'
       ]
     }
   }
