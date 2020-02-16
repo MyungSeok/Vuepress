@@ -477,7 +477,8 @@ module.exports = {
         '/books/effective_java_3rd/chapter_12'
       ], 
       '/books/elastic_search_guide/': [
-        '/books/elastic_search_guide/chapter_1'
+        '/books/elastic_search_guide/chapter_1',
+        '/books/elastic_search_guide/chapter_2'
       ]
     }
   }
