@@ -479,7 +479,8 @@ module.exports = {
       ], 
       '/books/elastic_search_guide/': [
         '/books/elastic_search_guide/chapter_1',
-        '/books/elastic_search_guide/chapter_2'
+        '/books/elastic_search_guide/chapter_2',
+        '/books/elastic_search_guide/chapter_3'
       ],
       '/books/mastering_akka/': [
         '',
