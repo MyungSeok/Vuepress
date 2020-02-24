@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>03. 데이터 모델링 | 🌟 Sudal&#39;s gram</title>
+    <meta name="description" content="정리공간">
+    <meta name="generator" content="VuePress 1.3.0">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.742392f4.css" as="style"><link rel="preload" href="/assets/js/app.c9eb7949.js" as="script"><link rel="preload" href="/assets/js/2.97456166.js" as="script"><link rel="preload" href="/assets/js/139.7959ed5d.js" as="script"><link rel="prefetch" href="/assets/js/10.02e2726f.js"><link rel="prefetch" href="/assets/js/100.7ee7971c.js"><link rel="prefetch" href="/assets/js/101.05ac94b9.js"><link rel="prefetch" href="/assets/js/102.5ccaf517.js"><link rel="prefetch" href="/assets/js/103.864cc2c4.js"><link rel="prefetch" href="/assets/js/104.7d6b944e.js"><link rel="prefetch" href="/assets/js/105.036731d5.js"><link rel="prefetch" href="/assets/js/106.b95cdd14.js"><link rel="prefetch" href="/assets/js/107.4bcb335b.js"><link rel="prefetch" href="/assets/js/108.117c5929.js"><link rel="prefetch" href="/assets/js/109.28c16063.js"><link rel="prefetch" href="/assets/js/11.b4137cfb.js"><link rel="prefetch" href="/assets/js/110.1557a148.js"><link rel="prefetch" href="/assets/js/111.70a5abec.js"><link rel="prefetch" href="/assets/js/112.b1af9fcd.js"><link rel="prefetch" href="/assets/js/113.7c51d623.js"><link rel="prefetch" href="/assets/js/114.b3fedba3.js"><link rel="prefetch" href="/assets/js/115.6e247242.js"><link rel="prefetch" href="/assets/js/116.7661f7c2.js"><link rel="prefetch" href="/assets/js/117.90062d8f.js"><link rel="prefetch" href="/assets/js/118.548dbcd3.js"><link rel="prefetch" href="/assets/js/119.a39d8464.js"><link rel="prefetch" href="/assets/js/12.0920e0db.js"><link rel="prefetch" href="/assets/js/120.a6c7347a.js"><link rel="prefetch" href="/assets/js/121.35e685a7.js"><link rel="prefetch" href="/assets/js/122.e71fd6b9.js"><link rel="prefetch" href="/assets/js/123.055255fe.js"><link rel="prefetch" href="/assets/js/124.7a50a53d.js"><link rel="prefetch" href="/assets/js/125.a501aa46.js"><link rel="prefetch" href="/assets/js/126.26d61d59.js"><link rel="prefetch" href="/assets/js/127.609194ef.js"><link rel="prefetch" href="/assets/js/128.e4beaf7e.js"><link rel="prefetch" href="/assets/js/129.64320313.js"><link rel="prefetch" href="/assets/js/13.fbbeec11.js"><link rel="prefetch" href="/assets/js/130.24fa1a1d.js"><link rel="prefetch" href="/assets/js/131.061ba1b5.js"><link rel="prefetch" href="/assets/js/132.3a2c3f46.js"><link rel="prefetch" href="/assets/js/133.c8031111.js"><link rel="prefetch" href="/assets/js/134.a870a569.js"><link rel="prefetch" href="/assets/js/135.2575a60b.js"><link rel="prefetch" href="/assets/js/136.cceccc6f.js"><link rel="prefetch" href="/assets/js/137.b1968792.js"><link rel="prefetch" href="/assets/js/138.27ad208c.js"><link rel="prefetch" href="/assets/js/14.d0180281.js"><link rel="prefetch" href="/assets/js/140.d852550b.js"><link rel="prefetch" href="/assets/js/141.e0f07cdd.js"><link rel="prefetch" href="/assets/js/142.c7230292.js"><link rel="prefetch" href="/assets/js/143.3e3fe850.js"><link rel="prefetch" href="/assets/js/144.891e7f95.js"><link rel="prefetch" href="/assets/js/145.2b6da8fd.js"><link rel="prefetch" href="/assets/js/146.33396d6a.js"><link rel="prefetch" href="/assets/js/147.ce215e84.js"><link rel="prefetch" href="/assets/js/148.3ee6441f.js"><link rel="prefetch" href="/assets/js/149.12b70265.js"><link rel="prefetch" href="/assets/js/15.facb8856.js"><link rel="prefetch" href="/assets/js/150.c288ca5e.js"><link rel="prefetch" href="/assets/js/151.9c4d0e8a.js"><link rel="prefetch" href="/assets/js/152.1a6a26bc.js"><link rel="prefetch" href="/assets/js/153.69558fc7.js"><link rel="prefetch" href="/assets/js/154.8f7ade12.js"><link rel="prefetch" href="/assets/js/155.b39ea418.js"><link rel="prefetch" href="/assets/js/156.19cafea5.js"><link rel="prefetch" href="/assets/js/157.b9a48a47.js"><link rel="prefetch" href="/assets/js/158.903e05c1.js"><link rel="prefetch" href="/assets/js/159.c7cc0811.js"><link rel="prefetch" href="/assets/js/16.087da677.js"><link rel="prefetch" href="/assets/js/160.0efc2560.js"><link rel="prefetch" href="/assets/js/161.7f149b84.js"><link rel="prefetch" href="/assets/js/162.6d87765a.js"><link rel="prefetch" href="/assets/js/163.57593d3d.js"><link rel="prefetch" href="/assets/js/164.52c35ffd.js"><link rel="prefetch" href="/assets/js/165.44502e40.js"><link rel="prefetch" href="/assets/js/166.36a60016.js"><link rel="prefetch" href="/assets/js/167.60fe1c6c.js"><link rel="prefetch" href="/assets/js/168.b81bb97d.js"><link rel="prefetch" href="/assets/js/169.258017e5.js"><link rel="prefetch" href="/assets/js/17.35d9cd3a.js"><link rel="prefetch" href="/assets/js/170.9bf45033.js"><link rel="prefetch" href="/assets/js/171.7140589c.js"><link rel="prefetch" href="/assets/js/172.5d64a0e2.js"><link rel="prefetch" href="/assets/js/173.e88ba3a8.js"><link rel="prefetch" href="/assets/js/174.54212d85.js"><link rel="prefetch" href="/assets/js/175.747f79c6.js"><link rel="prefetch" href="/assets/js/176.6e7a98cd.js"><link rel="prefetch" href="/assets/js/177.e497eda5.js"><link rel="prefetch" href="/assets/js/178.331de26e.js"><link rel="prefetch" href="/assets/js/179.c10e63e4.js"><link rel="prefetch" href="/assets/js/18.7ef3d111.js"><link rel="prefetch" href="/assets/js/180.281e98fb.js"><link rel="prefetch" href="/assets/js/181.fa547101.js"><link rel="prefetch" href="/assets/js/182.b309e2dc.js"><link rel="prefetch" href="/assets/js/183.bbddf453.js"><link rel="prefetch" href="/assets/js/184.d15dc158.js"><link rel="prefetch" href="/assets/js/185.f1cece04.js"><link rel="prefetch" href="/assets/js/186.9227352e.js"><link rel="prefetch" href="/assets/js/187.cce5fe64.js"><link rel="prefetch" href="/assets/js/188.048a8b08.js"><link rel="prefetch" href="/assets/js/189.b438d523.js"><link rel="prefetch" href="/assets/js/19.96832305.js"><link rel="prefetch" href="/assets/js/190.9730fee0.js"><link rel="prefetch" href="/assets/js/191.6341c98e.js"><link rel="prefetch" href="/assets/js/192.ac9f38a4.js"><link rel="prefetch" href="/assets/js/193.e6805a6b.js"><link rel="prefetch" href="/assets/js/194.2c28d5e0.js"><link rel="prefetch" href="/assets/js/195.ad11de66.js"><link rel="prefetch" href="/assets/js/196.f485047b.js"><link rel="prefetch" href="/assets/js/197.6c6c24a6.js"><link rel="prefetch" href="/assets/js/198.a52a2420.js"><link rel="prefetch" href="/assets/js/199.364d694d.js"><link rel="prefetch" href="/assets/js/20.5d26d3e9.js"><link rel="prefetch" href="/assets/js/200.b341f5bd.js"><link rel="prefetch" href="/assets/js/201.1c64126f.js"><link rel="prefetch" href="/assets/js/202.074c859a.js"><link rel="prefetch" href="/assets/js/203.fb75c977.js"><link rel="prefetch" href="/assets/js/204.84dbc63a.js"><link rel="prefetch" href="/assets/js/205.e21c40ae.js"><link rel="prefetch" href="/assets/js/206.631468a8.js"><link rel="prefetch" href="/assets/js/207.4256b73f.js"><link rel="prefetch" href="/assets/js/208.8e26c091.js"><link rel="prefetch" href="/assets/js/209.5ed30316.js"><link rel="prefetch" href="/assets/js/21.17010b66.js"><link rel="prefetch" href="/assets/js/210.b8a4dccc.js"><link rel="prefetch" href="/assets/js/211.13be9279.js"><link rel="prefetch" href="/assets/js/212.9fc876f8.js"><link rel="prefetch" href="/assets/js/22.4a70b4c4.js"><link rel="prefetch" href="/assets/js/23.bd5bfb4a.js"><link rel="prefetch" href="/assets/js/24.5fc0f7f6.js"><link rel="prefetch" href="/assets/js/25.257812a1.js"><link rel="prefetch" href="/assets/js/26.0463a5d6.js"><link rel="prefetch" href="/assets/js/27.f70fecaf.js"><link rel="prefetch" href="/assets/js/28.87353ac8.js"><link rel="prefetch" href="/assets/js/29.416065b9.js"><link rel="prefetch" href="/assets/js/3.a116bc83.js"><link rel="prefetch" href="/assets/js/30.716a75cc.js"><link rel="prefetch" href="/assets/js/31.2fb556c4.js"><link rel="prefetch" href="/assets/js/32.bf0d431c.js"><link rel="prefetch" href="/assets/js/33.d7c58d41.js"><link rel="prefetch" href="/assets/js/34.4913b6b3.js"><link rel="prefetch" href="/assets/js/35.5c3516dd.js"><link rel="prefetch" href="/assets/js/36.b4591466.js"><link rel="prefetch" href="/assets/js/37.5ca1db38.js"><link rel="prefetch" href="/assets/js/38.8b595dce.js"><link rel="prefetch" href="/assets/js/39.3f36b19b.js"><link rel="prefetch" href="/assets/js/4.8e213f7a.js"><link rel="prefetch" href="/assets/js/40.2435983b.js"><link rel="prefetch" href="/assets/js/41.da545133.js"><link rel="prefetch" href="/assets/js/42.1d8d8fa9.js"><link rel="prefetch" href="/assets/js/43.5e5d7a8e.js"><link rel="prefetch" href="/assets/js/44.8ae4abd2.js"><link rel="prefetch" href="/assets/js/45.95038028.js"><link rel="prefetch" href="/assets/js/46.0769cbf4.js"><link rel="prefetch" href="/assets/js/47.d78e9484.js"><link rel="prefetch" href="/assets/js/48.6f91eff8.js"><link rel="prefetch" href="/assets/js/49.205fa99e.js"><link rel="prefetch" href="/assets/js/5.7b38f535.js"><link rel="prefetch" href="/assets/js/50.df7fa530.js"><link rel="prefetch" href="/assets/js/51.7d1a702c.js"><link rel="prefetch" href="/assets/js/52.bf277c5f.js"><link rel="prefetch" href="/assets/js/53.f79e9e02.js"><link rel="prefetch" href="/assets/js/54.7ba19924.js"><link rel="prefetch" href="/assets/js/55.87b3959e.js"><link rel="prefetch" href="/assets/js/56.000cf446.js"><link rel="prefetch" href="/assets/js/57.dd729438.js"><link rel="prefetch" href="/assets/js/58.92ee6605.js"><link rel="prefetch" href="/assets/js/59.0d9dab47.js"><link rel="prefetch" href="/assets/js/6.9d8472be.js"><link rel="prefetch" href="/assets/js/60.7f2e3b75.js"><link rel="prefetch" href="/assets/js/61.c1417523.js"><link rel="prefetch" href="/assets/js/62.e9ef40db.js"><link rel="prefetch" href="/assets/js/63.6d84a611.js"><link rel="prefetch" href="/assets/js/64.218cd941.js"><link rel="prefetch" href="/assets/js/65.95ffcd01.js"><link rel="prefetch" href="/assets/js/66.b6e8d48a.js"><link rel="prefetch" href="/assets/js/67.f0d9c000.js"><link rel="prefetch" href="/assets/js/68.993bc2f8.js"><link rel="prefetch" href="/assets/js/69.7f60b865.js"><link rel="prefetch" href="/assets/js/7.9e236225.js"><link rel="prefetch" href="/assets/js/70.3fa0e67e.js"><link rel="prefetch" href="/assets/js/71.367a253d.js"><link rel="prefetch" href="/assets/js/72.bbc96987.js"><link rel="prefetch" href="/assets/js/73.5750fcc4.js"><link rel="prefetch" href="/assets/js/74.c1f4b472.js"><link rel="prefetch" href="/assets/js/75.e1f3b616.js"><link rel="prefetch" href="/assets/js/76.a5d85648.js"><link rel="prefetch" href="/assets/js/77.34c60be3.js"><link rel="prefetch" href="/assets/js/78.4820ede0.js"><link rel="prefetch" href="/assets/js/79.de941fe6.js"><link rel="prefetch" href="/assets/js/8.411203be.js"><link rel="prefetch" href="/assets/js/80.d922ae0d.js"><link rel="prefetch" href="/assets/js/81.8e88d997.js"><link rel="prefetch" href="/assets/js/82.47bb1a6d.js"><link rel="prefetch" href="/assets/js/83.fdef0d26.js"><link rel="prefetch" href="/assets/js/84.df8cef6c.js"><link rel="prefetch" href="/assets/js/85.cf5f6509.js"><link rel="prefetch" href="/assets/js/86.4751baf1.js"><link rel="prefetch" href="/assets/js/87.70fc30f3.js"><link rel="prefetch" href="/assets/js/88.533f0573.js"><link rel="prefetch" href="/assets/js/89.9edc26f2.js"><link rel="prefetch" href="/assets/js/9.2be0dc87.js"><link rel="prefetch" href="/assets/js/90.d181daf6.js"><link rel="prefetch" href="/assets/js/91.5444581c.js"><link rel="prefetch" href="/assets/js/92.381cf60a.js"><link rel="prefetch" href="/assets/js/93.2ec8e147.js"><link rel="prefetch" href="/assets/js/94.1083452c.js"><link rel="prefetch" href="/assets/js/95.a878aaab.js"><link rel="prefetch" href="/assets/js/96.67636d5c.js"><link rel="prefetch" href="/assets/js/97.c7183efe.js"><link rel="prefetch" href="/assets/js/98.abb73a9b.js"><link rel="prefetch" href="/assets/js/99.7f087f28.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.742392f4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/img/A049.png" alt="🌟 Sudal's gram" class="logo"> <span class="site-name can-hide">🌟 Sudal's gram</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="/general/" class="nav-link">
+  General
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Front End" class="dropdown-title"><span class="title">Front End</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          HTML
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/html/general/" class="nav-link">
+  General
+</a></li><li class="dropdown-subitem"><a href="/frontend/html/performance.html" class="nav-link">
+  Performance
+</a></li><li class="dropdown-subitem"><a href="/frontend/html/canvas.html" class="nav-link">
+  Canvas
+</a></li></ul></li><li class="dropdown-item"><h4>
+          CSS
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/css.html" class="nav-link">
+  Tips
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Javascript
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/javascript/general/" class="nav-link">
+  General
+</a></li><li class="dropdown-subitem"><a href="/frontend/javascript/reference/" class="nav-link">
+  Reference
+</a></li><li class="dropdown-subitem"><a href="/frontend/javascript/performance/" class="nav-link">
+  Performance
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Framework
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/framework/node/" class="nav-link">
+  Node
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/react/" class="nav-link">
+  React
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/vue/" class="nav-link">
+  Vue
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/angular.html" class="nav-link">
+  Angular
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Library
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/library/jquery.html" class="nav-link">
+  jQuery
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/d3.html" class="nav-link">
+  D3
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/three.html" class="nav-link">
+  THREE
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/graphql.html" class="nav-link">
+  Graph QL
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Etc
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/etc/flux.html" class="nav-link">
+  Flux
+</a></li><li class="dropdown-subitem"><a href="/frontend/etc/graphql.html" class="nav-link">
+  Graph QL
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Back End" class="dropdown-title"><span class="title">Back End</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          Language
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/language/java/basic/" class="nav-link">
+  JAVA
+</a></li><li class="dropdown-subitem"><a href="/backend/language/php/" class="nav-link">
+  PHP
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Server
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/server/linux/" class="nav-link">
+  Linux
+</a></li><li class="dropdown-subitem"><a href="/backend/server/nginx/" class="nav-link">
+  NGINX
+</a></li><li class="dropdown-subitem"><a href="/backend/server/tomcat/" class="nav-link">
+  Tomcat
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Network
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/network/http/" class="nav-link">
+  HTTP
+</a></li><li class="dropdown-subitem"><a href="/backend/network/security/" class="nav-link">
+  Security
+</a></li><li class="dropdown-subitem"><a href="/backend/network/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Database
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/database/oracle/" class="nav-link">
+  Oracle
+</a></li><li class="dropdown-subitem"><a href="/backend/database/mssql/" class="nav-link">
+  MSSQL
+</a></li><li class="dropdown-subitem"><a href="/backend/database/mysql/" class="nav-link">
+  MySQL
+</a></li><li class="dropdown-subitem"><a href="/backend/database/redis/" class="nav-link">
+  Redis
+</a></li><li class="dropdown-subitem"><a href="/backend/database/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Framework
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/framework/spring/" class="nav-link">
+  Spring
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/jpa/" class="nav-link">
+  JPA
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/security/" class="nav-link">
+  Security
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          DevOps
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/devops/docker/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/kubernetes.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/git.html" class="nav-link">
+  Git
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Big Data
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/bigdata/dw.html" class="nav-link">
+  DW
+</a></li><li class="dropdown-subitem"><a href="/backend/bigdata/analytics.html" class="nav-link">
+  Analytics
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Books" class="dropdown-title"><span class="title">Books</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/books/effective_java_3rd/chapter_1.html" class="nav-link">
+  Effective Java 3rd
+</a></li><li class="dropdown-item"><!----> <a href="/books/js_high_performance.html" class="nav-link">
+  자바스크립트 성능 최적화
+</a></li><li class="dropdown-item"><!----> <a href="/books/clean_architecture.html" class="nav-link">
+  클린 아키텍처
+</a></li><li class="dropdown-item"><!----> <a href="/books/elastic_search_guide/chapter_1.html" class="nav-link">
+  엘라스틱서치 실무 가이드
+</a></li><li class="dropdown-item"><!----> <a href="/books/mastering_akka/" class="nav-link">
+  아카를 이용한 마이크로서비스 개발
+</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="/general/" class="nav-link">
+  General
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Front End" class="dropdown-title"><span class="title">Front End</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          HTML
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/html/general/" class="nav-link">
+  General
+</a></li><li class="dropdown-subitem"><a href="/frontend/html/performance.html" class="nav-link">
+  Performance
+</a></li><li class="dropdown-subitem"><a href="/frontend/html/canvas.html" class="nav-link">
+  Canvas
+</a></li></ul></li><li class="dropdown-item"><h4>
+          CSS
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/css.html" class="nav-link">
+  Tips
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Javascript
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/javascript/general/" class="nav-link">
+  General
+</a></li><li class="dropdown-subitem"><a href="/frontend/javascript/reference/" class="nav-link">
+  Reference
+</a></li><li class="dropdown-subitem"><a href="/frontend/javascript/performance/" class="nav-link">
+  Performance
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Framework
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/framework/node/" class="nav-link">
+  Node
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/react/" class="nav-link">
+  React
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/vue/" class="nav-link">
+  Vue
+</a></li><li class="dropdown-subitem"><a href="/frontend/framework/angular.html" class="nav-link">
+  Angular
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Library
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/library/jquery.html" class="nav-link">
+  jQuery
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/d3.html" class="nav-link">
+  D3
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/three.html" class="nav-link">
+  THREE
+</a></li><li class="dropdown-subitem"><a href="/frontend/library/graphql.html" class="nav-link">
+  Graph QL
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Etc
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/frontend/etc/flux.html" class="nav-link">
+  Flux
+</a></li><li class="dropdown-subitem"><a href="/frontend/etc/graphql.html" class="nav-link">
+  Graph QL
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Back End" class="dropdown-title"><span class="title">Back End</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          Language
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/language/java/basic/" class="nav-link">
+  JAVA
+</a></li><li class="dropdown-subitem"><a href="/backend/language/php/" class="nav-link">
+  PHP
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Server
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/server/linux/" class="nav-link">
+  Linux
+</a></li><li class="dropdown-subitem"><a href="/backend/server/nginx/" class="nav-link">
+  NGINX
+</a></li><li class="dropdown-subitem"><a href="/backend/server/tomcat/" class="nav-link">
+  Tomcat
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Network
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/network/http/" class="nav-link">
+  HTTP
+</a></li><li class="dropdown-subitem"><a href="/backend/network/security/" class="nav-link">
+  Security
+</a></li><li class="dropdown-subitem"><a href="/backend/network/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Database
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/database/oracle/" class="nav-link">
+  Oracle
+</a></li><li class="dropdown-subitem"><a href="/backend/database/mssql/" class="nav-link">
+  MSSQL
+</a></li><li class="dropdown-subitem"><a href="/backend/database/mysql/" class="nav-link">
+  MySQL
+</a></li><li class="dropdown-subitem"><a href="/backend/database/redis/" class="nav-link">
+  Redis
+</a></li><li class="dropdown-subitem"><a href="/backend/database/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Framework
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/framework/spring/" class="nav-link">
+  Spring
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/jpa/" class="nav-link">
+  JPA
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/security/" class="nav-link">
+  Security
+</a></li><li class="dropdown-subitem"><a href="/backend/framework/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          DevOps
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/devops/docker/" class="nav-link">
+  Docker
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/kubernetes.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/git.html" class="nav-link">
+  Git
+</a></li><li class="dropdown-subitem"><a href="/backend/devops/etc.html" class="nav-link">
+  Etc
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Big Data
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/backend/bigdata/dw.html" class="nav-link">
+  DW
+</a></li><li class="dropdown-subitem"><a href="/backend/bigdata/analytics.html" class="nav-link">
+  Analytics
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Books" class="dropdown-title"><span class="title">Books</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/books/effective_java_3rd/chapter_1.html" class="nav-link">
+  Effective Java 3rd
+</a></li><li class="dropdown-item"><!----> <a href="/books/js_high_performance.html" class="nav-link">
+  자바스크립트 성능 최적화
+</a></li><li class="dropdown-item"><!----> <a href="/books/clean_architecture.html" class="nav-link">
+  클린 아키텍처
+</a></li><li class="dropdown-item"><!----> <a href="/books/elastic_search_guide/chapter_1.html" class="nav-link">
+  엘라스틱서치 실무 가이드
+</a></li><li class="dropdown-item"><!----> <a href="/books/mastering_akka/" class="nav-link">
+  아카를 이용한 마이크로서비스 개발
+</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/books/elastic_search_guide/chapter_1.html" class="sidebar-link">01. 검색 시스템 이해하기</a></li><li><a href="/books/elastic_search_guide/chapter_2.html" class="sidebar-link">02. 엘라스틱서치 살펴보기</a></li><li><a href="/books/elastic_search_guide/chapter_3.html" class="active sidebar-link">03. 데이터 모델링</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/books/elastic_search_guide/chapter_3.html#_3-1-매핑-api-이해하기" class="sidebar-link">3.1 매핑 API 이해하기</a></li><li class="sidebar-sub-header"><a href="/books/elastic_search_guide/chapter_3.html#_3-2-메타-필드" class="sidebar-link">3.2 메타 필드</a></li><li class="sidebar-sub-header"><a href="/books/elastic_search_guide/chapter_3.html#_3-3-필드-데이터-타입" class="sidebar-link">3.3 필드 데이터 타입</a></li><li class="sidebar-sub-header"><a href="/books/elastic_search_guide/chapter_3.html#_3-4-엘라스틱서치-분석기" class="sidebar-link">3.4 엘라스틱서치 분석기</a></li><li class="sidebar-sub-header"><a href="/books/elastic_search_guide/chapter_3.html#_3-5-document-api-이해하기" class="sidebar-link">3.5 Document API 이해하기</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="_03-데이터-모델링"><a href="#_03-데이터-모델링" class="header-anchor">#</a> 03. 데이터 모델링</h1> <p>엘라스틱 서치에서는 색인할 때 문서의 데이터 유형에 따라 필드에 적절한 데이터 타입을 지정하는것을 <strong>매핑</strong>이라 한다.</p> <p><strong>매핑</strong>은 색인될 문서의 데이터 모델링이라고 할 수 있다.</p> <p>사전에 매핑을 설정하면 자동으로 지정된 데이터 타입으로 색인되지만 매핑을 설정해 두지 않으면 엘라스틱 서치가 자동으로 필드를 생성하고 필드타입까지 결정한다.</p> <p>이는 예기치 않는 문제를 야기시킬수 있기 때문에 <strong>매핑</strong> 과정은 매우 중요한 과정이라 할 수 있다.</p> <h2 id="_3-1-매핑-api-이해하기"><a href="#_3-1-매핑-api-이해하기" class="header-anchor">#</a> 3.1 매핑 API 이해하기</h2> <p><strong>매핑</strong>은 색인시 데이터가 어떻게 저장될지 결정하는 설정</p> <p>문서에서 존재하는 필드의 속성을 정의할 때 각 필드 속성에는 데이터 타입과 메타데이터가 포함되는데
+이를 통해 색인 과정에서 문서가 역색인 (Inverted Index) 으로 변환되는지 상세하게 정의할 수 있다.</p> <p>엘라스틱은 기본적으로 스키마리스이기 때문에 자동으로 매핑정보가 생성된다.
+또한 엘라스틱 서치는 수정이 불가하여 삭제하고 재생성해야 하기 때문에 이를 통해 장애가 발생할 수 있다.</p> <p>예시는 다음과 같다.</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 문서 1</span>
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;movieCd&quot;</span><span class="token builtin class-name">:</span> <span class="token number">20173732</span>,
+  <span class="token string">&quot;moiveNm&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;캡틴 아메리카&quot;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># 문서 2</span>
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;movieCd&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;XT001&quot;</span>,
+  <span class="token string">&quot;moiveNm&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;아이언 맨&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>첫번째 문서를 매핑설정없이 색인하면 <code>moiveCd</code> 필드는 숫자 타입으로 매핑되지만 두번째 문서를 색인하면 <code>moiveCd</code> 값은 문자열이기 때문에 색인이 불가능하다.</p> <p>때문에 인덱스를 수정이 불가하니 삭제하고 다시 생성하거나 매핑을 다시 정의해야 한다.</p> <p>매핑정보를 설정할 때는 다음과 같은 사항을 고민해야 한다.</p> <ul><li>문자열을 분석할 것인가?</li> <li><code>_source</code> 에 어떤 필드를 정의할 것인가</li> <li>날짜 필드를 가지는 필드는 무엇인가</li> <li>매핑에 정의되지 않고 유입되는 필드는 어떻게 처리할 것인가?</li></ul> <h3 id="_3-1-1-매핑-인덱스-만들기"><a href="#_3-1-1-매핑-인덱스-만들기" class="header-anchor">#</a> 3.1.1 매핑 인덱스 만들기</h3> <p>하기와 같이 매핑 인덱스 생성</p> <div class="language-bash extra-class"><pre class="language-bash"><code>PUT movie_search
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;settings&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;number_of_shards&quot;</span><span class="token builtin class-name">:</span> <span class="token number">5</span>,
+    <span class="token string">&quot;number_of_replicas&quot;</span><span class="token builtin class-name">:</span> <span class="token number">1</span>
+  <span class="token punctuation">}</span>,
+  <span class="token string">&quot;mappings&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+      <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+        <span class="token string">&quot;movieCd&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;movieNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;text&quot;</span>,
+          <span class="token string">&quot;analyzer&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;standard&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;movieNmEn&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;text&quot;</span>,
+          <span class="token string">&quot;analyzer&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;standard&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;prdtYear&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;integer&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;openDt&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;integer&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;typeNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;prdtStatNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;nationAlt&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;genreAlt&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;repNationNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;repGenreNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;companies&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+            <span class="token string">&quot;companyCd&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+              <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+            <span class="token punctuation">}</span>,
+            <span class="token string">&quot;companyNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+              <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>,
+        <span class="token string">&quot;directors&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+            <span class="token string">&quot;peopleNm&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+              <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;keyword&quot;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>결과는 다음과 같다.</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;acknowledged&quot;</span> <span class="token builtin class-name">:</span> true,
+  <span class="token string">&quot;shards_acknowledged&quot;</span> <span class="token builtin class-name">:</span> true,
+  <span class="token string">&quot;index&quot;</span> <span class="token builtin class-name">:</span> <span class="token string">&quot;movie_search&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_3-1-2-매핑-확인"><a href="#_3-1-2-매핑-확인" class="header-anchor">#</a> 3.1.2 매핑 확인</h3> <div class="language-bash extra-class"><pre class="language-bash"><code>GET movie_search/_mapping
+</code></pre></div><h3 id="_3-1-3-매핑-파라미터"><a href="#_3-1-3-매핑-파라미터" class="header-anchor">#</a> 3.1.3 매핑 파라미터</h3> <p>매핑 파라미터는 색인할 필드의 데이터를 어떻게 저장할 것인지에 대한 다양한 옵션을 제공한다.</p> <ul><li>analyzer
+<ul><li>해당 필드의 데이터를 형태소 분석하겠다는 의미</li> <li>text 데이터 타입의 필드는 analyzer 매핑 파라미터를 기본적으로 사용</li> <li>별도의 분석기 지정하지 않으면 Standard Analyzer로 형태소 분석</li></ul></li> <li>normalizer
+<ul><li>term query에 분석기 사용하기 위해 사용</li> <li>일반적으로 대소문자를 구분하여 다른 문서로 인지하지만, normalizer를 통해 asciifolding 과 같은 필터를 사용해 하나의 문서로 인지할 수 있다.</li></ul></li> <li>boost
+<ul><li>필드에 가중치 부여</li> <li>가중치에 따라 유사도 점수(_score)가 달라지기 때문에 설정 시 검색 결과의 노출 순서에 영향을 줌</li> <li>최근 엘라스틱서치는 색인 시 boost 설정을 할 수 없도록 바뀜</li></ul></li> <li>coerce
+<ul><li>색인 시 자동 변환을 허용할지 여부를 설정</li> <li>ex) “10”과 같은 숫자 형태의 문자열이 integer 타입의 필드에 들어오면 엘라스틱서치는 자동으로 형변환을 수행해 정상적으로 처리. 하지만, coerce 설정 미사용 하면 색인에 실패</li></ul></li> <li>copy_to
+<ul><li>매핑 파라미터를 추가한 필드의 값을 지정한 필드로 복사</li> <li>ex) keyword 타입 필드에 copy_to 매핑 파라미터 사용해 다른 필드로 값을 복사하면 복사된 필드에서는 text 타입을 지정할 수 있음</li> <li>여러 개의 필드 데이터를 하나의 필드에 모아서 전체 검색 용도로 사용 (_all 칼럼과 동일한 기능)</li></ul></li> <li>fielddata
+<ul><li>엘라스틱서치가 힙 공간에 생성하는 메모리 캐시</li> <li>반복적인 메모리 부족 현상과 잦은 GC로 현재는 거의 사용되지 않음  -&gt; 최신 버전에서는 doc_values 라는 새로운 형태의 캐시 제공</li> <li>부득이하게 text 타입 필드에서 사용할 수 있지만, 최소한으로만 사용해야 함</li></ul></li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>PUT movie_search_mapping/_mapping
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;nationAltEn&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+      <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;text&quot;</span>,
+      <span class="token string">&quot;fielddata&quot;</span><span class="token builtin class-name">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;acknowledged&quot;</span> <span class="token builtin class-name">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>doc_values
+<ul><li>엘라스틱서치에서 사용하는 기본 캐시 -&gt; 루씬을 기반으로 하는 캐시 방식</li> <li>text 타입을 제외한 모든 타입에서 기본적으로 사용</li> <li>필드를 정렬, 집계할 필요 없고 스크립트에서 필드 값에 액세스할 필요 없다면 디스크 공간 절약을 위해 doc_values 비활성화 가능하지만, 한 번 비활성화 된 필드는 인덱스를 재색인하지 않는 한 변경이 불가능함.</li></ul></li> <li>dynamic
+<ul><li>매핑에 필드를 추가할 때 동적으로 생성할 지, 생성하지 않을지 결정</li> <li>옵션 (p.71 표3.2)</li></ul></li> <li>enabled
+<ul><li>검색 결과에는 포함하지만 색인은 하고 싶지 않는 경우 사용</li></ul></li> <li>format
+<ul><li>엘라스틱 서치는 날짜/시간을 문자열로 표시함. 미리 구성된 포맷을 사용 가능.</li> <li>p72 표3.3 참고</li></ul></li> <li>ignore_above
+<ul><li>필드에 저장되는 문자열이 지정한 크기를 넘어서면 빈 값으로 색인함</li> <li>지정한 크기만큼만 색인되는 것이 아니라 빈 값으로 저장되므로 주의 필요</li></ul></li> <li>ignore_malformed
+<ul><li>잘못된 데이터 타입을 색인하려고 하면 예외 발생하고 전부 색인되지 않음</li> <li>해당 매핑 파라미터 사용하면 해당 필드만 무시하고 문서는 색인 가능</li></ul></li> <li>index
+<ul><li>필드값을 색인할지를 결정</li> <li>기본값은 true</li></ul></li> <li>fields
+<ul><li>다중 필드를 설정할 수 있는 옵션</li> <li>필드 안에 또 다른 필드 정보를 추가할 수 있어 같은 string 값을 각각 다른 분석기로 처리하도록 설정 가능</li></ul></li></ul> <p>요청  (_doc 제거 후 실행)</p> <div class="language-bash extra-class"><pre class="language-bash"><code>PUT movie_search_mapping  
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;mappings&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;_doc&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+      <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+        <span class="token string">&quot;awards&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;text&quot;</span>,
+          <span class="token string">&quot;fields&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+            <span class="token string">&quot;name&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+              <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span>  <span class="token string">&quot;keyword&quot;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>결과 ---&gt; error 남 (확인 필요)</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;error&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;root_cause&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;illegal_argument_exception&quot;</span>,
+        <span class="token string">&quot;reason&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;The mapping definition cannot be nested under a type [_doc] unless include_type_name is set to true.&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>,
+    <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;illegal_argument_exception&quot;</span>,
+    <span class="token string">&quot;reason&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;The mapping definition cannot be nested under a type [_doc] unless include_type_name is set to true.&quot;</span>
+  <span class="token punctuation">}</span>,
+  <span class="token string">&quot;status&quot;</span><span class="token builtin class-name">:</span> <span class="token number">400</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>결과 --&gt; error 안났을 때</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;acknowledged&quot;</span> <span class="token builtin class-name">:</span> true,
+  <span class="token string">&quot;shards_acknowledged&quot;</span> <span class="token builtin class-name">:</span> true,
+  <span class="token string">&quot;index&quot;</span> <span class="token builtin class-name">:</span> <span class="token string">&quot;moive_search_mapping&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><p>norms</p> <ul><li>문서의 _score 값 계산에 필요한 정규화 인수를 사용할 지 여부를 설정</li> <li>기본값은 true</li></ul></li> <li><p>null_value</p> <ul><li>색인 시 문서에 필드가 없거나 필드의 값이 null이면 색인 시 필드를 생성하지 않음</li> <li>null_value 설정 시 문서의 값이 null이어도 필드를 생성 및 해당하는 값으로 저장</li></ul></li></ul> <p>요청</p> <div class="language-bash extra-class"><pre class="language-bash"><code>PUT movie_search_mapping/_mapping/_doc
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;properties&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;audiCnt&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+          <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;integer&quot;</span>,
+          <span class="token string">&quot;null_value&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;0&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>결과 ---&gt; 역시 error</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;error&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;root_cause&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;illegal_argument_exception&quot;</span>,
+        <span class="token string">&quot;reason&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;Types cannot be provided in put mapping requests, unless the include_type_name parameter is set to true.&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>,
+    <span class="token string">&quot;type&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;illegal_argument_exception&quot;</span>,
+    <span class="token string">&quot;reason&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;Types cannot be provided in put mapping requests, unless the include_type_name parameter is set to true.&quot;</span>
+  <span class="token punctuation">}</span>,
+  <span class="token string">&quot;status&quot;</span><span class="token builtin class-name">:</span> <span class="token number">400</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>결과</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;acknowledged&quot;</span> <span class="token builtin class-name">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>position_increment_gap
+<ul><li>배열 형태의 데이터를 색인 시 검색의 정확도를 높이기 위해 제공하는 옵션</li> <li>필드 데이터 중 단어와 단어 사이의 간격을 허용할 지 설정</li></ul></li> <li>properties
+<ul><li>오브젝트 타입이나 중첩 타입의 스키마를 정의할 때 사용되는 옵션으로 필드의 타입을 매핑</li></ul></li> <li>search_analyzer
+<ul><li>일반적으로는 색인과 검색 시 같은 분석기를 사용하지만, 다른 분석기를 사용하고 싶은 경우 별도 지정을 하기 위한 타입</li></ul></li> <li>similarity
+<ul><li>유사도 측정 알고리즘을 지정</li> <li>기본 알고리즘인 BM25에서 다른 알고리즘으로 변경 가능</li> <li>p75 표3.4 참고</li></ul></li> <li>store
+<ul><li>필드의 값을 저장해 검색 결과에 값을 포함하기 위한 매핑 파라미터</li> <li>기본적으로 _source에 색인된 문서가 저장되지만 store 매핑 파라미터를 사용하면 해당 필드를 자체적으로 저장 가능함 ( 대신 디스크를 더 많이 사용 )</li></ul></li> <li>term_vector
+<ul><li>루씬에서 분석된 용어의 정보를 포함할지 여부를 결정</li></ul></li></ul> <h2 id="_3-2-메타-필드"><a href="#_3-2-메타-필드" class="header-anchor">#</a> 3.2 메타 필드</h2> <h2 id="_3-3-필드-데이터-타입"><a href="#_3-3-필드-데이터-타입" class="header-anchor">#</a> 3.3 필드 데이터 타입</h2> <h2 id="_3-4-엘라스틱서치-분석기"><a href="#_3-4-엘라스틱서치-분석기" class="header-anchor">#</a> 3.4 엘라스틱서치 분석기</h2> <h2 id="_3-5-document-api-이해하기"><a href="#_3-5-document-api-이해하기" class="header-anchor">#</a> 3.5 Document API 이해하기</h2></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/books/elastic_search_guide/chapter_2.html" class="prev">
+        02. 엘라스틱서치 살펴보기
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.c9eb7949.js" defer></script><script src="/assets/js/2.97456166.js" defer></script><script src="/assets/js/139.7959ed5d.js" defer></script>
+  </body>
+</html>
