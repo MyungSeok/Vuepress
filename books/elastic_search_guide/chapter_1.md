@@ -283,3 +283,8 @@ GET moive_kibana_execute/_search
 ```
 
 ![샘플 문서 검색](/img/A111.png)
+
+:::warning 버전정보의 유의
+Elastic Search 와 Kibana 의 버전을 통일시켜주는것이 좋다.
+간혹 Kibana 의 동작이 불안정하여 기동이 안되는 경우가 빈번하다.
+:::
