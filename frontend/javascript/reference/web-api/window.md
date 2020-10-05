@@ -120,5 +120,5 @@ reqAnimate(() => {
   * `encodeURI` 와 `encodeURIComponent` 의 중간정도의 문자를 인코딩 합니다.
 
 :::tip 참고자료
-<http://mwultong.blogspot.com/2006/10/encodeuri-encodeuricomponent-escape.html>
+<https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiJmaaJppzsAhVBPHAKHSJwAvMQFjAAegQIBhAC&url=https%3A%2F%2Fvelog.io%2F%40yejinh%2FIntersection-Observer%25EB%25A1%259C-%25EB%25AC%25B4%25ED%2595%259C-%25EC%258A%25A4%25ED%2581%25AC%25EB%25A1%25A4-%25EA%25B5%25AC%25ED%2598%2584%25ED%2595%2598%25EA%25B8%25B0&usg=AOvVaw3ZsJE1A2P2lHZ130h7mhV->
 :::

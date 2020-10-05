@@ -196,6 +196,7 @@ module.exports = {
             '/frontend/javascript/reference/web-api/element',
             '/frontend/javascript/reference/web-api/window',
             '/frontend/javascript/reference/web-api/xhr',
+            '/frontend/javascript/reference/web-api/io',
           ]
         }, 
         {
