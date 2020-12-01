@@ -66,7 +66,8 @@ module.exports = {
           {
             text: 'Language', 
             items: [
-              { text: 'JAVA', link: '/backend/language/java/basic/' },
+              { text: 'Java', link: '/backend/language/java/basic/' },
+              { text: 'Kotlin', link: '/backend/language/kotlin/basic/nested_classes' },
               { text: 'PHP', link: '/backend/language/php/' },
             ]
           }, 
@@ -392,6 +393,14 @@ module.exports = {
             '/backend/language/java/tip/gson_adapter'
           ]
         },
+      ],
+      '/backend/language/kotlin/': [
+        {
+          title: 'Basic',
+          children: [
+            '/backend/language/kotlin/basic/nested_classes'
+          ]
+        }
       ],
       '/backend/server/linux/': [
         '', 
