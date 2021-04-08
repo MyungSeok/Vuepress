@@ -130,7 +130,8 @@ module.exports = {
           { text: '자바스크립트 성능 최적화',  link: '/books/js_high_performance' }, 
           { text: '클린 아키텍처',  link: '/books/clean_architecture' },
           { text: '엘라스틱서치 실무 가이드', link: '/books/elastic_search_guide/chapter_1' },
-          { text: '아카를 이용한 마이크로서비스 개발', link: '/books/mastering_akka/'}
+          { text: '아카를 이용한 마이크로서비스 개발', link: '/books/mastering_akka/'},
+          { text: 'Programming in Scala 4/e', link: '/books/programming_in_scala/'}
         ]
       }
     ],
@@ -495,6 +496,10 @@ module.exports = {
       '/books/mastering_akka/': [
         '',
         'chapter_1'
+      ],
+      '/books/programming_in_scala/': [
+        '',
+        '1week'
       ]
     }
   }
