@@ -259,4 +259,155 @@ boolean nameHasUpperCase =
 
 ### 1.5 결론
 
-스칼라의 타입 시스템과 함수형 프로그래밍은 프로그램의 사고방식을 바꿀 수 있는 지적인 경험을 제공한다는 사실을 체감한다. 
+스칼라의 타입 시스템과 함수형 프로그래밍은 프로그램의 사고방식을 바꿀 수 있는 지적인 경험을 제공한다는 사실을 체감한다.
+
+
+## Chapter 02 스칼라 첫걸음
+
+### 2.1 1단계: 스칼라 인터프리터 사용법을 익히자
+
+스칼라를 시작하기 가장 쉬운 방법은 스칼라 인터프리터 (대화형 Shell) 을 사용하는 것이다.
+
+표현식 (expression) 을 입력하면 인터프리터가 그 표현식을 계산해서 결괏값을 출력할 것이다.
+
+```bash
+$ scala
+Welcome to Scala version 2.11.7
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala>
+```
+
+1 + 2 와 같은 표현식을 입력하고 엔터를 누르자
+
+```scala
+scala> 1 + 2
+```
+
+다음과 같이 응답한다.
+
+```scala
+res0: Int = 3
+```
+
+`res{번호}` 의 식별자 (identifier) 는 나중에 사용할 수 있다.
+
+만약 `res0` 가 `3` 으로 정해졌으면 아래와 같이 해당 식별자에 3을 곱하면 9를 출력한다.
+
+```scala
+scala> res0 * 3
+res1: Int = 9
+```
+
+Hello World 출력은 다음과 같다.
+
+```scala
+scala> println("Hello, world!")
+Hello, world!
+```
+
+### 2.2 2단계:변수를 정의해보자 
+
+스칼라에는 두가지 종류의 변수가 있는데 `val` 과 `var` 이며 특징은 다음과 같다.
+
+* val : 불변 (immutable)
+* var : 가변 (mutable)
+
+또한 스칼라는 아래와 같이 타입 추론이 가능하다.
+
+```scala
+scala> val msg = "Hello, world!"
+msg: String = Hello, world!
+```
+
+### 2.3 3단계:함수를 정의해보자
+
+스칼라에서는 함수의 정의를 다음과 같이 한다.
+
+```scala
+def max(x: Int, y: Int): Int = {
+  if (x > y)
+    x
+  else 
+    y
+}
+```
+
+위 코드는 아래와 같이 중괄호를 생략하여 표현이 가능하다.
+
+```scala
+def max(x: Int, y: Int) = if (x > y) x else y
+```
+
+스칼라 컴파일러가 함수의 반환 타입을 반드시 지정하도록 요구하는 경우가 있는데 이는 **함수가 재귀적 (recursive) 이라면 반드시 반환 타입을 명시해야 한다.**
+
+만약 함수가 어떤 관심이 있을만한 결과를 돌려주지 않는 경우가 바로 아래와 같은 경우다.
+
+```scala
+def greet() = println("Hello, world!")
+```
+
+`greet()` 함수를 정의하면 인터프리터가 `greet: ()Unit` 이라고 응답할 것이다.
+
+`Unit` 은 `greet` 함수의 반환 타입인데 이는 우리가 관심을 가질 만한 값을 반환하지 않는다는 뜻이다.<br/>
+이는 자바의 `void` 와 비슷한 역활을 하며 스칼라에서는 모두 `Unit` 을 반환하는 메서드가 된다.
+
+즉, 반환 타입이 `Unit` 인 메서드는 부수효과를 위해서만 실행하는 함수이다.
+
+### 2.4 4단계:스칼라 스크립트를 작성해보자
+
+```scala
+println("Hello, " + args(0) + "!" )
+```
+
+```bash
+$ scala helloarg.scala planet
+
+Hello, planet!
+```
+
+스칼라 배열의 첫번째 원소는 `args[0]` 이 아니고 `args(0)` 이다.
+
+### 2.5 5단계:while로 루프를 돌고, if로 결정해보자
+
+```scala
+var i = 0
+
+while (i < args.length) {
+  if (i != 0)
+    println(" ")
+  println(args(i))
+  i += 1
+}
+```
+
+이 코드는 명령형 스타일이며 작동을 지시하는 명령을 한 번에 하나씩 사용하는 방식이다.
+
+> 위 코드는 예시일 뿐 다음에 배울 배열의 인덱스를 사용해 이터레이션 하는 것이 더 나은 접근방법이다. 
+
+### 2.6 6단계:foreach와 for를 사용해 이터레이션해보자
+
+스칼라를 더 잘 알게 될수록 함수형 (functional) 스타일로 코드 작성을 하게 될 것이다.
+
+```scala
+args.foreach(arg => println(arg))
+```
+
+위 코드는 함수 리터럴 (function literal) 을 사용하였지만 더 정확한 형태는 다음과 같다.
+
+```scala
+args.foreach(println)
+```
+
+함수 리터럴 문법은 파라미터 이름의 목록이 괄호 안에 오고, 그 위에 오른쪽 화살표, 마지막으로 함수의 본문이 있어야 한다.<br/>
+
+```scala
+(x: Int, y: Int) => x + y
+```
+
+### 2.7 결론
+
+스칼라의 기본적은 문법을 알아봤으니 3장에서 계속된다.
+
+## Chapter 03 스칼라 두 번째 걸음
