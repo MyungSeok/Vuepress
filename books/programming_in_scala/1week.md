@@ -12,7 +12,7 @@
 ### 1.1  여러분의 마음에서 점점 자라나는 언어 (a language that grows on you)
 
 ```scala
-var captial = Map("US" -> "Washington", "France" -> "Paris)
+var captial = Map("US" -> "Washington", "France" -> "Paris")
 capital += ("Japan" -> "Tokyo")
 println(capital("France"))
 ```
@@ -307,7 +307,7 @@ scala> println("Hello, world!")
 Hello, world!
 ```
 
-### 2.2 2단계:변수를 정의해보자 
+### 2.2 2단계: 변수를 정의해보자 
 
 스칼라에는 두가지 종류의 변수가 있는데 `val` 과 `var` 이며 특징은 다음과 같다.
 
@@ -321,7 +321,7 @@ scala> val msg = "Hello, world!"
 msg: String = Hello, world!
 ```
 
-### 2.3 3단계:함수를 정의해보자
+### 2.3 3단계: 함수를 정의해보자
 
 스칼라에서는 함수의 정의를 다음과 같이 한다.
 
@@ -355,7 +355,7 @@ def greet() = println("Hello, world!")
 
 즉, 반환 타입이 `Unit` 인 메서드는 부수효과를 위해서만 실행하는 함수이다.
 
-### 2.4 4단계:스칼라 스크립트를 작성해보자
+### 2.4 4단계: 스칼라 스크립트를 작성해보자
 
 ```scala
 println("Hello, " + args(0) + "!" )
@@ -369,7 +369,7 @@ Hello, planet!
 
 스칼라 배열의 첫번째 원소는 `args[0]` 이 아니고 `args(0)` 이다.
 
-### 2.5 5단계:while로 루프를 돌고, if로 결정해보자
+### 2.5 5단계: while로 루프를 돌고, if로 결정해보자
 
 ```scala
 var i = 0
@@ -386,7 +386,7 @@ while (i < args.length) {
 
 > 위 코드는 예시일 뿐 다음에 배울 배열의 인덱스를 사용해 이터레이션 하는 것이 더 나은 접근방법이다. 
 
-### 2.6 6단계:foreach와 for를 사용해 이터레이션해보자
+### 2.6 6단계: foreach와 for를 사용해 이터레이션해보자
 
 스칼라를 더 잘 알게 될수록 함수형 (functional) 스타일로 코드 작성을 하게 될 것이다.
 
@@ -408,6 +408,66 @@ args.foreach(println)
 
 ### 2.7 결론
 
-스칼라의 기본적은 문법을 알아봤으니 3장에서 계속된다.
+스칼라의 기본적은 문법을 알아봤으니 다음장에서는 좀 더 여러운 주제로 넘어간다.
 
 ## Chapter 03 스칼라 두 번째 걸음
+
+2장에서는 스칼라의 기초를 3장에서는 스칼라에서 스크립트를 작성할 수 있을 정도의 충분한 지식을 쌓을수 있다. 
+
+### 3.1 7단계: 배열에 타입 파라미터를 지정해보자
+
+스칼라에서는 `new` 를 사용해 객체를 인스턴스화 할 수 있다.
+
+다음 코드는 스칼라에서 `java.math.BigInteger` 인스턴스를 만들고 값 `"12345"` 를 인스턴스화 한다.
+
+```scala
+val big = new java.math.BigInteger("12345")
+```
+
+배열을 타입으로 파라미터화 하는 방법이다.
+
+```scala
+val greetStrings = new Array[String](3)
+
+greetStrings(0) = "Hello"
+greetStrings(1) = ", "
+greetStrings(2) = "world!\n"
+
+for (i < 0 to 2)
+  print(greetStrings(i))
+```
+
+배열의 첫번째 요소를 접근하려면 자바에서는 `greetStrings[0]` 이지만 스칼라에서는 `greetStrings(0)` 이다.
+
+`for` 반복문의 코드중에 나타나는 스칼라의 특징은 **메서드가 파라미터를 하나만 요구하는 경우, 그 메서드를 점(.)과 괄호 없이 호출할 수 있다는 점**이다.
+
+이 예에서 `to` 는 실제로 `Int` 인자를 하나만 받는 메서드이며 `0 to 2` 는 내부적으로 `(0).to(2)` 라는 메서드 호출로 바뀐다.
+
+> 스칼라는 모든 객체가 함수이다.
+
+전통적으로 `1 + 2` 라는 코드는 `(1).+(2)` 라고도 쓸 수 있다.
+
+변수 하나 이상의 값을 괄호로 둘러싸서 호출하면 스칼라는 그 코드를 변수에 대해 `apply` 라는 메서드를 호출하는 것으로 바꾼다.
+
+즉, `greetStrings(i)` 는 `greetStrings.apply(i)` 로 바뀐다.
+
+마찬가지로 **어떤 변수 뒤에 괄호로 둘러싼 인자들이 있는 표현식에 할당 하면, 컴파일러는 인자와 등호, 오른쪽값등을 모두 넣어 `update` 메서드를 호출한다.**
+
+즉 `greetStrings(0) = "Hello"` 는 `greetStrings.update(0, "Hello")` 로 바뀐다.
+
+하지만 위 코드는 개념을 보여주려는 의도로 스칼라에서는 추천하지 않는 코드이며 더 좋은 방법을 사용하는 코드는 다음과 같다.
+
+스칼라에서는 타입 추론이 가능하기 때문에 아래와 같이 배열을 만들고 초기화 할 수 있다.
+
+```scala
+val numNames = Array("zero", "one", "two")
+```
+
+위에서 언급한 것 처럼 위 코드를 좀 더 장황하게 만들면 아래와 같다.
+
+```scala
+val numNames = Array.apply("zero", "one", "two")
+```
+
+### 3.2 8단계: 리스트를 사용해보자
+
