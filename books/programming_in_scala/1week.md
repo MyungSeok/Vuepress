@@ -471,3 +471,187 @@ val numNames = Array.apply("zero", "one", "two")
 
 ### 3.2 8단계: 리스트를 사용해보자
 
+함수형 프로그래밍의 가장 큰 착안점 하나는 **메서드에 부수효과가 없어야 한다**는 점이다.
+
+메서드의 유일한 동작은 계산을 해서 값을 반환하는 것 뿐이다.
+
+리스트를 만들고 초기화하는 방식은 다음과 같다.
+
+```scala
+val oneTwoThree = List(1, 2, 3)
+```
+
+리스트에 원소를 추가하는 방식은 다음과 같이 이루어진다.
+
+```scala
+val twoThree = List(2, 3)
+val oneTwoThree = 1 :: twoThree
+
+println(oneTwoThree)
+```
+
+연산자 콘즈 (::) 를 사용하여 처리하는데 이는 연산자 결합법칙에 의거하여 이후 5.9 절에서 설명한다.
+
+위 코드는 다음과 같은 결과를 볼 수 있다.
+
+```scala
+List(1, 2, 3)
+```
+
+빈 리스트를 `Nil` 로 줄여 쓸 수 있어 이를 이용하여 리스트를 초기화 할 수 있다.
+
+```scala
+val oneTwoThree = 1 :: 2 :: 3 :: Nil
+
+println(oneTwoThree)
+```
+
+리스트와 리스트 간을 붙일 때는 `:::` 을 사용한다.
+
+```scala
+List("a", "b") ::: List("c", "d", "e")
+```
+
+### 3.3 9단계: 튜플을 사용해보자
+
+튜플은 리스트와 다르게 동시에 문자열과 정수를 함께 사용가능하다.
+
+튜플은 다음과 같이 사용할 수 있다.
+
+```scala
+var pair = (99, "Luftballons")
+
+println(pair._1)
+println(pair._2)
+```
+
+튜플을 인스턴스화하고 나서 각 원소에 접근하려면, 점 (.) 과 밑줄 (_) 다음에 1부터 시작하는 인덱스를 넣는다. (0 이 아닌 1부터 시작)
+
+```scala
+99
+Luftballons
+```
+
+튜플의 실제 타입은 내부에 들어 있는 원소의 갯수와 각각의 타입에 따라 바뀐다.
+
+위 튜플은 `Tuple2[Int, String]` 이다.
+
+```scala
+('u', 'r', "the", 1, 4, "me")
+```
+
+위 튜플의 타입은 다음과 같다.
+
+```scala
+Tuple6[Char, Char, String, Int, Int, String]
+```
+
+### 3.4 10단계: 집합과 맵을 써보자
+
+스칼라의 목적은 함수형 스타일과 명령형 스타일의 장점을 모두 취할수 있게 돕는것이다.
+
+이를 위해 스칼라 컬렉션 라이브러리에서는 변경 가능한 컬렉션과 변경 불가능한 컬렉션을 구분해놓는 곳이 있다.
+
+예를 들어 배열은 항상 변경 가능하지만, 리스트는 항상 변경 불가능하다.<br/>
+하지만 집합 혹은 맵은 변경한 것과 변경 불가능 것을 모두 제공한다.
+
+이는 **스칼라에서는 클래스 계층 안에서 변경 가능성을 모델링 하기 때문이다.**
+
+스칼라에서 제공하는 트레이트 (trait) 을 사용하여 확장 (extends) 하거나 혼합 (mixed) 하여 사용이 가능하다.
+
+![스칼라 집합의 클래스 계층도](/img/A117.png)
+
+위 그림처럼 변경 가능하거나 혹은 변경 불가능한 클래스를 임포트 (import) 하여 사용한다.
+
+다음은 변경 불가능한 집합을 생성, 초기화, 사용하는 방법이다.
+
+```scala
+var jetSet = Set("Boeing", "Airbus")
+jetSet += "Lear"
+println("jetSet.contains("Cessna")
+```
+
+위 코드의 `Set` 은 `scala.collection.immutable.Set` 의 동반 객체에 있는 `apply` 를 호출 하였다.
+
+만약 변경 가능한 집합을 사용하고 싶다면 아래와 같이 `scala.collection.mutable` 을 임포트 (import) 하면 된다.
+
+```scala
+import scala.collection.mutable
+
+val moiveSet = mutable.Set("Hitch", "Poltergeist")
+movieSet += "Shrek"
+println(movieSet)
+```
+
+`movieSet += "Sherk"` 대신에 `moiveSet.+=("Shrek")` 이라고 쓸 수 있다.
+
+변경 가능한 맵은 위와 유사하게 아래와 같이 사용하면 된다.
+
+```scala
+import scala.collection.mutable
+
+val treasureMap = mutable.Map[Int, String]()
+
+treasureMap += (1 -> "Go to island.")
+treasureMap += (2 -> "Find big X on ground")
+treasureMap += (3 -> "Dig.")
+
+println(treasureMap(2))
+```
+
+```scala
+Find big X on ground.
+```
+
+변경 불가능한 맵을 생성, 초기화, 사용은 다음과 같다.
+
+```scala
+val romanNumeral = Map(
+  1 -> "I", 2 -> "II", 3 -> "III", 4 -> "IV", 5 -> "V"
+)
+println(romanNumeral)
+```
+
+스칼라가 `->` 를 모든 객체에 적용 가능하게 만들 수 있는 이유는<br/> 
+스칼라의 다양한 매커니즘 중 하나인 **암시적 변환 (implicit conversion) 이 일어나기 때문**이다. (21장)
+
+> 기본적으로 컬랙션 클래스를 호출하면 변경 불가능한 클래스를 호출하는 것 같음
+
+### 3.5 11단계: 함수형 스타일을 인식하는 법을 배우자
+
+함수형 스타일의 사용을 권장 하는데, 코드상에서 `var` 대신에 `val` 을 사용하여 프로그래밍 하도록 노력하자.
+
+이는 더더욱 코드를 함수적으로 동작 시키도록 만들수 있으며, 내부적으로는 부수효과를 없애도록 유도하기 때문이다.
+
+부수효과가 절대적으로 나쁜건 아니지만 최대한 지양하도록 하자
+
+### 3.6 12단계: 파일의 내용을 줄 단위로 읽자
+
+어떤 파일의 모든 줄의 문자 개수를 줄을 잘 맞춰 출력하기
+
+```scala
+import scala.io.Source
+
+def widthOfLength(s: String) = s.length.toString.length
+
+if (arg.length > 0) {
+  val lines = Source.formFile(args(0)).getLines().toList
+   
+  val longestLine = lines.reduceLeft(
+    (a, b) => if (a.length > a.length) a else b
+   )
+
+  val maxWidth = widthOfLength(longestLine)
+
+  for (line <- lines) {
+    val numSpaces = maxWidth - widthOfLength(line)
+    val padding = " " * numSpaces
+    println(padding + line.length + " | " + line)
+  }
+} else
+  Console.err.println("Please enter filename")
+```
+
+### 3.7 결론
+
+스칼라 스크립트 사용 준비 끝이 각 주제에 대해 더 상세하게 알아본다.
