@@ -1,4 +1,4 @@
-# 1주차 (1 ~ 4 Chapter)
+# 1주차 (1 ~ 5 Chapter)
 
 ## Chapter 01 확장 가능한 언어
 

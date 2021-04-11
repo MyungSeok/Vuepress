@@ -499,7 +499,8 @@ module.exports = {
       ],
       '/books/programming_in_scala/': [
         '',
-        '1week'
+        '1week',
+        '2week'
       ]
     }
   }
