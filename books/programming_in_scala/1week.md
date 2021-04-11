@@ -673,3 +673,121 @@ if (arg.length > 0) {
 
 ### 4.1 클래스, 필드, 메서드
 
+클래스는 객체에 대한 청사진이다.
+
+클래스를 정의하고 나면 `new` 를 사용하여 객체를 만들 수 있다.
+
+```scala
+class ChecksumAccumulator {
+  // 여기 클래스의 정의가 들어간다.
+}
+```
+
+클래스 안에는 변수와 메서드를 넣을수 있으며 이를 멤버 (member) 라고 한다.
+
+이후 `ChecksumAccumulator` 타입의 객체를 만들고 싶다면 다음과 같이 할 수 있다.
+
+```scala
+new ChecksumAccumulator
+```
+
+클래스를 인스턴스화 (instanciate) 할 때, 스칼라 런타임은 해당 객체의 상태 (각 변수의 내용) 를 담을 메모리를 확보한다.<br/>
+각 클래스를 여러 변수에 인스턴스화 하면 그 결과에 따라 인스턴스 객체는 프로그램 진행에 따라 변할 수 있다.
+
+**객체의 강건성 (robustness) 를 추구하는 한 가지 중요한 방법은 객체의 상태 (인스턴스 변수 값 전체) 를 해당 인스턴스가 살아 있는 동안 항상 바르게 유지하는 것이다.**
+
+**이는 클래스 내부 필드를 비공개 (private) 로 만들어서 외부에서 직접 접근할 수 없도록 하는 것 이다.**<br/>
+비공개 필드는 같은 클래스 안에 정의한 함수에서만 접근 가능하기 때문에, 상태를 변경하는 코드를 클래스 내부로 한정하는 효과가 있다.
+
+스칼라 메서드 파라미터는 val (immutable: 불변) 이라는 점 이다.
+
+> 스칼라 파리미터가 `val` 인 이유는 `val` 이 분석하기 더 쉽기 때문이다. <br/>
+> `val` 의 경우 분석을 위해 나중에 재할당해서 값이 바뀌는지 살펴볼 필요가 있다.<br/><br/>
+> 반면에 `var` 은 추적해야 한다.
+
+부수효과만을 위해 실행되는 메서드를 프로시저 (procedure) 라고 한다.
+
+### 4.2 세미콜론 추론
+
+아래와 같이 한줄에 여러문장을 넣으려면 다음과 같이 꼭 중간에 세미콜론을 넣어야 한다.
+
+```scala
+val s = "hello"; println(s)
+```
+
+### 4.3 싱글톤 객체
+
+스칼라는 싱글톤 객체를 지원한다.
+
+`class` 라는 키워드 대신 `object` 라는 키워드로 시작한다.
+
+```scala
+import scala.collection.mutable
+
+object ChecksumAccumulator {
+  private val cache = mutable.Map.empty[String, Int]
+
+  def calculate(s: String): Int = 
+    if (cache.contains(s)) 
+      cache(s)
+    else {
+      val acc = new ChecksumAccumulator
+      for (c <- s)
+        acc.add(c.toByte)
+      val cs = acc.checksum()
+      cache += (s -> cs)
+      cs
+    }
+}
+```
+
+어떤 싱글톤 객체의 이름이 어떤 클래스와 같을 때, 그 객체를 클래스의 동반객체 (companion object) 라고 한다.
+
+클래스와 동반 객체는 반드시 같은 소스파일 안에 정의해야 한다.
+
+> 자바와 같이 클래스나 객체를 파일 이름과 동일하게 구성하지 않아도 되지만 개발의 편의성을 위해서 파일변과 클래스명을 동일하게 유지하는 것을 권장한다.
+
+동반 클래스가 없는 싱글톤 클래스를 독립객체 (standalone object) 라고 한다.
+
+### 4.4 스칼라 애플리케이션
+
+스칼라 프로그램을 실행하려면 `Array[String]` 을 유일한 인자로 받고 `Unit` 을 반환하는 `main` 이라는 메서드 이름을 가진 독립 싱글톤 객체 이름을 알아야 한다.
+
+위 조건을 만족하는 `main` 메서드만 있으면 어떤 독립 객체든 애플리케이션의 시작점을 알 수 있다.
+
+```scala
+import ChecksumAccumulator.calculate
+
+object Summer {
+  def main(args: Array[String]) {
+    for (arg <- args)
+      println(args + ": " + calculate(arg))
+  }
+}
+```
+
+> 스칼라는 항상 `java.lang` 과 `scala` 패키지의 엠버를 암시적으로 임포트 한다.
+
+### 4.5 App 트레이트
+
+스칼라는 타이핑 수고를 덜 수 잇는 scala.App 이라는 트레이트를 제공한다.
+
+트레이트를 사용하기 정의할 싱글톤 뒤에 `extends App` 이라고 써야 한다.<br/>
+그 후, `main` 메서드를 적은 대신 `main` 메서드에 넣고 싶은 코드를 직접 싱글톤 객체를 중괄호 사이 (바디) 에 넣는다.
+
+```scala
+import ChecksumAccumulator.calculate
+
+object FallWinterSpringSummer extends App {
+  for (season <- List("fall", "winter", "spring"))
+    println(season + ": " + calculate(season))
+}
+```
+
+이때 `args` 라는 문자열의 배열을 사용하여 명령행 인자에 접근할 수 있다.
+
+### 4.5 결론
+
+스칼라의 기본적인 사항을 알아봤다.
+
+다음장에서는 스칼라의 기본타입과 활용하는 방법을 배울것이다.
