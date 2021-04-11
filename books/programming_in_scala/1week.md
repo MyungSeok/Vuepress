@@ -791,3 +791,208 @@ object FallWinterSpringSummer extends App {
 스칼라의 기본적인 사항을 알아봤다.
 
 다음장에서는 스칼라의 기본타입과 활용하는 방법을 배울것이다.
+
+## Chapter 05 기본 타입과 연산
+
+스칼라는 **암시적 변환 (implicit conversion)** 을 통해 자바가 제공하는 연산 외의 여러 연산을 추가로 제공함으로써 기본타입이 얼마나 풍부해질 수 있는지 확인할 수 있다.
+
+### 5.1 기본 타입
+
+* 정수형 타입 (intergral type) : `Byte`, `Short`, `Int`, `Long`, `Char`
+* 수 타입 (numeric type) : `Float`, `Double`
+
+### 5.2 리터럴
+
+스칼라의 모든 타입은 리터럴 (literal) 로 적을수 있다.
+
+> **리터럴**<br/>
+> 상숫값을 코드에 직접 적는 방법
+
+#### 정수 리터럴
+
+```scala
+val hex = 0x5
+// Int = 5
+
+val hex2 = 0x00FF
+// Int = 255
+
+val magic = 0xcafebebe
+// Int = -889275714
+```
+
+#### 부동소수점 리터럴
+
+```scala
+val big = 1.2345
+// Double = 1.2345
+
+val bigger = 1.2345e1
+// Double = 12.345
+
+val biggerStill 123E45
+// Double = 1.23E47
+```
+
+#### 문자 리터럴
+
+```scala
+val a = 'A'
+// Char = A
+
+val d = '\u0041'
+// Char = A
+```
+
+#### 문자열 리터럴
+
+```scala
+val hello = "Hello"
+// String = Hello
+```
+
+```scala
+println("""Welcome to Ultamix 3000
+           Type "HELP" for help.""")
+```
+
+위 코드의 결과는 아래와 같다.
+
+```scala
+Welcome to Ultamix 3000
+           Type "HELP" for help.
+```
+
+이는 두번째 줄에 공백이 들어갔기 때문인데, 이 문제해결을 위해서는 `stripMargin` 문자열에 대해 호출하여 처리한다.
+
+
+```scala
+println("""|Welcome to Ultamix 3000
+           |Type "HELP" for help.""".stripMargin)
+```
+
+이제 코드가 원하는 대로 동작한다.
+
+```scala
+Welcome to Ultamix 3000
+Type "HELP" for help.
+```
+
+#### 심볼 리터럴
+
+```scala
+val s = 'aSymbol
+// Symbol = 'aSymbol
+```
+
+#### 불리언 리터럴
+
+```scala
+val bool = true
+// Boolean = true
+
+val full = false
+// Boolean = false
+```
+
+### 5.3 문자열 인터폴레이션
+
+스칼라는 인터폴레이션 (interpolation) 을 위한 메커니즘을 포함한다.
+
+기본적으로는 `s` 와 `f` 를 제공한다.
+
+```scala
+s"The answer is ${6 * 7}."
+// The answer is 42
+```
+
+`f` 무자열 이터폴레이션을 사용하면 내장된 표현식에 대해 `printlnf` 스타일의 형식을 지정할 수 있다.
+
+```scala
+val pi = "Pi"
+
+f"$pi is approximately ${math.Pi}.8f."
+// String = Pi is approximately 3.14159265
+```
+
+### 5.4 연산자는 메서드다
+
+스칼라는 기본타입에 대해 풍부한 연산자를 제공한다.
+
+모든 메서드는 연산자가 될 수 있다.
+
+1개의 인자를 받는 메서드인 경우 아래와 같이 축약한 표현이 가능하다. <br/>
+다음은 같은 표현의 코드이다.
+
+```scala
+val s = "Hello, world!"
+
+s.indexOf('o')
+
+or 
+
+s indexOf 'o'
+
+// Int = 4
+
+```
+
+```scala
+-2.0
+
+or
+
+(2.0).unary_-
+
+// Double = -2.0
+```
+
+```scala
+val s = "Hello, world!"
+
+s.toLowerCase()
+
+or 
+
+s toLowerCase
+
+// String = hello, world!
+```
+
+### 5.5 산술연산
+
+모든 수 타입에 더하기 (+), 빼기 (-), 곱하기 (*), 나누기 (/), 나머지 (%) 를 중위 연산자를 사용해 계산할 수 있다.
+
+### 5.6 관계 연산과 논리연산
+
+수 타입을 크다 (>), 작다 (<), 크거나 같다 (>=), 작거나 같다 (<=) 라는 관계 연산자를 사용해 비교 가능하며 그 결과는 `Boolean` 값으로 반환한다.
+
+논리 연산으로는 논리곱 (&&, &), 논리합 (||, |) 이 있다. <br/>
+각각은 두 `Boolean` 피 연산자를 취하며 `Boolean` 결괏값을 내놓는다.
+
+> 스칼라에서 && 와 || 연산은 자바와 마찬가지로 쇼트 서킷 (short circuit: 회로) 연산이다.
+
+### 5.7 비트 연산
+
+* 비트곱 (&)
+* 비트합 (|)
+* 비트 배타합 (^)
+* 단항 비트 반전 연산자 (~)
+
+### 5.8 객체 동일성
+
+두 객체가 같은지 비교하고 싶다면 `==` 을 사용할 수 있고 같지 않은지 비교하려면 `!=` 을 사용한다.
+
+### 5.9 연산자 우선순위와 결합 법칙
+
+표현식에서 어느 부분을 우선적으로 실행할지 결정하는 방식이다.
+
+일반적으로 결합법칙을 따른다 (곱하기 / 나누기 > 더하기 / 빼기)
+
+### 5.10 풍부한 래퍼
+
+암시적 변환에 따른 방법으로 스칼라 API 를 통해 확인 가능하다.
+
+### 5.11 결론
+
+이번장에서 가장 중요한 사항은 **스칼라에서는 연산자가 메서드 호출이라는 사실**, **스칼라 기본타입에 더 유용한 메서드를 제공해주는 풍부한 레퍼 클래스로 변환하는 암시적 변환이 존재**한다는 점이다.
