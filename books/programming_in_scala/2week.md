@@ -156,3 +156,131 @@ class Rational(n: Int, d: Int) {
 
 ### 6.8 비공개 필드와 메서드
 
+최대 공약수를 계산하는 비공개 필드와 메서드를 추가하자
+
+```scala
+class Rational(n: Int, d: Int) {
+  require(d != 0)
+  
+  private val g = gcd(n.abs, d.abs)
+  val numer: Int = n
+  val denom: Int = d
+  
+  def this(n: Int) = this(n, 1) // 보조 생성자
+
+  override def toString = s"$n/$d"
+
+  def add(that: Rational): Rational = 
+    new Rational(
+      numer * that.denom + that.numer * denom,
+      denom * that.denom
+    )
+}
+```
+
+첫 줄에 등장하는 `g` 의 초기화 코드 `gcd(n.abs, d.abs)` 는 다른 두 초기화 코드보다 먼저 실행된다.
+
+때문에 최대공약수 `g` 로 나뉜 값이 `numer`, `denom` 를 약분상태로 초기화 시켜준다.
+
+### 6.9 연산자 정의
+
+수학적 기호 `+` 는 메서드 이름을 정의하면 add 메서드를 대체할 수 있다.
+
+```scala
+def + (that: Rational): Rational = 
+  new Rational(
+    numer * that.denom + that.numer * denom,
+    denom * that.denom
+  )
+```
+
+마찬가지로 곱셈 연산자인 `*` 또한 times 메서드를 대체할 수 있다.
+
+```scala
+def * (that: Reational): Rational = 
+  new Rational(numer * that.numer, denom * that.denom)
+```
+
+### 6.10 스칼라의 식별자
+
+#### 영숫자 식별자 (alphanumeric identifier)
+
+* 문자나 밑줄 (_) 로 시작한다.
+
+간혹 밑줄과로 끝나는 식별자일때 다음과 같은 에러를 발생 시킬수 있다.
+
+```scala
+val name_:Int = 1
+```
+
+위 경우 `name_:Int` 를 변수명으로 컴파일 하려 하기 때문에 콜론 앞에 공백을 하나 두어 다음과 같이 작성해야 한다.
+
+```scala
+val name_ :Int = 1
+```
+
+#### 연산자 식별자 (operator identifier)
+
+하나 이상의 연산자 문자로 이루어져 있다.
+
+```scala
++ ++ ::: <?> :->
+```
+
+예를 들면 `:->` 는 내부적으로 `$colon$minus$grater` 로 변환된다.
+
+자바에서 사용하려고 한다면 내부 변환 이름을 알아야 한다.
+
+#### 혼합 식별자 (mixed identifier)
+
+영문과 숫자로 이뤄진 식별자 뒤에 밑줄이 오고 그 뒤에 연산자 식별자가 온다.
+
+```scala
+myvar_=
+```
+
+#### 리터럴 식별자 (iteral identifier)
+
+아래 코드처럼 역따옴표 (`)로 둘러싼 임의의 문자열이다.
+
+```scala
+`x` `<clinit>` `yield`
+```
+
+런타임이 인식할 수 있는 어떤 문자열이라도 역따옴표 사이에 넣을 수 있다는게 핵심이다.
+
+시스템 예약어를 무시할 수 있는 방법으로 씌인다.
+
+```scala
+Thread.`yield`()
+```
+
+### 6.11 메서드 오버로드
+
+스칼라에서 처리하는 오버로드 메서드는 자바와 거의 유사하다.
+
+스칼라는 오버로드한 메서드 중 인자의 정적인 타입과 가장 잘 일치하는 버전을 선택한다.
+
+만약 일치하는 결과가 없을 경우 컴파일러는 `ambiguous reference` 오류를 노출하여 모호한 참조라는 사실을 알린다.
+
+### 6.12 암시적 타입 변환
+
+암시적 타입 변환은 라이브러리를 좀 더 유연하고 사용하기 편리하게 만들어주는 아주 강력한 기법이다.
+
+하지만 너무나도 강력해 잘못 사용하기도 한다.
+
+연산자 식별자를 이용하여 `r * 2` 표현을 사용할 수 있지만 `2 * r` 의 표현은 오류를 발생 시킨다.
+
+이는 암시적 타입으로 변환하는 과정에서 `r * 2` 는 `r.*(2)` 로 바뀌게 되며 `2 * r` 는 `2.*(r)` 로 변환되어 Int 클래스는 `Rational` 인자를 받는 곱셈 메서드가 없기 때문이다.
+
+### 6.13 주의사항
+
+스칼라는 쉽게 사용할 수 있는 라이브러리 설계를 할 수 있는 막강한 권한을 주지만 **미숙하게 사용하면 연산자 메서드와 암시적 타입 변환 모두 클라이언트 코드를 읽고 이해하기 힘들게 만든다.**
+
+라이브러리를 설계하며 항상 염두에 두어야 할 목표는 단순히 클라이언트 코드를 간결하게 하는것 뿐만이 아니라, 가독성을 높이고 이해하기 쉽게 만드는 법이다.
+
+### 6.14 결론
+
+다음장에서는 Rational 클래스의 동반 객체에 암시적 타입 변환을 넣어서 편리하게 사용가능한 스코프로 불러올 수 있게 하는 방법을 설명하겠다.
+
+## Chapter 07 내장 제어 구문
