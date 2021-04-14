@@ -597,3 +597,342 @@ def multiTable() = {
 스칼라도 자바처럼 잘 정의한 작업을 작은 함수 프로그램으로 나뉘어 유연하게 조립할 수 있는 빌딩 블록 (building block) 을 제공한다.
 
 자바는 접근 제어자를 통한 비공개 메서드를 이용하지만 스칼라에서는 함수안에 함수를 정의하는 방법으로 정의할 수 있다.
+
+```scala
+def processFile(filename: String, width: Int) = {
+  def processLine(filename: String, width: Int, line: String) = {
+    if (line.length > width)
+      println(filename + ": " + line.trim)
+  }
+
+  val source = Source.fromFile(filename)
+  for (line <- source.getLines()) {
+    processLine(filename, width, line)
+  }
+}
+```
+
+`processLine` 메서드는 `processfile` 내부에서만 접근할 수 있으며, 외부에서는 접근이 불가능 하다.
+
+### 8.3 1급 계층 함수
+
+스칼라는 1급 계층 함수 (first class function) 를 제공한다.
+
+함수를 정의하고 호출할 뿐만 아니라 이름없이 리터럴로 표기해 값처럼 주고받을 수 있다.
+
+함수 리터럴은 소스 코드에 존재하는 반면, 함수값은 실행 시점에 객체로 존재한다는 점에 있다.
+
+### 8.4 간단한 형태의 함수 리터럴
+
+함수 리터럴을 좀 더 간단하게 만드는 방법은 인자의 타입을 제거하는 것이다.
+
+```scala
+someNumbers.filter((x) => x > 0)
+```
+
+`someNumbers` 라는 정수의 리스트를 걸러내는 필터 함수를 사용하기 때문에, 스칼라 컴파일러는 함수 리터럴의 인자가 x가 정수라는 사실을 안다.
+
+이를 타겟 타이핑 (target typing) 이라고 하는데 표현식을 어떤 방식으로 사용하느냐에 따라 컴파일러가 추론하는 타입이 달라지기 때문이다.
+
+### 8.5 위치 표시자 문법
+
+함수 리터럴을 좀 더 간결하게 만들기 위해 밑줄을 하나 이상의 파라미터에 위치 표시자로 사용할 수 있다.
+
+```scala
+someNumbers.filter(_ > 0)
+```
+
+**밑줄을 채워넣어야 하는 빈칸**으로 생각해도 좋다.
+
+때로는 밑줄의 인자의 위치 표시자로 사용할 때 컴파일러가 인자의 타입 정보를 찾지 못할 경우가 있다.
+
+이럴 경우에는 콜론을 이용하여 타입을 명시해주면 된다.
+
+```scala
+val f = (_: Int) + (_: Int)
+```
+
+### 8.6 부분 적용 함수
+
+전체 파라미터 목록을 밑줄로 바꿀수도 있다.
+
+예를 들면 `println(_)` 이라고 쓰지 않고 `println _` 이라고 쓸 수 있다.
+
+```scala
+def sum(a: Int, b: Int, c: Int) = a + b + c
+
+val a = sum _
+
+a(1, 2, 3)
+// 6
+```
+
+위 코드는 스칼라 컴파일러가 부분 적용 함수 표현식 `sum _` 에서 빠진 인자 3개를 받는 함숫값을 인스턴스화 한다.
+
+스칼라 컴파일러는 `a(1, 2, 3)` 의 함숫값의 apply 메서드에 대한 호출로 해석해 1, 2, 3을 전달한다.
+
+따라서 `a(1, 2, 3)` 은 `a.apply(1, 2, 3)` 을 짧게 쓴 것이다.
+
+다음과 같이 필요한 인자중 일부만 넘겨서 부분 적용 함수를 만들 수도 있다.
+
+```scala
+val b = sum(1, _:Int, 3)
+
+b(2)
+// 6
+```
+
+### 8.7 클로저
+
+주어진 함수 리터럴부터 실행 시점에 만들어낸 객체인 함숫값 (객체) 을 클로저 (closure) 라고 한다.
+
+자바스크립트의 클로저와 비슷할 것으로 판단.
+
+### 8.8 특별한 형태의 함수 호출
+
+#### 반복 파라미터
+
+반복 가능한 인자를 표기하려면 별표 (*) 를 인자의 타입 다음에 추가하면 된다.
+
+```scala
+def echo(args: String*) =
+  for (arg <- args) println(arg)
+
+echo()
+echo("one")
+echo("hello", "world")
+```
+
+배열을 반복 인자로 전달하기 위해 다음과 같이 콜론 (:) 에 `_*` 기호를 추가해야 한다. 
+
+> aka. 가변인자
+
+#### 이름 붙인 인자
+
+이름 붙인 인자를 이용해 호출하면 인자들의 순서를 바꾸어 전달해도 호출의 의미가 변하지 않는다.
+
+```scala
+def speed(distance: Float, time: Float): Float = 
+  distance / time
+
+speed(distance = 100, time = 10)
+
+or 
+
+speed(time = 10, distance = 100)
+```
+
+#### 디폴트 인잣값
+
+스칼라에서 파라미터의 디폴트값을 지정할 수 있다.
+
+```scala
+def printTime(
+  out: java.io.PrintStream = Console.out,
+  divisor: Int = 1
+) = 
+  outprintln("time = " + System.currentTimeMillis() / divisor)
+```
+
+특정 파라미터를 명시하고 싶으면 다음과 같이 호출한다.
+
+```println
+printTime(divisor = 1000)
+```
+
+### 8.9 꼬리 재귀
+
+마지막의 자신의 재귀 호출하는 경우를 꼬리재귀 (tail recursive) 라고 한다.
+
+문제를 해결할때 재귀를 사용하는 것을 두려워하지 않아도 된다. 재귀를 사용하는 해법이 루프를 사용하는 해법보다 간결하고 우아한 경우가 종종 있다.
+
+#### 꼬리 재귀 함수 추적
+
+꼬리 재귀 함수는 재귀 호출마다 새로운 스택을 마들지 않고 같은 스택 프레임을 재활용 한다.
+
+```scala
+def boom(x: Int): Int = 
+  if (x == 0) throw new Exception("boom!")
+  else boom(x - 1) + 1
+```
+
+위 코드의 `boom` 함수는 재귀 호출 후에 더하기 연산을 수행하기 때문에 꼬리 재귀가 아니다.
+
+실행하면 다음결과를 볼 수 있다.
+
+```scala
+boom(3)
+java.lang.Exception: boom!
+    at .boom(<console>:5)
+    at .boom(<console>:6)
+    at .boom(<console>:6)
+    at .boom(<console>:6)
+    at .<init>(<console>:6)
+...
+```
+
+boom 을 수정해 꼬리 재귀로 만들면 다음과 같다.
+
+```scala
+def bang(x: Int): Int =
+  if (x == 0) throw new Exception("bang!")
+  else bang(x - 1)
+```
+
+```scala
+bang(5)
+java.lang.Exception: bang!
+    at .bang(<console>:5)
+    at .<init>(<console>:6)...
+```
+
+이번에는 `bang` 에 단 하나의 스택만 보인다.
+
+#### 꼬리 재귀의 한계
+
+JVM 명령어 집합만으로는 고수준의 꼬리 재귀를 구현하기에 어려움이 있기 때문에, 스칼라의 꼬리 재귀 최적화에는 한계가 있다.
+
+꼬맂 재귀 최적화는 메서드나 중첩 함수가 마지막 연산으로서 자신을 직접 호출하는 경우에만 이뤄진다.
+
+### 8.10 결론
+
+스칼라의 함수를 알아보았다.
+
+스칼라는 메서드 이외에도 지역함수, 함수 리터럴, 함숫값을 제공하며 일반적인 함수 호출 외에, 부분 적용 함수와 반복 인자등을 사용할 수 있다.
+
+다음장에서는 함수의 지원을 통한 흐름제어를 알아보자.
+
+## Chapter 09 흐름 제어 추상화
+
+스칼라에는 내장 제어 추상화가 많지 않다.
+
+하지만 자신의 고유한 제어 추상화를 작성할 수 있다.
+
+### 9.1 코드 중복 줄이기
+
+함수를 인자로 받는 함수를 고차 함수 (higher-order function) 이라고 하는데 이를 이용하여 코드를 더 같단하게 압축할 수 있는 기회를 제공한다.
+
+고차 함수를 사용할 때의 장점 중 하나는 자신만의 추상화한 흐름 제어를 작성할 수 있어 코드의 중복을 줄일 수 있다는 점이다.
+
+```scala
+object FileMatcher {
+  private def filesHere = (new java.io.File(".")).listFiles
+
+  private def filesMatching(matcher: String => Boolean) = 
+    for (file <- filesHere; if matcher(file.getName))
+      yield file
+  
+  def fileEnding(query: String) =
+    filesMatching(_.endsWith(query))
+
+  def filesContaining(query: String) = 
+    filesMatching(_.contains(query))
+
+  def filesRegex(query: String) =
+    filesMatching(_.matches(query))
+}
+```
+
+### 9.2 클라이언트 코드 단순하게 만들기
+
+```scala
+def containsOdd(nums: List[Int]) = nums.exists(_ % 2 == 1)
+```
+
+위 코드와 같이 `exists` 와 같은 루프 메서드를 사용하면 코드를 더 단순하게 만들수 있다.
+
+### 9.3 커링
+
+```scala
+def curriedSum(x: Int)(y: Int) = x + y
+
+curriedSum(1)(2)
+// 3
+```
+
+위와 같이 함수를 연속적으로 호출하여 호출 가능한 값을 반환하는 것이다.
+
+### 9.4 새로운 제어 구조 작성
+
+이전 `try ~ catch ~ finally` 구문에서 사용했던 방식을 새로운 제어구조로 변경하여 다음과 같이 표현한다.
+
+```scala
+def widthPrintWriter(file: File, op: PrintWriter => Unit) = {
+  val writer = new PrintWriter(file)
+  try {
+    op(writer)
+  } finally {
+    writer.close()
+  }
+}
+```
+
+```scala
+withPrintWriter(
+  new File("date.txt"),
+  writer => writer.println(new java.util.Date)
+)
+```
+
+위 메서드를 사용하는 경우 `withPrintWriter` 가 파일 닫기를 보장한다는 장점이 있다.
+
+**제어 추상화를 하는 함수가 자원일 열어 특정 함수에게 해당 자원을 빌려주기 때문이다.**
+
+다음은 커링을 이용한 빌려주기 방식을 이용한 파일쓰기 이다.
+
+```scala
+def withPrintWriter(file: File)(op: PrintWriter => Unit) = {
+  val writer = new PrintWriter(file)
+  try {
+    op(writer)
+  } finally {
+    writer.close()
+  }
+}
+```
+
+```scala
+val file = new File("date.txt")
+
+withPrintWriter(file) {
+  writer => writer.println(new java.util.Date)
+}
+```
+
+File 인자를 포함하는 첫 인자 목록은 소괄호로 감쌌다.
+
+함수 인자를 포함하는 두 번째 인자 목록에는 중괄호를 사용했다.
+
+### 9.5 이름에 의한 호출 파라미터
+
+```scala
+def byNameAssert(predicate: => Boolean) =
+  if (assertionsEnabled && !predicate)
+    throw new AssertionError
+```
+
+```scala
+def boolAssert(predicate: Boolean) =
+  if (assertionsEnabled && !predicate)
+    throw new AssertionError
+```
+
+```scala
+byNameAssert(5 > 3)
+
+boolAssert(5 > 3)
+```
+
+`byNameAssert` 과 `boolAssert` 의 결과도 사용하는 코드도 같다.
+
+위 둘의 가장 중요한 차이점은 `boolAssert` 인자 타입이 `Boolean` 이므로, `boolAssert(5 > 3)` 의 괄호 안에 위치한 표현식을 `boolAssert` 호출 **직전에 계산**한다.
+
+만약 `boolAssert` 인자타입이 `x / 0 == 0` 이라면 `boolAssert` 의 인자의 표현식을 계산함에 따라 에러가 발생된다.
+
+하지만 같은 코드의 `byNameAssert` 는 예외가 발생하지 않는다.
+
+### 9.6 결론
+
+스칼라 라이브러리의 고차함수, 커링 등을 이용하여 좀 더 간결한 문법으로 활용하는 방법을 알아보았다.
+
+## Chapter 10 상속과 구성
