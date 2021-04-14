@@ -284,3 +284,299 @@ Thread.`yield`()
 다음장에서는 Rational 클래스의 동반 객체에 암시적 타입 변환을 넣어서 편리하게 사용가능한 스코프로 불러올 수 있게 하는 방법을 설명하겠다.
 
 ## Chapter 07 내장 제어 구문
+
+스칼라의 내장 제어 구문은 몇가지 없다.
+
+* if
+* while
+* for
+* try
+* match
+* 함수 호출 (function call)
+
+스칼라에 제어 구문의 수가 적은 이유는 설계 초기부터 함수 리터럴을 포함했기 때문이다.
+
+프로그램 전체를 값을 계산하는 관점에서 바라보고 프로그램 구성요소 또한 값을 도출해야 한다는 함수 언어적 접근을 채용한 결과이다.
+
+### 7.1 if 표현식
+
+스칼라의 if 표현식은 값을 내놓기 때문에 더 간결하게 코드 작성이 가능하다.
+
+```scala
+val filename = 
+  if (!args.isEmpty) args(0)
+    else "default.txt"
+```
+
+위 코드는 진짜 장점은 `var` 이 아닌 `val` 을 사용했다는 점이다.
+
+> `var` 이 아닌 `val` 을 사용함에 있어서 장점은 동일성 추론 (equational reasoning) 이 더욱 유리하다.<br/>
+> 부수효과가 없기 때문에 값을 도출하는 표현식과 동일하다.<br/>
+> `val` 을 사용할 기회를 노리면 코드를 더 가독성이 높고 리펙토링 하기 쉬워진다.
+
+### 7.2 while 루프
+
+`while` 루프는 결과가 특정 값이 아니기 때문에 순수한 함수형 언어는 이를 종종 제외하곤 한다.
+
+하지만 **간혹 명령형 해법이 가독성이 뛰어나기 때문에 특정 조건이 바뀔때까지 정해진 절차대로 반복하는 알고리즘을 작성한다고 하면 `while` 루프가 대안이 될 수 있다.**
+
+일반적으로 `while` 루프는 `var` 변수와 마찬가지로 최대한 적게 사용하기 위해 노력하는것을 권장한다.
+
+특별히 `while` 이나 `do-while` 루프를 사용할 충분한 이유가 없다면 사용하지 않는것을 권장한다. 
+
+### 7.3 for 표현식
+
+스칼라의 `for` 표현식은 반복 처리를 위한 만능 표현식이다.
+
+#### 컬렉션 이터레이션 
+
+`for` 로 할 수 잇는 가장 간단한 일은 모든 요소를 이터레이션하는 것이다.
+
+```scala
+val fileHere = (new java.io.File(".")).listFiels
+for (file <- filesHere)
+  println(file)
+```
+
+제너레이터 (generator) 라고 부르는 `file <- filesHere` 문법을 이용해 filesHere 원소를 이터레이션 한다.
+
+이터레이션 대상 값의 범위에서 최댓값을 제외하고 싶다면 `to` 대신 `until` 을 사용한다.
+
+```scala
+for (i <- 1 until 4)
+  println("Iteration " + i)
+```
+
+```scala
+Iteration 1
+Iteration 2
+Iteration 3
+```
+
+#### 필터링
+
+`for` 표현식에 필터 (filter) 을 추가하면 전체 컬렉션에서 일부만 사용할 수 있다.
+
+```scala
+val filesHere = (new java.io.File(".")).listFiles
+
+for (file <-filesHere if file.getName.endsWith(".scala))
+  println(file)
+```
+
+만약 여러개의 필터를 적용하려면 다음과 같이 사용하면 된다.
+
+```scala
+for (
+  file <- filesHere
+  if file.isFile
+  if file.getName.endsWith(".scala")
+) println(file)
+```
+
+#### 중첩 이터레이션
+
+2개의 루프를 중첩한 리스트는 여러개의 `<-` 절을 이용하여 중첩루프를 생성할 수 있다.
+
+```scala
+def fileLines(file: java.io.File) = 
+  scala.io.Source.fromFile(file).getLines().toArray
+
+def grep(pattern: String) =
+  for (
+    file <- filesHere
+    if file.getName.endsWith(".scala");
+    line <- fileLines(file)
+    if line.trim.matches(pattern)
+  ) println(s"$file: ${line.trim}")
+
+grep(".*gcd.*")
+```
+
+바깥쪽 루프는 `filesHere` 내의 `.scala` 로 끝나는 파일을 <br/>
+안쪽 루프는 바깥루프에서 얻은 `file` 에 `fileLines(file)` 을 호출한 결과를 이터레이션 한다.
+
+원한다면 중괄호를 사용하여 제너레이터와 필터를 감싸도 된다.<br/>
+중괄호를 사용한다면 스칼라 컴파일러가 **세미콜론을 추론하기 때문**에, 괄호를 사용할 때 써야만 했던 세미콜론을 제거할 수 있다.
+
+#### for 중에 변수 바인딩 하기
+
+위 코드에서 `line.trim` 이라는 표현식을 반복하는데 이를 변수로 바인딩하여 처리 가능하다.
+
+```scala
+def fileLines(file: java.io.File) = 
+  scala.io.Source.fromFile(file).getLines().toArray
+
+def grep(pattern: String) =
+  for (
+    file <- filesHere
+    if file.getName.endsWith(".scala");
+    line <- fileLines(file)
+    trimmed = line.trim
+    if trimmed.matches(pattern)
+  ) println(s"$file: ${trimmed}")
+
+grep(".*gcd.*")
+```
+
+#### 새로운 컬렉션 만들어내기
+
+이터레이션의 매 반복 단계의 결과를 저장하기 위한 값을 만들 수 있다.
+
+`for` 표현식의 본문 앞에 `yield` 라는 키워드를 사용한다.
+
+```scala
+def scalaFiles = 
+  for {
+    file <- filesHere
+    if file.getName.endsWith(".scala")
+  } yield file
+```
+
+위 코드는 for 표현식을 수행할 때마다 값 (file) 을 하나씩 만들어낸다.
+
+### 7.4 try 표현식으로 예외 다루기
+
+호출한 메서드가 별다른 처리를 하지 않고 종료하면 해당 메서드를 호출한 메서드, 즉 호출자의 호출자 메서드로 예외를 전파한다.
+
+이를 방지하기 위해 try 표현식으로 처리한다.
+
+#### 예외 발생 시키기
+
+자바와 동일하게 `throw` 키워드를 이용하여 예외를 던진다.
+
+```scala
+throw new IllegalArgumentException
+```
+
+```scala
+val half = 
+  if (n % 2 == 0)
+    n / 2
+  else 
+    throw new RuntimeException("n must be even")
+```
+
+예외는 `Nothing` 이라는 타입을 갖는다.
+
+#### 발생한 예외 잡기
+
+패턴 매치 (pattern match)를 이용하여 발생한 예외를 잡는다.
+
+```scala
+try {
+  val f = new FileReader("input.txt")
+} catch {
+  case e: FileNotFoundException => // 파일을 못 찾는 경우 처리
+  case e: IOException => // 그 밖에 IO 오류 처리
+}
+```
+
+#### finally 절
+
+표현식의 결과가 어떻든 특정코드를 반드시 수행하고 싶은 경우 사용
+
+```scala
+try {
+  // 파일을 사용한다.
+} finally {
+  file.close()
+}
+```
+
+스칼라에서는 동일한 목적을 좀 더 간결하게 달성하기 위해, 빌려주기 패턴 (loan pattern) 이라는 기법을 사용할 수 있다.
+
+#### 값 만들어내기
+
+finally 구문에서는 값을 반환하지 않는 게 최선이다.
+
+finally 절은 결괏값을 만들어 내기 보다는 파일을 닫거나 정리하는 작업을 하는등 부수효과를 제공하는 방법이라고 생각하는게 좋다.
+
+### 7.5 match 표현식
+
+스칼라의 `match` 표현식은 여타 언어의 `swtich` 문과 유사하게 다수의 대안 (alternative) 중 하나를 선택하게 해준다.
+
+```scala
+val firstArg = if (args.length > 0) args(0) else ""
+
+firstArg match {
+  case "salt" => println("pepper")
+  case "chips" => println("salsa")
+  case "eggs" => println("bacon")
+  case _ => println("huh?")
+}
+```
+
+모든 case 마다 break 문이 암묵적으로 있어서, break 문이 없어도 다음 선택으로 넘어가지 않는다.
+
+### 7.6 break 와 continue 문 없이 살기
+
+함수 리터럴의 장점을 활용하면 `break` 나 `continue` 없이 더 간결한 코드 작성이 가능하다.
+
+만약 그래도 `break` 문이 필요하다 생각되면 `scala.util.control` 에 있는 `Breaks` 클래스에서 break 메서드를 제공한다.
+
+```scala
+import scala.util.control.Breaks._
+import java.io._
+
+val in = new BufferedReader(new InputStreamReader(System.in))
+
+breakable {
+  while (true) {
+    println("? ")
+    if (in.readLine() == "") break
+  }
+}
+```
+
+### 7.7 변수 스코프
+
+스칼라에서 변수의 정의하는 스코프 (scope) 를 가진다.
+
+자바에서 통용되는 지역변수 (local variable) 개념을 가진다.
+
+변수들이 말 그대로 함수 내에 지역적으로 존재하며, 함수가 호출될 때마다 새로운 지역변수를 만들어서 사용한다.
+
+```scala
+val a = 1;
+{
+  val a = 2;
+  {
+    println(a)
+  }
+}
+```
+
+```scala
+2
+```
+
+중괄호를 사용하여 스코프를 새로 만들 수 있다.
+
+### 7.8 명령형 스타일 코드 리펙토링
+
+함수형 방식으로 곰셈표 만들기
+
+```scala
+def makeRowSeq(row: Int) = 
+  for (col <- 1 to 10) yield {
+    val prod = (row * col).toString
+    val padding = " " * (4 - prod.length)
+    padding + prod
+  }
+
+def makeRow(row: Int) = makeRowSeq(row).mkString
+
+def multiTable() = {
+  val tableSeq = 
+    for (row <- 1 to 10)
+    yield makeRow(row)
+  tableSeq.mkString("\n")
+}
+```
+
+### 7.9 결론
+
+스칼라의 내장 제어 구조는 그 수는 적지만 역활을 제대로 수행한다.
+
+명령형 언어에 존재하는 구문과 유사한 역활을 수행하지만, 값이 결과가 되도록 의도했기 때문에 함수형 스타일로도 작성이 가능하다.
