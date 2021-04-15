@@ -936,3 +936,146 @@ boolAssert(5 > 3)
 스칼라 라이브러리의 고차함수, 커링 등을 이용하여 좀 더 간결한 문법으로 활용하는 방법을 알아보았다.
 
 ## Chapter 10 상속과 구성
+
+클래스 간의 근본적인 두 가지 관계인 상속 (inheritance) 과 구성 (composition) 을 비교할 것이다.
+
+### 10.1 2차원 레이아웃 라이브러리
+
+조립을 담당하는 above 와 beside 도 정의 할 것이다.
+
+```scala
+elem(s: String) = Element
+```
+
+```scala
+val column1 = elem("hello") above elem("***")
+val column2 = elem("***") above elem("world")
+
+hello***
+***world
+```
+
+조립 연산자는 특정 도메인의 요소를 결합하여 새로운 요소를 만들어내기 때문에 콤비네이터 (combinator) 라고 부른다.
+
+### 10.2 추상 클래스
+
+`abstract` 키워드로 아래와 같이 클래스를 정의 내린다.
+
+```scala
+abstract class Element {
+  def contents: Array[String]
+}
+```
+
+`contents` 는 `Element` 클래스의 추상 멤버 (abstract member) 이다.
+
+`abstract` 수식자는 해당 클래스 안에 구현이 없는 추상 멤버가 있음을 알려준다. 때문에 추상클래스로는 인스턴스를 만들수 없다.
+
+만약 메서드의 구현이 있다면 **구체 메서드 (concrete method)** 라고 한다.
+
+### 10.3 파라미터 없는 메서드 정의 
+
+필드나 메서드중 어떤 방식으로 속성을 정의 하더라도 클라이언트 코드에는 영향을 끼치지 말아야 한다는 **단일 접근 원칙 (uniform assess principle) 에 부합**한다.
+
+```scala
+"hello".length // 부수효과가 없으므로 () 를 사용하지 않음
+println() // () 을 사용하는 편이 나음
+```
+
+호출 하는 함수가 어떠한 작업을 수행한다면 빈 괄호를 사용하라
+
+하지만 프로퍼티에 대한 접근만을 수행한다면 괄호를 떼버려라.
+
+### 10.4 클래스 확장
+
+추상클래스를 확장하려면 `extends` 키워드를 사용하여 정의한다.
+
+```scala
+class ArrayElement(conts: Array[String]) extends Element {
+  def contents: Array[String] = conts
+}
+```
+
+`extends` 절은 다음 효과를 가진다.
+
+* 확장 클래스는 추상클래스에서 비공개 (private) 가 아닌 멤버를 모두 물려받는다.
+* 확장 클래스를 추상클래스의 서브타입 (subtype) 으로 만든다.
+
+```
+확장 클래스 (서브 클래스) -> 추상 클래스 (슈퍼 클래스)
+```
+
+### 10.5 메서드와 필드 오버라이드
+
+스칼라에서는 필드와 메서드가 같은 네임스페이스에 속한다.
+
+```java
+class CompilesFine {
+  private int f = 0;
+  public int f() {
+    return 1;
+  }
+}
+```
+
+위 자바 코드는 문제없이 컴파일 할 수 있지만 아래 스칼라 코드는 필드와 메서드가 같은 이름으로 컴파일 할 수 없다.
+
+```scala
+class WontCompile {
+  private var f = 0
+  def f = 1
+}
+```
+
+자바에는 4개의 네임스페이스 (필드, 메서드, 타입, 패키지) 가 있지만 <br/>
+스칼라에는 2개의 네임스페이스 (값, 타입) 만 있다.
+
+### 10.6 파라미터 필드 정의
+
+```scala
+class Cat {
+  val dangerous = false
+}
+
+class Tiger (
+  override val dangerous: Boolean,
+  private var age: Int
+) extends Cat
+```
+
+아래 두 멤버는 각각 대응하는 인자로 초기화 된다.
+
+인자의 이름을 임의로 `param1`, `param2` 라고 붙였다.
+
+```scala
+class Tiger(param1: Boolean, param: Int) extends Cat {
+  override val dangerous = param1
+  private var age = param2
+}
+```
+ 
+중요한 것은 인자의 이름이 스코프에 있는 다른 이름과 충돌하지 않아야 한다는 것이다.
+
+### 10.7 슈퍼 클래스 생성자 호출
+
+```scala
+class LineElements(s: String) extends ArrayElement(Array(s)) {
+  override def width = s.length
+  override def height = 1
+}
+```
+
+`LineElement` 클래스는 `Array(s)` 를 `ArrayElement` 뒤어 괄호로 묶어 표기함으로써 `ArrayElement` 의 주 생성자에 전달한다.
+
+### 10.8 override 수식자 사용
+
+스칼라에서는 부모 클래스에 있는 구체 (concrete) 멤버를 오버라이드 하는 모든 멤버에 `override` 수식자를 붙여야 한다.
+
+### 10.9 다형성과 동적 바인딩
+
+상위 클래스를 상속 받는 클래스가 여러 타입의 객체를 참조할 수 있음을 다형성 (polymorphism) 이라고 한다.
+
+**변수나 표현식에 대한 메서드 호출을 동적으로 바인딩 한다는 점이다.**
+
+이는 실행시점에 실제로 그 객체가 어떤 타입인가를 따른다는 뜻이다.
+
