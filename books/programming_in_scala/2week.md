@@ -1079,3 +1079,108 @@ class LineElements(s: String) extends ArrayElement(Array(s)) {
 
 이는 실행시점에 실제로 그 객체가 어떤 타입인가를 따른다는 뜻이다.
 
+### 10.10 final 멤버 선언
+
+상속 클래스가 오버라이드 하지 못하게 막고 싶을때 사용
+
+```scala
+class ArrayElement extends Element {
+  final override def demo() = {
+    println("ArrayElement's implementation invoked")
+  }
+}
+```
+
+### 10.11 상속과 구성 사용
+
+구성과 상속은 이미 존재하는 클래스를 이용해 새로운 클래스를 정의하는 두 가지 방법이다.
+
+### 10.12 above, beside, toString 구현 
+
+```scala
+abstract class Element {
+  def contents: Array[String]
+  
+  def width: Int = 
+    if (height == 0) 0 else contents(0).length
+  
+  def height: Int = content.length
+  
+  def above(that: Element): Element = 
+    new ArrayElement(this.contents ++ that.contents)
+
+  def beside(that: Element): Element = 
+    new ArrayElement(
+      for (
+        (line1, line2) <- this.contnets zip that.contnets
+      ) yield line + line2
+    )
+
+  override def toString = contents mkString "\n"
+}
+```
+
+### 10.13 팩토리 객체 정의
+
+팩토리 객체는 다른 객체를 생성하는 메서드를 제공하는 개체다.
+
+`new` 를 이용하여 직접 객체를 만들기 보다는 팩토리 메서드로 객체를 생성한다.
+
+팩토리 메서드를 생성하는 이점은 **생성 기능을 한곳에 모아 제공하고 구체적인 내부 표현을 감출수 있다는 점**이다.
+
+이렇게 세부사항을 숨기면 클라이언트는 라이브러리를 좀 더 쉽게 이해 가능하고, 나중에 클라이언트의 코드를 깨지 않고 구현을 변경하기에도 유리하다.
+
+```scala
+object Element {
+  def elem(contents: Array[String]): Element = 
+    new ArrayElement(contents)
+  
+  def elem(chr: Char, width: Int, height: Int): Element = 
+    new UniformElement(chr, width, height)
+  
+  def elem(line: String): Element =
+    new LineElement(line)
+}
+```
+
+### 10.14 높이와 너비 조절
+
+> 예제 코드 설명
+
+### 10.15 한데 모아 시험해보기
+
+```scala
+import Element.elem
+
+object Spiral {
+  val space = elem(" ")
+  val corner = elem("+")
+
+  def spiral(nEdges: Int, direction: Int): Element = {
+    if (nEdges == 1) 
+      elem("+")
+    else {
+      val sp = spiral(nEdges - 1, (direction + 3) % 4)
+      def verticalBar = elem('|', 1, sp.height)
+      def horizontalBar = elem('-', sp.width, 1)
+      if (direction == 0)
+        (corner beside horizontalBar) above (sp beside space)
+      else if (direction == 1)
+        (sp above space) beside (corner above verticalBar)
+      else if (direction == 2)
+        (space beside sp) above (horizontalBar beside corner)
+      else 
+        (verticalBar above corner) beside (space above sp)
+    }
+  }
+
+  def main(args: Array[String]) = {
+    val nSides = args(0).toInt
+    println(spiral(nSides, 0))
+  }
+}
+```
+
+### 10.16 결론
+
+객체 지향의 많은 개념을 살펴보았다.
