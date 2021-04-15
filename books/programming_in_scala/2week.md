@@ -682,6 +682,36 @@ b(2)
 // 6
 ```
 
+아래는 **리터럴** 테스트와 **객체** 테스트 했을 경우 결과이다.
+
+```scala
+def makeIncreaser(more: Foo) = (x: Int) => x + more.f
+
+var value = 1
+
+val increaser = makeIncreaser(value)
+
+value = 2
+
+println(increaser(3))
+// 4
+``` 
+
+```scala
+case class Foo(var f: Int)
+
+def makeIncreaser(more: Foo) = (x: Int) => x + more.f
+
+val foo = Foo(1)
+
+val increaser = makeIncreaser(foo)
+
+foo.f = 2
+
+println(increaser(3))
+// 5
+```
+
 ### 8.7 클로저
 
 주어진 함수 리터럴부터 실행 시점에 만들어낸 객체인 함숫값 (객체) 을 클로저 (closure) 라고 한다.
