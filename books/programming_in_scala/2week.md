@@ -1,4 +1,4 @@
-# 2주차 (6 ~ 12 Chapter)
+# 2주차 (6 ~ 10 Chapter)
 
 ## Chapter 06 함수형 객체
 
