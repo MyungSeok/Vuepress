@@ -128,3 +128,88 @@ def title(title: Text, anchor: Anchor, style: Style): Html =
 ### 11.5 결론
 
 다음 장에서 믹스인 (mix in) 합성을 이해할 준비가 되었다.
+
+## Chapter 12 트레이트
+
+스칼라에서 트레이트는 코드 재사용의 근간을 이루는 단위다.
+
+하나의 슈퍼클래스만 갖는 클래스의 상속과는 달리, 트레이트의 경우 몇개라도 혼합해 사용할 수 있다.
+
+### 12.1 트레이트의 동작 원리
+
+트레이트를 정의하고 나면 `extends` 나 `with` 키워드를 사용해 클래스에 조합하여 사용할 수 있다.
+
+스칼라 프로그래머는 트레이트를 사용할 때 상속보다는 믹스인 (mix in) 을 사용하려한다.
+
+```scala
+class Frog extends Philosophical {
+  override def to String = "green"
+}
+```
+
+트레이트를 믹스인할 때는 `extends` 키워드를 사용한다.
+
+`extends` 키워드를 사용하면 트레이트의 슈퍼클래스를 암시적으로 상속한다.
+
+여러 트레이트를 믹스인 하려면 `with` 구문을 추가하면 된다.
+
+```scala
+class Frog extends Animal with Philosophical {
+  override def toString = "green"
+}
+```
+
+```scala
+class Frog extends Animal with Philosophical HasLegs {
+  override def toString = "green"
+}
+```
+
+클래스와 트레이트의 차이점은 다음과 같다.
+
+* 트레이트는 클래스 파라미터 (클래스의 주 생성자에 전달할 파라미터) 를 가질 수 없다.
+* 클래스에서는 `super` 호출을 정적으로 바인딩하지만, 트레이트에서는 동적으로 바인딩한다는 점이다.
+
+### 12.2 간결한 인터페이스와 풍부한 인터페이스
+
+트레이트의 주된 사용방법은 **어떤 클래스에 그 클래스가 이미 갖고 있는 메서드를 기반으로 하는 새로운 메서드를 추가하는 법**이다.
+
+간결한 인터페이스 (thin interface) 를 풍부한 인터페이스 (rich interface) 로 만들 때 트레이트를 사용할 수 있다.
+
+구체적인 메서드 구현을 트레이트에 더할 수 있으면 풍부한 인터페이스 쪽의 비용대비 효용이 더 좋아진다.
+
+### 12.3 예제: 직사각형 객체
+
+풍부한 트레이트를 사용해 코드의 반복을 피할 수 있다.
+
+```scala
+trait Rectangular {
+  def topLeft: Point
+  def bottomRight: Point
+
+  def left = topLeft.x
+  def right = bottomRight.x
+  def width = right - left
+  // 여러 기하 관련 메서드...
+}
+```
+
+### 12.4 Ordered 트레이트
+
+스칼라에서 제공하는 `Ordered` 라는 트레이트를 사용할 경우 하나의 비교 연산자만 작성하면 모든 비교 연산자 구현을 대신할 수 있다.
+
+`Ordered` 트레이트가 그 하나의 메서드 구현을 기반으로 `<`, `>`, `<=`, `=>` 를 제공한다.
+
+`compare` 메서드만 구현하면 `Ordered` 트레이트가 비교 메서드를 제공해 클래스를 풍부하게 해준다.
+
+`Ordered` 트레이트가 `equals` 를 정의하지 않는다. 이는 비교관점에서 `equals` 를 구현하려면 전달 받을 객체의 타입을 알아야 한다.
+
+하지만 타입 소거 (type erasure) 때문에 Ordered 트레이트는 이러한 검사를 수행할 수 없다.
+
+### 12.5 트레이트를 이용해 변경 쌓아 올리기
+
+클래스에 쌓을 수 있는 변경을 적용해보자.
+
+
+
+![Cat 클래스의 상속 계층과 선형화](/img/A119.png)
