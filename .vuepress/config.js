@@ -501,7 +501,8 @@ module.exports = {
         '',
         '1week',
         '2week',
-        '3week'
+        '3week',
+        '4week'
       ]
     }
   }

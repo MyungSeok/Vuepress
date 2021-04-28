@@ -865,7 +865,6 @@ Welcome to Ultamix 3000
 
 이는 두번째 줄에 공백이 들어갔기 때문인데, 이 문제해결을 위해서는 `stripMargin` 문자열에 대해 호출하여 처리한다.
 
-
 ```scala
 println("""|Welcome to Ultamix 3000
            |Type "HELP" for help.""".stripMargin)

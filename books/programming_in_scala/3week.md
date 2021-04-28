@@ -521,3 +521,560 @@ object PrintMenu {
 ### 13.7 결론
 
 패키지를 사용하면 쉽고 쓸모 있게 모듈화가 가능하다.
+
+## Chapter 14 단언문과 테스트
+
+이 장에서는 작성한 소프트웨어가 제대로 동작하는지 확인할 수 있는 두가지 방법을 보여준다.
+
+### 14.1 단언문
+
+스칼라에서는 `assert` 메서드를 호출하는 방법으로 단언문을 작성한다.
+
+단언문의 조건이 충족되지 않는 경우에는 `AssertionError` 를 발생시킨다.
+
+인자를 2개 받는 단언문도 있는데 `assert(조건, 설명)` 으로 구성된다.
+
+이 설명의 데이터 타입은 `Any` 이며 어떤 객체라도 넘길수 있다.
+
+```scala
+def above(that: Element): Element = {
+  val this1 = this widen that.width
+  val that1 = that widen this.width
+  assert(this1.width == that1.width)
+  elem(this1.contents ++ that1.contents)
+}
+```
+
+위와 동일한 기능으로 `ensuring` 을 사용하여 함수의 결과 확인하기가 있다.
+
+```scala
+private def widen(w: Int): Element = 
+  if (w <= width)
+    this
+  else {
+    val left = elem(' ', (w - width) / 2, height)
+    val right = elem(' ', w - width - left.width, height)
+    left beside this beside right
+  } ensuring (w <= _.width)
+```
+
+> JVM 에서 `-ea` 나 `-da` 명령행 옵션을 사용하면 `assert` 와 `ensuring` 동작을 켜거나 끌수가 있다.
+
+### 14.2 스칼라에서 테스트하기
+
+스칼라에서는 여러 테스트 도구가 존재한다.
+
+* 스칼라 테스트 (Scala Test)
+* 스칼라 스팩스2 (Scala Spec2)
+* 스칼라 체크 (Scala Check)
+
+
+스칼라 테스트는 가장 유연한 테스트 프레임워크이다. <br/>
+다른 문제를 풀기 위해 쉽게 커스터마이징 할 수 있다.
+
+`AnyFunSuite` 로 작성하며 JUnit 을 경험해본 개발자는 익술할 것이다.
+
+```scala
+import org.scalatest.funsuite.AnyFunSuite
+import Element.elem
+
+class ElementSuite extends AnyFunSuite {
+  test("elem result should have passed width") {
+    val ele = elem('x', 2, 3)
+    assert(ele.width == 2)
+  }
+}
+```
+
+**스칼라 테스트에서 중심적인 개념은 테스트 집합인 스위트 (suite)** 이다.
+
+테스트는 시작해서 성공 혹은 실패, 대기, 취소 할 수 있는 이름이 있는 어떤것들이다.<br/>
+트레이트 스위트 (trait suite) 는 테스트를 실행하기 위해 사전에 준비된 **생명주기 메서드 (life cycle) 를 지원**한다.
+
+이러한 메서드들은 테스트 작성과 실행 방법을 커스터마이징 하기 위해 오버라이드 할 수 있다.
+
+`AnyFunSuite` 를 포함한 모든 스칼라 테스트 스타일은 서술적인 이름을 갖는 테스트 작성을 권장하고자 설계됬다.
+
+### 14.3 충분한 정보를 제공하는 실패 보고
+
+단언문이 실패한다면 **파일이름, 실패한 단언문 줄 번호, 정보가 담긴 오류메세지가 오류 보고에 포함**되어야 한다.
+
+```bash
+scala> val width = 3
+width: Int = 3
+
+scala> assert(width == 2)
+org.scalatest.exceptions.TestFailedException: 
+    3 did not equal 2
+```
+
+단언문 실패에 더 상세한 정보를 원한다면, 스칼라 테스트에 Diagrams 를 사용할 수 있다.
+
+```bash
+scala> assert(List(1, 2, 3).contains(4))
+org.scalatest.exceptions.TestFailedException:
+
+  assert(List(1, 2, 3).contains(4))
+         |    |  |  |  |        |
+         |    1  2  3  false    4
+         List(1, 2, 3)
+```
+
+스칼라테스트의 `assert` 메서드는 오류 메세지에서 실제 결과와 기대되는 결과의 차이를 보여주지 않는다.
+
+만약 어떤 메서드가 발생시킬 수 있는 예외를 검사하고 싶다면, 스칼라테슽트의 assertThrows 메서드를 다음과 같이 사용할 수 있다.
+
+```scala
+assertThrows[IllegalArgumentException] {
+  elem('x', -2, 3)
+}
+```
+
+중괄호 내의 코드가 다른 예외를 발생시키거나, 어떤 예외도 발생시키지 않는다면, assertThrows 는 TestFailedException 과 함께 즉시 끝날것이다.
+
+### 14.4 명세로 테스트하기
+
+동작 주도 개발 (BDD: Behavior Driven Development) 테스트는 코드의 동작이 사람이 읽을 수 있는 명세로 작성하고, 코드가 그 명세에 따라 장동하는지 확인하는 테스트를 작성하는데 중점을 둔다.
+
+```scala
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
+
+class ElementSpec extends AnyFlatSpec with Matchers {
+  "A UniformElement" should
+    "have a width equal to the passed value" in {
+      val ele = elem ('x', 2, 3)
+      elem.width should be (2)
+    }
+
+    it should "have a height equal to the passed value" in {
+      val ele = elem('x', 2, 3)
+      ele.height should be (3)
+    }
+
+    it should "throw an IAE if passed a negative width" in {
+      an [IllegalArgumentException] should be thrownBy {
+        elem('x', -2, 3)
+      }
+    }
+}
+```
+
+`AnyFlatSpec` 에서는 명세 절 (specifier clause) 을 사용해 테스트를 작성한다.
+
+먼저 테스트 할 주제에 대해 이름을 문자열로 붙이는 것부터 시작한다.<br/>
+그 뒤에 `should` 를 넣고, 그 뒤에 주제의 작동을 설명하는 문자열이 오고, 그 다음에 `in` 이 따라온다.
+
+`in` 다음에는 중괄호 안에 지정한 동작을 테스트하는 코드를 작성한다.
+
+> 에릭 토레보르 (Eric Torreborrre) 가 스칼라로 작성한 오픈소스 도구인 스펙스2 (specs2) 테스트 프레임워크도 BDD 를 지원한다.
+
+BDD 의 가장 큰 아이디어 중 하나는 어떤 소프트웨어 시스템을 만들지 경정하는 사람, 그 소프트웨어를 구현하는 사람, 그리고 그 소프트웨어가 잘 마무리 되어 동작하는지를 결정하는 사람 사이의 의사소통을 테스트가 도와줄 수 있다는 것이다.
+
+```scala
+import org.scalatest._
+import org.scalatest.featurespec.AnyFeatureSpec
+
+class TVSetSpec extends AnyFeatureSpec with GivenWhenThen{
+  Feature("TV power button")
+    Scenario("User presses power button when TV is off") {
+      Given("a TV set that is switched off")
+      When("the power button is pressed")
+      Then("the TV should switch on)
+      pending
+    }
+}
+```
+
+`AnyFeatureSpec` 은 소프트웨어 요구사항에 대한 대화를 돕기 위해 설계되었다.
+
+이는 구체적인 특징 (feature) 은 밝혀야 하고, 그런 특징을 시나리오 (scenario) 에 명시해야 한다.<br/>
+Given, When, Then 은 구체적인 개별 시나리오에 대한 대화의 초점을 맞추는데 도움을 줄 수 있다.
+
+> `pending` 호출은 테스트나 실제 동작이 아직 구현되지 않았다는 사실을 명시한다.
+
+### 14.5 프로퍼티 기반 테스트
+
+리커드 닐슨 (Rickard Nilsson) 이 작성한 오픈소스 프레임워크인 스칼라체크 (Scala Check) 는 스칼라로 만들어진 또 다른 유용한 테스트 도구이다.
+
+스칼라 체크는 코드가 준수해야 하는 프로퍼티를 명시하게 해준다.
+
+```scala 3
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.matchers.must.Matchers._
+
+class ElementSpec extends AnyWorldSpec with ScalaCheckPropertyChecks {
+  "elem result" must {
+    "have passed width" in {
+      forAll { (w: Int) =>
+        whenever (x > 0) {
+          elem('x', w % 100, 3).width must equal (w % 100)
+        }
+      }
+    }
+  }
+}
+```
+
+`forAll` 메서드 내부에 elem 팩토리가 지켜야 하는 프로퍼티를 검사한다.
+
+```scala
+whenever (w > 0) {
+  elem('x', w % 100, 3).width must equal (w % 100)
+}
+```
+
+`whenever` 절은 왼쪽 편에 있는 식이 `true` 일 때마다 오른쪽에 있는 식이 `true` 가 되어야 함을 명시한다.
+
+스칼라 체크는 프로퍼티에 맞지 않는 값을 찾기 위해 `w` 에 들어갈 수 있는 값을 여러개 생성하고 각각을 테스트한다.<br/>
+스칼라 체크가 시도하는 모든 값을 프로티가 만족하는 경우 테스트를 통과하고, 그렇지 않으면 실패의 원인이 된 값이 들어있는 `TestFailedException` 을 뿜으며 테스트가 종료된다.
+
+```scala
+abstract class Element {
+  def contents: Array[String]
+  def height: Int = contents.length
+  def width: Int = if (height == 0) 0 else contents(0).length
+}
+```
+
+> Element 클래스는 10.3 예제를 따른다.
+
+### 14.6 테스트 조직과 실행
+
+스칼라 테스트에서는 스위트 (suite) 안에 스위트를 포함 시킴으로써 큰 테스트를 조직화 한다.
+
+이는 어떤 스위트가 실행되면 그 안에 테스트 뿐만이 아니라 내부에 있는 스위트의 테스트도 실행함으로써 내포된 모든 스위트를 실행한다.
+
+큰 스위트는 Suite 객체 트리로 표현할 수 있다.
+
+수동 혹은 자동으로 스위트를 포함 시킬수 있다.
+
+#### 수동
+
+* `nestedSuites` 메스드를 오버라이드 하거나 포함시키고 싶은 생성자에 `Suite` 클래스의 생성자에 전달
+* 스위트간의 포함관계를 위해서 추가 생성자를 제공
+
+#### 자동
+
+* 스칼라 테스트의 `Runner` 에 패키지 이름을 전달
+
+### 14.7 결론
+
+자바에서의 익숙한 테스트 도구의 장점을 살릴수도 있고, 스칼라테스트, 스칼라체크, 스팩스2 등의 스칼라만을 위해 설계한 새로운 도구의 이점도 취할 수 있다.
+
+## Chapter 15 케이스 클래스와 패턴 매치
+
+케이스 클래스 (Case Class) 와 패턴 매치 (Pattern Match) 는 일반적이고 캡슐화되지 않는 데이터 구조를 작성할 때 쓰인다.
+
+### 15.1 간단한 예
+
+케이스 클래스의 정의 
+
+```scala
+abstract class Expr 
+case class Var(name: String) extends Expr
+case class Number(num: Double) extends Expr
+case class UnOp(operator: String, arg: Expr) extends Expr
+case class BinOp(operator: String, left: Expr, right: Expr) extends Expr
+```
+
+#### 케이스 클래스 
+
+클래스 선언에서 각 서브 클래스 앞에 case 라는 수식자가 있음을 주의한다.
+
+`case` 수식자는 스칼라 컴파일러에게 해당 클래스에 문법적으로 편리한 기능 몇가지를 추가하라고 지시한다.
+
+1. 컴파일러는 클래스 이름과 같은 팩토리 메서드를 추가한다.
+
+```bash
+scala> val v = Var("x")
+v: Var = Var(x)
+```
+
+팩토리 메서드는 중첩해서 객체를 생성할 때 좋다.
+
+2. 케이스 클래스의 파라미터 목록에 있는 모든 인자의 암시적으로 `val` 접두사를 붙인다.
+
+```bash
+scala> v.name
+res0: String = x
+
+scala> op.left
+res1: Expr = Number(1.0)
+```
+
+각 파라미터가 클래스의 필드도 된다.
+
+3. 컴파일러는 케이스 클래스에 `toString`, `hashCode`, `equals` 메서드의 **일반적인 구현**을 추가한다.
+
+```bash
+scala> println(op)
+BinOp(+,Number(1.0),Var)
+
+scala> op.right == Var("x")
+res3: Boolean = true
+```
+
+스칼라에서는 `==` 을 사용한 비교를 항상 `equals` 에 위임한다.
+
+4. 컴파일러는 어떤 케이스 클래스에서 일부를 변형한 복사본을 생성하는 `copy` 메서드를 추가한다.
+
+이 `copy` 메서드는 **디폴트 파라미터**와 **이름을 붙인 파라미터를 제공**한다.
+
+```bash
+scala> op.copy(operator = "-")
+BinOp(-,Number(1.0),Var)
+```
+
+**하지만 케이스 클래스의 가장 큰 장점은 패턴 매치를 지원한다는 점이다.**
+
+#### 패턴 매치
+
+패턴 매치는 스칼라에서 함수를 단순화 시키는것이 핵심
+
+```scala
+ def simplifyTop(expr: Expr): Expr = expr match { 
+  case UnOp("-", UnOp("-", e))  => e
+  case BinOp("+", e, Number(0)) => e
+  case BinOp("*", e, Number(1)) => e
+  case _ => expr 
+}
+
+simplifyTop(UnOp("-", UnOp("-", Var("x")))) 
+// Var(x)
+
+simplifyTop(BinOp("+", UnOp("-", Var("x")), Number(3))) 
+// BinOp(+,UnOp(-,Var(x)),Number(3.0))  ???
+```
+
+:::tip TODO
+[방문자 패턴](/backend/language/java/design-pattern/behavioral/visitor) 을 사용하여 동일한 기능을 구현해보자
+:::
+
+#### switch 와 match 의 비교
+
+match 식은 자바 스타일의 switch 를 일반화한 것이다.
+
+스칼라의 match 와 자바 switch 차이점은 다음과 같다.
+
+* 스칼라의 match 는 표현식이다. 따라서 결괏값을 내놓는다.
+* 스칼라의 대안 표현식은 다음 케이스로 빠지지 않는다.
+* match 에 성공하지 못한 경우 MatchError 예외가 발생한다.
+
+### 15.2 패턴의 종류
+
+#### 와일드 카드 패턴
+
+#### 상수 패턴
+
+#### 변수 패턴
+
+##### 변수 또는 상수?
+
+#### 생성자 패턴
+
+#### 시퀀스 패턴
+
+#### 튜플 패턴
+
+#### 타입 지정 패턴
+
+##### 타입 소거
+
+#### 변수 바인딩
+
+### 15.3 패턴 가드
+
+한 패턴 안에 오직 한번만 나와야 한다. 이는 스칼라가 선형 패턴으로 제한하기 때문이다.
+
+```scala
+scala> def simplifyAdd(e: Expr) = e match { 
+          case BinOp("+", x, x) => BinOp("*", x, Number(2)) 
+          case _ => e 
+      } 
+
+// error: x is already defined as value x
+```
+
+하지만 패턴 가드 (pattern guard) 를 사용하면 match 표현식을 다시 쓸 수 있다.
+
+```bash
+scala> def simplifyAdd(e: Expr) = e match { 
+        case BinOp("+", x, y) if x == y => 
+        BinOp("*", x, Number(2)) 
+        case _ => e 
+      } 
+```
+
+패턴 가드는 패턴 뒤에 오고 `if` 로 시작한다.
+
+### 15.4 패턴 겹침
+
+패턴 매치는 코드에 있는 순서를 따른다.
+
+따라서 모든 경우를 처리하는 case 문이 더 구체적인 규칙 다음에 와야 한다. (더 좁은 범위를 처리하는 규칙이 선행되어야 한다.)
+
+```scala
+def simplifyBad(expr: Expr): Expr = expr match { 
+  case UnOp(op, e) => UnOp(op, simplifyBad(e)) 
+  case UnOp("-", UnOp("-", e)) => e 
+} 
+
+// case UnOp("-", UnOp("-", e)) => e 코드는 도달할 수 없다.
+```
+
+### 15.5 봉인된 클래스
+
+컴파일러의 도움을 얻어 모든 케이스의 매치를 가능하도록 놓친 패턴 조합이 있으면 알려준다.
+
+케이스 클래스를 **봉인된 클래스 (sealed class)** 로 만들면 그 클래스와 같은 파일이 아닌 다른 곳에서 새로운 서브 클래스를 만들 수 없다.
+
+봉인된 클래스를 만드려는 클래스 앞에 `sealed` 라는 키워드를 넣으면 된다.
+
+```scala
+sealed abstract class Expr 
+case class Var(name: String) extends Expr 
+case class Number(num: Double) extends Expr 
+case class UnOp(operator: String, arg: Expr) extends Expr 
+case class BinOp(operator: String, left: Expr, right: Expr) extends Expr
+```
+
+위와 같이 봉인된 클래스를 정의해놓고 아래와 같이 매치 케이스를 작성한다.
+
+```scala
+def describe(e: Expr): String = e match { 
+    case Number(_) => "a number" 
+    case Var(_)    => "a variable" 
+} 
+```
+
+다음과 같은 경고가 노출 된다.
+
+```bash
+warning: match is not exhaustive!
+missing combination         UnOp 
+missing combination         BinOp
+```
+
+만약 경고를 없애고 싶다면 나머지 케이스를 다 매치시켜놓는다.
+
+```scala
+def describe(e: Expr): String = e match { 
+  case Number(_) => "a number" 
+  case Var(_) => "a variable" 
+  case _ => throw new RuntimeException
+}
+```
+
+더 세련된 방법은 `@unchecked` 어노테이션을 추가하는 것이다.
+
+이 `@unchecked` 어노테이션은 패턴 매치시 모든 패턴을 다 다루는지 검사하는 일을 생략한다.
+
+### 15.6 Options 타입
+
+스칼라에는 Option 이라는 표준 타입이 있다. 이 타입은 선택적인 값을 표현하며 두가지 형태가 있다.
+
+만약 `x` 가 실제 값이라면 `Some(x)` 라는 형태로 값이 있음을 표현할 수 있다. 반대로 값이 없으면 `None` 이라는 객체가 된다.
+
+```scala
+scala> def show(x: Option[String]) = x match { 
+        case Some(s) => s 
+        case None => "?" 
+      } 
+```
+
+스칼라에서는 선택적인 값을 나타내기 위해 `Option` 을 사용하도록 권장한다.
+
+### 15.7 패턴은 어디에서나
+
+독립적인 match 표현식뿐 아니라, 스칼라의 여러곳에서 패턴을 사용할 수 있다.
+
+#### 변수 정의에서 패턴 사용하기
+
+`val` 이나 `var` 를 정의할 때 식별자 대신에 패턴을 사용할 수 있다.
+
+```bash
+scala> val myTuple = (123, "abc") 
+myTuple: (Int, java.lang.String) = (123,abc) 
+
+scala> val (number, string) = myTuple 
+number: Int = 123 
+string: java.lang.String = abc
+```
+
+다음과 같이 구조해체 구문과 같이(?) 사용 가능하다.
+
+```bash
+scala> val exp = new BinOp("*", Number(5), Number(1)) 
+exp: BinOp = BinOp(*,Number(5.0),Number(1.0)) 
+
+scala> val BinOp(op, left, right) = exp 
+op: String = * 
+left: Expr = Number(5.0) 
+right: Expr = Number(1.0)
+```
+
+#### case 나열해서 부분 함수 만들기
+
+```scala
+val withDefault: Option[Int] => Int = {
+  case Some(x) => x
+  case None => 0
+}
+```
+
+아래 `case` 문은 부분 함수처럼 사용 가능하다.
+
+```scala
+scala> withDefault(Some(10)) 
+// Int = 10 
+
+scala> withDefault(None) 
+// Int = 0
+```
+
+이러한 기능은 아카 액터 (akka actors) 라이브러리에서 유용한데, case 를 나열하여 receive 메서드 정의를 가능케 한다.
+
+유의할 점은 case 나열은 부분 함수 (partial function) 이 처리하지 않는 값을 전달해서 호출하면 실행 시점에 예외가 발생한다.
+
+```scala
+val second: List[Int] => Int = {
+  case x :: y :: _ => y 
+}
+
+// warning: match is not exhaustive!
+// missing combination      Nil
+```
+
+위 코드는 원소를 3개를 넘기면 통과하지만 빈 리스트를 넘기면 실패한다.
+
+이러한 이슈 해결을 위해 `isDefinedAt` 메서드를 제공하는데, `isDefinedAt` 메서드는 부분 함수가 어떤 값에 대해 결괏값을 정의하고 있는지 알려준다.
+
+```scala
+second.isDefinedAt(List(5,6,7))
+// Boolean = true                             
+
+second.isDefinedAt(List()) 
+// Boolean = false
+```
+
+#### for 표현식에서 패턴 사용하기
+
+```scala
+for ((country, city) <- capitals) 
+  println("The capital of "+ country +" is "+ city) 
+
+// The capital of France is Paris 
+// The capital of Japan is Tokyo
+```
+
+위와 같이 `for` 표현식 안에 패턴을 사용할 수 있다.
+
+### 15.8 복잡한 예제
+
+> 예제 코드 설명
+
+### 15.9 결론
+
+케이스 클래스와 패턴매치를 사용하면 객체지향에서 지원하지 않는 간결한 표현법의 이점을 누릴수 있다.
