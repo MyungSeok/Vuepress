@@ -79,3 +79,675 @@ def insert(x: Int, xs: List[Int]): List[Int] = xs match {
 
 #### 두 리스트 연결하기
 
+```scala
+List(1, 2) ::: List(3, 4, 5)
+// List(1, 2, 3, 4, 5)
+
+List(1, 2, 3) ::: List
+// List(1, 2, 3, 4)
+```
+
+#### 분할 정복 원칙
+
+연결 (`:::`) 은 `List` 클래스 안에 구현되어 있는 메서드이다.
+
+하지만 리스트에 패턴 매치를 사용해 `:::` 를 직접 구현할 수도 있다.
+
+```scala
+def append[T](xs: List[T], ys: List[T]): List[T]
+```
+
+```scala
+def append[T](xs: List[T], ys: List[T]): List[T] =
+  xs match {
+    case List() => ys
+    case x :: xs1 => x :: append(xs1, ys)
+}
+```
+
+#### 리스트 길이 구하기: length
+
+`length` 메서드는 리스트의 길이를 계산한다.
+
+```scala
+List(1, 2, 3).length
+// 3
+```
+
+배열과 강리 리스트의 `length` 는 비교적 비싼 연산이다.
+
+리스트의 끝을 찾기 위해 전체 리스트를 순회해야 하기 때문이다.
+
+때문에 `xs.isEmpty` 의 검사를 `xs.length == 0` 으로 바꾼 방식은 좋은 방식이 아니다<br/>
+두 검사의 결과는 같지만 모든 리스트를 순회해야 한다는 점에서 `xs.length == 0` 은 느리다.
+
+#### 리스트의 양 끝에 접근하기
+
+* head : 첫번째 원소를 반환
+* tail : 첫번째 원소를 제외한 모든 원소를 포함한 리스트를 반환
+* init : 마지막 원소를 제외한 모든 원소를 포함한 리스트를 반환
+* last : 마지막 원소 반환
+
+```scala
+val abcde = List('a', 'b', 'c', 'd', 'e')
+
+abcde.head
+// List(a)
+
+abcde.tail
+// List(b, c, d, e)
+
+abcde.init
+// List(a, b, c, d)
+
+abcde.last
+// List(e)
+```
+
+이 둘은 쌍대성 (거울연산) 이다.
+
+#### 리스트 뒤집기: reverse
+
+```scala
+abcde.reverse
+// List(e, d, c, b, a)
+```
+
+`reverse` 는 값을 변경한다기 보다는 **새로운 리스트를 생성**한다.
+
+reverse, init, last 연산은 다음 법칙을 만족한다.
+
+1. reverse 는 자기자신의 역이다.
+  * xs.reverse.reverse 는 xs 와 같다.
+2. 원소의 방향이 뒤집혔다는 점을 제외하면 reverse 는 init 을 tail 로 바꾸고 last 를 head 로 바꾼다.
+  * xs.reverse.init 는 xs.tail.reverse 와 같다.
+  * xs.reverse.tail 은 xs.init.reverse 와 같다.
+  * xs.reverse.head 는 xs.last 와 같다.
+  * xs.reverse.last 는 xs.head 와 같다.
+
+`:::` 을 이용하여 reverse 를 구현할 수 있다.
+
+```scala
+def rev[T](xs: List[T]): List[T] = xs match {
+  case List() => xs
+  case x :: xs1 => rev(xs1) ::: List(x)
+}
+```
+
+이 `rev` 메서드는 만족스러운 성능을 내지 못한다. (시간복잡도는 On^2)
+
+#### 접두사와 접미사: drop, take, splitAt
+
+* drop: 첫번째에서 n 번째 원소를 제외한 xs 리스트를 반환
+* take: 첫번째에서 n 번째 원소를 반환
+* splitAt: 주어진 인덱스에서 리스트를 분할해서 두 리스트를 반환
+
+```scala
+val abcde = List('a', 'b', 'c', 'd', 'e')
+
+abcde drop 2
+// List(c, d, e)
+
+abcde take 2
+// List(a, b)
+
+abcde splitAt 2
+// (List(a, b), List(c, d, e))
+```
+
+#### 원소 선택하기: apply, indices
+
+```scala
+abcde apply 2
+// c
+
+abcde(2)
+// c
+```
+
+임의의 원소를 선택하는 `apply` 는 인덱스 n 의 값에 비례해서 시간이 걸린다.
+
+`indices` 는 유효한 인덱스를 반환한다.
+
+```scala
+abcde.indices
+
+// Range(0, 1, 2, 3, 4)
+```
+
+kotlin 에서 `for loop` 사용할때와 유사
+
+#### 리스트의 리스트를 한 리스트로 반듯하게 만들기: flatten
+
+`flatten` 메서드는 리스트의 리스트를 인자로 받아 하나의 리스트로 반듯하게 펼친다.
+
+```scala
+List(List(1, 2), List(3), List(), List(4, 5)).flatten
+// List(1, 2, 3, 4, 5)
+```
+
+이 메서드는 리스트의 모든 원소가 리스트일때만 적용 가능하다.
+
+#### 두 리스트를 순서싸으로 묶기: zip, unzip
+
+`zip` 연산은 두 리스트를 이자로 받아 순서쌍의 리스트로 만든다.
+
+```scala
+val zipped = abcde zip List(1, 2, 3, 4)  
+// List((a,1), (b,2), (c,3), (d, 4))
+```
+
+리스트의 길이가 다르면 길이가 긴쪽의 남는 원소가 버려진다.
+
+`unzip` 은 당연히 반대이다.
+
+```scala
+zipped.unzip
+// (List(a, b, c),List(1, 2, 3))
+```
+
+`zipWithIndex` 는 원소와 그 인덱스를 순서쌍으로 묶는다.
+
+```scala
+abcde.zipWithIndex
+// List((a,0), (b,1), (c,2), (d,3), (e,4))
+```
+
+#### 리스트 출력하기: toString, mkString
+
+`toString` 은 리스트의 표준 문자열을 반환한다.
+
+```scala
+abcde.toString()
+// List(a, b, c, d, e)
+```
+
+`mkString` 은 `xs mkString (pre, sep, post)` 으로 사용하며
+
+`pre + xs(0) + sep + ... + sep + xs + post` 으로 구성된다.
+
+#### 리스트 변환하기: iterator, toArray, copyToArray
+
+`iterator` 는 원소를 순회하도록 도와준다.
+
+```scala
+val it = abcde.iterator
+// it: Iterator[Char] = <iterator>
+
+it.next
+// a
+ 
+it.next
+// b
+```
+
+`copyToArray` 는 리스트의 원소를 어떤 배열의 특정 지점으로 부터 연속적으로 복사한다.
+
+```scala
+val arr2 = new Array[Int](10)
+// Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+List(1, 2, 3) copyToArray (arr2, 3)
+// Array(0, 0, 0, 1, 2, 3, 0, 0, 0, 0)
+```
+
+#### 예제: 병합정렬
+
+> 예제코드 참고
+
+### 16.7 List 클래스의 고차 메서드
+
+#### 리스트 매핑: map, flatmap, foreach
+
+`xs map f` 연산은 `List[T]` 타입인 `xs` 와 `T => U` 타입인 `f` 함수를 받는다.
+
+```scala
+List(1, 2, 3) map (_ + 1)
+// List(2, 3, 4)
+
+val words = List("the", "quick", "brown", "fox")
+words map (_.length)
+// List(3, 5, 5, 3)
+```
+
+`flatmap` 연산자는 `map` 과 유사하지만 모든 리스트를 연결한 단일 리스트로 반환한다.
+
+```scala
+words map (_.toList)
+// List(List(t, h, e), List(q, u, i,c, k), List(b, r, o, w, n), List(f, o, x))
+ 
+words flatMap (_.toList)
+// List(t, h, e, q, u, i, c, k, b, r, o, w, n, f, o, x)
+```
+
+`foreach` 는 오른쪽 피연산자로 프로시져를 받는다.
+
+```scala
+var sum = 0
+List(1, 2, 3, 4, 5) foreach (sum += _)
+// sum = 15
+```
+
+`foreach` 결과는 `Unit` 이다.
+
+#### 리스트 걸러내기: filter, partition, find, takeWhile, dropWhile, span
+
+* filter: `T => Boolean` 타입의 술어를 받아 조건을 만족하는 원소를 반환
+* find: `T => Boolean` 를 만족하는 첫번째 원소만 반환
+* takeWhile: `T => Boolean` 를 만족하는 가장 긴 접두사를 반환
+* dropWhile: `T => Boolean` 를 만족하는 가장 긴 접두사를 제거
+
+```scala
+List(1, 2, 3, -4, 5) takeWhile (_ > 0)
+// List(1, 2, 3)
+ 
+List(1, 2, 3, -4, 5) dropWhile (_ > 0)
+// List(-4,5)
+```
+
+#### 리스트 전체에 대한 술어: forall, exists
+
+* `xs forall p`: 리스트의 모든 원소가 만족할 때 `true` 반환
+* `xs exists p`: 리스트의 원소중에 술어 (`p`) 를 하나라도 만족하면 `true` 를 반환
+
+#### 리스트 폴드: foldLeft 와 foldRight
+
+`sum(List(a, b, c))` 는 `0 + a + b + c` 와 같다.
+
+```scala
+def sum(xs: List[Int]): Int = xs.foldLeft(0)(_ + _)
+```
+
+왼쪽 폴드 (foldLeft) 연산은 `xs.foldLeft(z)(op)` 에 대해 시작값 `z`, 폴드할 대상 `xs` 에 대해 이항 연산인 `op` 를 적용한다.
+
+```scala
+words.foldLeft("")(_ + " " + _)
+// " the quick brown fox"
+```
+
+위와 같이 맨 앞에 공백을 제거하기 위해 다음과 같이 변형한 형태를 사용한다.
+
+```scala
+words.tail.foldLeft("")(_ + " " + _)
+// the quick brown fox
+```
+
+왼쪽 폴드와 반대되는 메서드가 오른쪽 폴드 (foldRight) 이다
+
+#### 예: 폴드를 사용해 리스트 뒤집기
+
+> 예제 참고
+
+#### 리스트 정렬: sortWith
+
+```scala
+List(1, -3, 4, 2, 6) sortWith (_ < _)
+// List(-3, 1, 2, 4, 6)
+
+word sortWith (_.length > _.length)
+// List(quick, brown, the, fox)
+```
+
+### 16.8 List 객체의 메서드
+
+#### 원소로부터 리스트 만들기
+
+```scala
+List.apply(1, 2, 3)
+// List(1, 2, 3)
+```
+
+#### 수의 범위를 리스트로 만들기: List.range
+
+`List.range(form, unitl)` 이며 `unitl` 은 범위에 들어가지 않는다.
+
+```scala
+List.range(1, 5)
+// List(1, 2, 3, 4)
+```
+
+세번째 파라미터로 다음과 같이 증가치를 갖는 `range` 버전도 있다.
+
+```scala
+List.range(1, 9, 2)  
+// List(1, 3, 5, 7)    
+ 
+List.range(9, 1, -3)  
+// List(9, 6, 3)
+```
+
+#### 균일한 리스트 만들기: List.fill
+
+생성할 리스트의 길이를 받은 다음 반복할 원소를 받는다.
+
+```scala
+List.fill(5)('a')
+// List(a, a, a, a, a)
+```
+
+fill 에 인자를 2개보다 많이 전달하면 다차원 리스트를 생성한다.
+
+```scala
+List.fill(2, 3)('b')
+List(List(b, b, b), List(b, b))
+```
+
+#### 함수 도표화: List.tabulate
+
+제공된 함수로 계산된 리스트를 생성한다.
+
+```scala
+List.tabulate(5)(n => n * n)
+List(0, 1, 4, 9, 16)
+```
+
+#### 여러 리스트 연결하기
+
+```scala
+List.concat(List('a', 'b'), List('c'))
+// List(a, b, c)
+
+List.concat(List(), List('b'), List('c'))
+// List(b, c)
+```
+
+### 16.9 여러 리스트를 함께 처리하기
+
+`zip` 은 앞에서 봐왔듯이 순서쌍 연산을 한다.
+
+하지만 `zip` 이 호출된 직후 중간 리스트를 임의로 만들어내기 때문에 생성비용이 들어간다.
+
+때문에 `lazyzip` 을 제공한다.
+
+```scala
+(List(10, 20) lazyZip List(3, 4, 5)).map(_ * _)
+// List(30, 80)
+```
+
+하지만 이름에서 알 수 있듯이 컬렉션을 바로 돌려주지 않는다.
+
+`exists` 와 `forall` 도 지연 연산에 해당하는 버전이 있다.
+
+### 16.10 스칼라의 타입 추론 알고리즘 이해
+
+```scala
+msort((x: Char, y: Char) => x > y)(abcde)
+// List(e, d, c, b, a)
+```
+
+```scala
+abcde sortWith (_ > _)
+// List(e, d, c, b, a)
+```
+
+위 두 코드는 같은 동작을 수행한다.
+
+하지만 다음의 경우에는 에러가 발생한다.
+
+```scala
+msort(_ > _)(abcde)
+```
+
+스칼라에서는 타입 추론이 흐름기반으로 동작한다.
+
+메서드 적용인 `m(args)` 에서 타입 추론 로직은 메서드 `m` 타입이 있는지 먼저 검사한다.
+
+만약 `m` 타입이 있다면 메서드에 적용할 인자의 예상 타입을 추론한다.
+
+타입추론이 첫 인자인 `(_ > _)`을 검토할때 함수 인자의 정확한 타입을 알 수 없어 실패한다.
+
+```scala
+msort[Char](_ > _)(abcde)
+```
+
+> 어쨋든 타입 인자나 타입 표기를 명시해줘라
+
+### 16.11 결론
+
+리스트를 다루는 많은 방법들을 살펴보았다.
+
+## Chapter 17 컬랙션
+
+가장 일반적으로 사용하는 컬렉션 타입과 연산을 살펴본다.
+
+### 17.1 시퀀스
+
+시퀀스 (sequence) 타입은 순서가 정해진 데이터 그룹을 가지고 작업할 수 있게 해준다.
+
+#### 리스트
+
+리스트는 앞부분에 빠르게 원소를 추가하거나 삭제할 수 있다.
+
+리스트를 순차적으로 따라가야 하기 때문에 임의의 위치에 접근할 때는 빠르지 않다.
+
+불변성을 유지하기 때문에 효율적이고 알고리즘을 개발할 때 도움이 된다.
+
+#### 배열
+
+임의의 있는 원소에 효율적으로 접근하게 해준다.
+
+#### 리스트 버퍼
+
+리스트의 앞쪽에 대해서는 빠른 접근을 제공하지만, 끝쪽에서는 그렇지 않다.
+
+때문에 리스트의 끝부분에 원소를 추가하면서 리스트를 생성할 필요가 있다면 리스트 앞에 원소를 차례로 추가해 뒤집힌 리스트를 만들고 그런 다음 `reverse` 를 호출해 원하는 순서의 리스트를 얻어야 한다.
+
+```scala
+import scala.collection.mutable.ListBuffer 
+
+val buf = new ListBuffer[Int]
+
+buf += 1
+// ListBuffer(1)
+
+buf += 2
+// ListBuffer(1, 2)
+
+3 +=: buf                                   
+// ListBuffer(3, 1, 2) 
+```
+
+#### 배열 버퍼
+
+끝 부분과 시작 부분에 원소를 추가하거나 삭제할 수 있다는 점만 제외하면 배열과 같다.
+
+구현을 감싸주는 층 때문에 속도가 다소 느리다해도, 배열 버퍼에 모든 배열 연산을 사용할 수 있다.
+
+```scala
+val buf = new ArrayBuffer[Int]()
+
+buf += 12 
+// ArrayBuffer(12) 
+
+buf += 15 
+// ArrayBuffer(12, 15)
+```
+
+위와 같이 `+=` 메서드를 사용하여 ArrayBuffer 끝에 원소를 추가할 수 있다.
+
+#### 문자열(StringOps를 통해서)
+
+`Predef` 에 `String` 을 `StringOps` 로 바꾸는 암시적 변환이 있기 때문에 시퀀스 처럼 문자열을 다룰수 있다.
+
+```scala
+def hasUpperCase(s: String) = s.exists(_.isUpper) 
+
+hasUpperCase("Robert Frost") 
+// true
+```
+
+문자열 안에 대문자가 있으면 true 를 반환한다.
+
+### 17.2 집합과 맵
+
+`Set` 이나 `Map` 의 기본값은 변경 불가능한 객체이다.
+
+만약 변경 가능한 객체를 만들고 싶으면 명시적으로 임포트 해야 한다.
+
+```scala
+import scala.collection.mutable
+```
+
+#### 집합의 사용
+
+집합의 특징은 특정 객체는 최대 하나만 들어가도록 보장한다는 점이다.
+
+> **416p 표 17.1 일반적인 집합연산** 표 참조
+
+#### 맵의 사용
+
+어떤 값과 집합의 각 원소 사이에 연관 관계를 만든다.
+
+> **419p 표 17.2 일반적인 맵 연산** 표 참조
+
+#### 디폴트 집합과 맵
+
+`scala.collection.mutable.Set()` 팩토리 메서드는 내부적으로 해시 테이블을 사용하는 `scala.collection.mutable.HashSet` 을 반환한다.
+
+`scala.collection.mutable.Map()` 팩토리 메서드는 마찬가지로 `scala.collection.mutable.HashMap` 을 반환한다.
+
+`scala.collection.mutable.Set()` 팩토리 메서드는 팩토리에 얼마나 많은 원소를 전달하느냐에 따라 달라진다.<br/>
+이는 성능을 극대화 하기 위해 특정 크기의 집함만을 담당하는 특별한 클래스를 사용한다.
+
+|원소 개수|구현
+|:-:|:-:|
+|0|`scala.collection.immutable.EmptySet`|
+|1|`scala.collection.immutable.Set1`|
+|2|`scala.collection.immutable.Set2`|
+|3|`scala.collection.immutable.Set3`|
+|4|`scala.collection.immutable.Set4`|
+|5 이상|`scala.collection.immutable.HashSet`|
+
+마찬가지로 `scala.collection.immutable.Map()` 팩토리 메서드도 원소가 5개보다 적은 맵에 대해서는 성능을 최대화 하기 위해 크기별로 특화된 클래스를 사용한다.
+
+|원소 개수|구현
+|:-:|:-:|
+|0|`scala.collection.immutable.EmptyMap`|
+|1|`scala.collection.immutable.Map1`|
+|2|`scala.collection.immutable.Map2`|
+|3|`scala.collection.immutable.Map3`|
+|4|`scala.collection.immutable.Map4`|
+|5 이상|`scala.collection.immutable.HashMap`|
+
+#### 정렬된 집합과 맵
+
+정해진 순서대로 원소를 반환하는 이터레이터를 제공하는 맵이나 집합을 사용할 때는 `SortedSet` 이나 `SortedMap` 트레이트를 사용한다.
+
+이 두 트레이트의 구현은 `TreeSet` 과 `TreeMap` 클래스이다.
+
+### 17.3 변경 가능 컬렉션과 변경 불가능 컬렉션
+
+변경 가능한 컬렉션과 변경 불가능한 컬렉션의 선택이 어려우면 변경 불가능한 컬렉션을 우선시 하라
+
+변경 불가능한 컬렉션은 프로그램을 추론하기 더 쉬우며, 저장할 원소의 수가 적을 경우 더 작게 저장할 수 있다.
+
+### 17.4 컬렉션 초기화
+
+컬렉션을 초기화하고 생성하는 일반적인 방법은 초기 원소를 컬렉션 동반 객체의 팩토리 메서드에 넘기는 것이다.
+
+대부분의 경우에는 스칼라 컴파일러가 동반 객체의 팩토리 메서드에 전달한 원소로부터 컬렉션 원소 타입을 추론할 수 있다.
+
+특별한 상황에서는 어떤 컬렉션을 다른 컬렉션으로 전환해야 하는 경우가 있는데 이럴때는 `to` 메서드를 사용하여 다른 컬렉션으로 초기화 하자
+
+```scala
+val colors = List("blue", "yellow", "red", "green")
+
+val treeSet = color to TreeSet
+// TreeSet(blue, green, red, yellow)
+```
+
+#### 배열이나 리스트로 바꾸기
+
+다른 컬렉션을 가지고 새로운 리스트를 초기화 하려면 `toList` 를 호출하자
+
+```scala
+treeSet.toList
+// List(blue, green, red, yellow)
+```
+
+만약 배열을 원한다면 `toArray` 을 호출하자
+
+```scala
+treeSet.toArray
+// Array(blue, green, red, yellow)
+```
+
+#### 변경 가능한 집합(맵)과 변경 불가능한 집합(맵) 사이의 변환
+
+변경 가능한 집합이나 맵을 변경 불가능한 객체로 바꾸거나 혹은 그 반대일 경우 `to` 메서드를 사용할 수 있다.
+
+```scala
+import scala.collection.mutable 
+
+treeSet 
+// TreeSet(blue, green, red, yellow) 
+
+val mutaSet = treeSet to mutable.Set
+//Set(yellow, blue, red, green) 
+
+val immutaSet = mutaSet to Set
+//Set(yellow, blue, red, green) 
+```
+
+### 17.5 튜플
+
+튜플 (tuple) 은 정해진 개수의 원소를 한데 묶는다.
+
+다음은 정수, 문자열, Console 타입의 원소가 있는 튜플의 한 예이다.
+
+```scala
+(1, "Hello", Console)
+```
+
+튜플은 각기 다른 타입의 객체를 결합할 수 있기 때문에, Iterable을 상속하지 않는다.
+
+튜플을 사용하는 가장 일반적인 경우에는 메서드에서 여러 값을 반환하는 것이다.
+
+다음은 가장 긴 단어를 찾고 그 단어의 인덱스를 반환하는 메서드이다.
+
+```scala
+def longestWord(words: Array[String]): (String, Int) = {
+  var word = words(0)
+  var idx = 0
+  for (i <- 1 until words.length)
+    if (words(i).length > word.length) {
+      word = words(i)
+      idx = i
+    }
+  (word, idx)
+}
+```
+
+```scala
+val longset = longestWord("The quick brown fox".split(" "))
+// (quick, 1)
+```
+
+```scala
+longest._1
+// quick
+
+longest._2
+// 1
+```
+
+```scala
+val (word, idx) = longest
+// word = quick, idx = 1
+```
+
+위에서 괄호를 생략하면 다른 결과가 나온다.
+
+```scala
+val word, idx = longest
+// word = (quick, 1)
+// idx = (quick, 1)
+```
+
+튜플은 너무나 사용하기 쉽기 때문에 'A 하나와 B 하나' 수준을 넘지 않는 데이터를 묶을때 유용하다.
+
+결합에 어떤 의미가 있거나 결합 메서드를 추가하기를 원한다면 클래스를 생성하는 편이 더 좋다.
+
+### 17.6 결론
+
+스칼라 컬렉션을 더 효과적으로 사용할 수 있다.
