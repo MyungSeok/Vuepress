@@ -751,3 +751,162 @@ val word, idx = longest
 ### 17.6 결론
 
 스칼라 컬렉션을 더 효과적으로 사용할 수 있다.
+
+## Chapter 18 변경 가능한 객체
+
+변경 가능한 객체가 무엇인지 설명하고, 그런 객체를 표현하도록 스칼라가 제공하는 문법적 요소를 설명한다.
+
+### 18.1 무엇이 객체를 변경 가능하게 하는가
+
+순수 함수형 객체의 필드에 접근하거나 메서드를 호출하면 항상 동일한 결과가 나온다.
+
+```scala
+class BankAccount {
+  private var bal: Int = 0
+
+  def balance: Int = bal
+
+  def deposit(amount: Int) = {
+    require(amount > 0)
+    bal += amount
+  }
+
+  def withdraw(amount: Int): Boolean = 
+    if (amount > bal)
+      false
+    else {
+      bal -= amount
+      true
+    }
+}
+```
+
+```scala {7}
+val account new BankAccount
+
+account deposit 100
+
+account withdraw 80
+
+account withdraw 88
+```
+
+위의 예에서 마지막 두 `withDraw` 는 다른 결과를 반환한다.
+
+첫번째는 계좌에 충분한 잔고가 있기 때문에 `true` 를 반환하지만 두 번째는 동일한 연산을 호출했으나 잔고가 부족하여 `false` 를 반환한다.
+
+만약 어떤 클래스가 변경 가능한 상태를 가진 다른 객체에게 메서드 호출을 위임하기 때문에 `var` 를 상속하거나 정의하지 않고도 변경가능한 상태를 가질 수 있다.
+
+```scala
+class Keyed {
+  def computeKey: Int = ... // 비용이 많이 드는 연산
+  ...
+}
+```
+
+`computeKey` 가 어떤 `var` 를 읽고 쓰지 않는다면, 캐시를 추가함으로써 Keyed 를 더 효율적으로 만들 수 있다.
+
+```scala
+class MemoKeyed extends Keyed {
+  private var keyCache: Option[Int] = None
+
+  override def computeKey: Int = {
+    if (!keyCache.isDefined)
+      keyCache = Some(super.computeKey)
+    keyCache.get
+  }
+}
+```
+
+`Keyed` 대신 `MemoKeyed` 를 사용해 속도를 더 올릴 수 있다.
+
+### 18.2 재할당 가능한 변수와 프로퍼티
+
+스칼라에서는 어떤 객체의 멤버 중 비공개가 아닌 모든 `var` 멤버에 `Getter` 와 `Setter` 메서드를 자동으로 정의해 준다.
+
+`Getter` 와 `Setter` 의 이름은 자바의 관례와는 다르다
+
+`var x` 의 `Getter` 는 `x` 이고 Setter 는 `x_=` 이다.
+
+다음은 공개 `var` 가 게터와 세터 메서드로 어떻게 확장되는지 보여주는 예
+
+```scala
+class Time {
+  private[this] var h = 12
+  private[this] var m = 0
+
+  def hour: Int = h
+  def hour_= (x: Int) = { h = x }
+
+  def minute: Int = m
+  def minute_= (x: Int) = { m = x }
+}
+```
+
+다음은 `var` 를 `Getter` 와 `Setter` 로 확장하는 경우 직접 정의할 수 있다는 점을 보여준다.
+
+만약 특정 값의 허용범위를 제한할 경우 `require` 문을 사용한다.
+
+```scala {7,13}
+class Time {
+  private[this] var h = 12
+  private[this] var m = 0
+
+  def hour: Int = h
+  def hour_= (x: Int) = { 
+    require(0 <= x && x < 24)
+    h = x 
+  }
+
+  def minute: Int = m
+  def minute_= (x: Int) = { 
+    require(0 <= x && x < 60)
+    m = x 
+  }
+}
+```
+
+프로퍼티는 여러 목적으로 사용할 수 있는데 위의 예에서는 `require` 를 사용하여 불변 조건 (invariant) 를 적용하였다.
+
+이를 사용하면 허용하면 안되는 값을 변수에 할당하는것을 막을수 있는데 어떤 변수에 모든 접근을 로그로 남길수도 있고, 변수에 이벤트를 접목해서 어떤 변수를 변경할 때마다 구독 (subscribe) 를 요청한 다른 객체들에게 통지하게 만들 수 있다.
+
+다음과 같이 필드 초기화에 `= _` 를 사용하면 필드에 제로 (zero) 를 할당한다.
+
+제로는 필드 타입에 따라 다르다.
+
+* 숫자 타입 : 0
+* 논리 타입 : false
+* 참조 타입 : null
+
+```scala
+val celsius: Float = _
+```
+
+만약 다음과 같이 초기화 하지 않으면 추상 변수를 선언해 버린다.
+
+```scala
+val celsius: Float
+```
+
+### 18.3 사례 연구: 이산 이벤트 시뮬레이션
+
+> 책 예제 코드 및 설명 참고
+
+### 18.4 디지털 회로를 위한 언어
+
+> 책 예제 코드 및 설명 참고
+
+### 18.5 시뮬레이션 API
+
+> 책 예제 코드 및 설명 참고
+
+### 18.6 회로 시뮬레이션
+
+> 책 예제 코드 및 설명 참고
+
+### 18.7 결론
+
+함수형 접근 방식과 명령형 접근 방식을 조합하여 문제를 해결할 수 있도록 유도하자.
+
+## Chapter 19 타입 파라미터화
+
