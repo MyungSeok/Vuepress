@@ -1182,7 +1182,7 @@ trait Function1[-S, +T] {
 }
 ```
 
-`Function1` 트레이트는 인자 타입 S 에 대해서는 반공변이고, 결과 타입 T 에 대해서는 공변이다.
+`Function1` 트레이트는 인자 타입 `S` 에 대해서는 반공변이고, 결과 타입 `T` 에 대해서는 공변이다.
 
 인자는 함수가 요구하는것이고 결과는 함수가 제공하는것이기 때문이다.
 
@@ -1222,7 +1222,7 @@ trait Function1[-S, +T] {
 
 ### 19.8 상위 바운드
 
-`T <: Ordered[T]` 라는 문법을 사용하여 타입 파라미터 T 의 상위 바운드가 Order[T] 라는 사실을 명시할 수 있다.
+`T <: Ordered[T]` 라는 문법을 사용하여 타입 파라미터 `T` 의 상위 바운드가 Order[T] 라는 사실을 명시할 수 있다.
 
 ```scala {1}
 def orderedMergeSort[T <: Ordered[T]](xs: List[T]): List[T] = { 
@@ -1250,3 +1250,287 @@ def orderedMergeSort[T <: Ordered[T]](xs: List[T]): List[T] = {
 또한 타입 변성을 지정하는 법, 변성 표기를 위한 기법들도 살펴보았다.
 
 ## Chapter 20 추상 멤버
+
+클래스타 트레이트의 멤버가 그 클래스 안에 완전한 정의를 갖고 있지 않으면 **추상 멤버 (abstract member)** 라고 한다.
+
+추상 멤버는 그 멤버가 정의된 클래스를 상속한 서브 클래스에서 구현하도록 되어 있다.
+
+### 20.1 추상 멤버 간략하게 돌아보기
+
+```scala
+trait Abstract { 
+  type T 
+  def transform(x: T): T 
+  val initial: T 
+  var current: T 
+}
+```
+
+`Abstract` 를 구체적으로 구현하려면 각각의 추상 멤버 정의를 채워넣어야 한다.
+
+```scala
+class Concrete extends Abstract { 
+  type T = String 
+  def transform(x: String) = x + x 
+  val initial = "hi" 
+  var current = initial 
+}
+```
+
+### 20.2 타입 멤버
+
+스칼라에서 추상 타입 (abstract type) 은 클래스나 트레이트의 멤버로 정의 없이 선언된 타입이다.
+
+어떤 타입에 대한 새로운 이름, 혹은 별명 (alias) 을 정의하는 방법으로 생각할 수 있다.
+
+타입 멤버는 실제 이름이 너무 길거나 의미가 불명확할 때 더 간단하고 의도를 잘 전달할 수 있는 별명을 선언하는 것이다.
+
+서브클래스에서 꼭 정의해야 하는 추상 타입을 선언 하여 사용한다.
+
+### 20.3 추상 val
+
+```scala
+val inital: String
+```
+
+`val` 에 대해 이름과 타입은 주지만 값은 지정하지 않는다. 
+
+실제로 Concrete 클래스 구현에서 위의 `val` 을 다음과 같이 정의할 수 있다.
+
+추상 val 선언은 파라미터 없는 추상 메서드 선언과 비슷해 보인다.
+
+```scala
+abstract class Fruit { 
+  val v: String // `v' 는 값을 의미
+  def m: String // `m' 은 메서드를 의미
+} 
+```
+
+```scala
+abstract class Apple extends Fruit { 
+  val v: String 
+  val m: String // def 를 val 로 오버라이드 할 수 있다.
+} 
+
+abstract class BadApple extends Fruit { 
+  def v: String // 오류: val 은 def 로 오버라이드 할 수 없다.
+  def m: String 
+}
+```
+
+### 20.4 추상 var
+
+암시적으로 `Getter` 메서드와 `Setter` 메서드를 정의하는 것과 같다.
+
+```scala
+trait AbstractTime { 
+  var hour: Int 
+  var minute: Int 
+}
+```
+
+```scala
+trait AbstractTime { 
+  def hour: Int
+  def hour_=(x: Int)
+  def minute: Int
+  def minute_=(x: Int)
+}
+```
+
+### 20.5 추상 val 의 초기화
+
+슈퍼클래스에 빠진 자세한 부분을 서브클래스에 전달할 수 있는 수단을 제공한다.
+
+이 부분은 트레이트에 중요한데, 트레이트에는 파라미터를 넘길 생성자가 없기 때문이다.
+
+따라서 보통 트레이트를 파라미터화 하려면 서브 클래스에서 구현하는 추상 val 을 통하기 마련이다.
+
+```scala
+trait RationalTrait {  
+  val numerArg: Int
+  val denomArg: Int
+} 
+```
+
+```scala
+new RationalTrait {  
+  val numerArg = 1
+  val denomArg = 2
+} 
+```
+
+`new` 키워드를 트레이트 이름 `RationalTrait` 앞에 적었다. 그리고 트레이트 이름 다음의 중괄호 속에 새 클래스의 본문이 들어갔다.
+
+이 표현식은 트레이트를 혼합한 익명 클래스 (anonymous class) 의 인스턴스를 만들며 클래스 정의는 본문에 있다.
+
+```scala
+trait RationalTrait {  
+  val numerArg: Int  
+  val denomArg: Int  
+  require(denomArg != 0) 
+  private val g = gcd(numerArg, denomArg) 
+  val numer = numerArg / g 
+  val denom = denomArg / g 
+  private def gcd(a: Int, b: Int): Int =  
+    if (b == 0) a else gcd(b, a % b) 
+  override def toString = numer +"/"+ denom 
+}
+```
+
+위 코드에서 트레이트에 분모나 분자에 단순한 리터럴이 아닌 표현식을 넣어서 초기화하려고 하면 예외가 발생한다.
+
+`RationalTrait` 클래스를 초기화할 때 `denomArg` 의 값이 디폴트 값인 `0` 이기 때문이다.
+
+#### 필드 미리 초기화하기
+
+* 익명 클래스 표현식에서 필드 미리 초기화하기
+
+```scala
+new {  
+  val numerArg = 1 * x 
+  val denomArg = 2 * x  
+} with RationalTrait 
+```
+
+* 객체 정의에서 필드를 미리 초기화하기
+
+```scala
+object twoThirds extends { 
+  val numerArg = 2 
+  val denomArg = 3 
+} with RationalTrait
+```
+
+* 클래스 정의에서 필드를 미리 초기화하기
+
+```scala
+class RationalClass(n: Int, d: Int) extends { 
+  val numerArg = n 
+  val denomArg = d 
+} with RationalTrait { 
+  def + (that: RationalClass) = new RationalClass( 
+    numer * that.denom + that.numer * denom, 
+    denom * that.denom 
+  ) 
+}
+```
+
+#### 지연 계산 val 변수
+
+```scala {2}
+object Demo { 
+  lazy val x = { println("initializing x"); "done" } 
+} 
+```
+
+```scala {5}
+scala> Demo 
+res5: Demo.type = Demo$@11dda2d 
+
+scala> Demo.x 
+initializing x 
+res6: java.lang.String = done
+```
+
+`Demo` 를 초기화하는 과정에는 `x` 를 초기화하는 과정이 들어가지 않는다. 
+
+`x` 의 초기화를 `x` 가 맨 처음 쓰일 때까지 연기한다. 
+
+### 20.6 추상 타입
+
+* 추상 타입 선언: 서브 클래스에서 구체적으로 정해야 하는 어떤 대상에 대한 빈 공간을 마련해두는 것이다.
+
+```scala
+class Food 
+abstract class Animal { 
+  type SuitableFood <: Food   
+  def eat(food: SuitableFood) 
+}
+```
+
+`SuitableFood` 를 구체적으로 인스턴스화 해야 하는 경우 `Food` 의 서브클래스여야 한다는 뜻이다.
+
+### 20.7 경로에 의존하는 타입
+
+```scala
+val bessy: Animal = new Cow 
+```
+
+`bessy.SuitableFood` 와 같은 타입을 경로에 의존하는 타입 (path-dependent type) 이라고 한다.
+
+여기서 **경로**는 객체의 참조를 의미한다.
+
+이 타입은 경로에 따라 달라진다.
+
+### 20.8 세분화한 타입
+
+어떤 클래스 A 가 다른 클래스 B 를 상속할 때, 전자 (A) 가 후자 (B) 의 **이름에 의한 서브타입**이라고 말한다.
+
+이 이름의 의한 서브타입은 사용하기 편하며 이름은 짧은 식별자이기 때누에 타입을 나열하는것 보다 훨씬 간결하다.
+
+```scala
+Animal { type SuitableFood = Grass }
+```
+
+```scala
+class Pasture { 
+  var animals: List[Animal { type SuitableFood = Grass }] = Nil 
+  // ... 
+}
+```
+
+### 20.9 열거형
+
+스칼라는 열거형을 위한 특별한 문법을 제공하지는 않지만 `scala.Enumeration` 이라는 클래스가 스칼라 표준 라이브러리에 있다.
+
+```scala
+object Color extends Enumeration { 
+  val Red = Value 
+  val Green = Value 
+  val Blue = Value 
+}
+```
+
+```scala
+object Color extends Enumeration { 
+  val Red, Green, Blue = Value 
+}
+```
+
+위 두 코드는 같은 기능을 한다.
+
+다음과 같이 `Value` 메서드를 오버로드한 변형 메서드를 호출하면 열거형 값과 이름을 연관시킬수 있다.
+
+```scala
+object Direction extends Enumeration { 
+  val North = Value("North") 
+  val East = Value("East") 
+  val South = Value("South") 
+  val West = Value("West") 
+}
+```
+
+또한 values 메서드를 사용하면, 어떤 열거형의 값에 대해 이터레이션 할 수 있다.
+
+```scala
+for (d <- Direction.values) print(d +" ") 
+// North East South West  
+```
+
+각 열거형은 0 부터 번호 (id) 가 붙는다 이 번호는 id 메서드 반대로 열겨형 값으로 호출할 수 있다.
+
+```scala
+Direction.East.id
+// 1: Int
+
+Direction(1)
+// East
+```
+### 20.10 사례 연구: 통화 변환
+
+> 예제 코드 설명
+
+### 20.11 결론
+
+스칼라는 객체지향 추상화를 구조적으로 일반화하여 지원한다.
