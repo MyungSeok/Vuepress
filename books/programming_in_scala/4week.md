@@ -781,14 +781,16 @@ class BankAccount {
 }
 ```
 
-```scala {7}
+```scala {8}
 val account new BankAccount
 
 account deposit 100
 
 account withdraw 80
+// true
 
 account withdraw 88
+// false
 ```
 
 위의 예에서 마지막 두 `withDraw` 는 다른 결과를 반환한다.
@@ -804,7 +806,7 @@ class Keyed {
 }
 ```
 
-`computeKey` 가 어떤 `var` 를 읽고 쓰지 않는다면, 캐시를 추가함으로써 Keyed 를 더 효율적으로 만들 수 있다.
+`computeKey` 가 어떤 `var` 를 읽고 쓰지 않는다면, 캐시를 추가함으로써 `Keyed` 를 더 효율적으로 만들 수 있다.
 
 ```scala
 class MemoKeyed extends Keyed {
@@ -819,6 +821,8 @@ class MemoKeyed extends Keyed {
 ```
 
 `Keyed` 대신 `MemoKeyed` 를 사용해 속도를 더 올릴 수 있다.
+
+`computeKey` 의 결과를 두번째로 요청 받으면, `computeKey` 를 한번 더 계산하는 대신 `keyCache` 필드에 저장해둔 값을 반환하기 때문이다.
 
 ### 18.2 재할당 가능한 변수와 프로퍼티
 
@@ -910,3 +914,339 @@ val celsius: Float
 
 ## Chapter 19 타입 파라미터화
 
+타입 파라미타화를 사용하면 제네릭 클래스와 트레이트를 쓸 수 있다.
+
+집합은 제네릭이며 타입 파라미터를 받기 때문에 타입이 `Set[T]` 이다. (특정 집합의 인스턴스는 `Set[String]`, `Set[Int]` 이다.)
+
+제네릭 타입의 파라미터를 쓰지 않아도 되는 자바와 달리, 스칼라에서는 반드시 타입 파라미터를 명시해야 한다.
+
+타입 변성은 파라미터 타입 간의 상속관계를 지정해야 하는데 예를 들면 `Set[String]`이 `Set[AnyRef]` 하위 집합인지 변성에 의해 결정된다.
+
+### 19.1 함수형 큐
+
+* head: 큐의 첫 원소를 반환한다.
+* tail: 큐의 첫 원소를 제외한 나머지를 반환한다.
+* enqueue: 인자로 주어진 원소를 큐의 맨뒤에 추가한 새로운 큐를 반환한다.
+
+```scala
+class SlowAppendQueue[T](elems: List[T]) {
+  def head = elems.head
+  def tail = new SlowAppendQueue(elems.tail)
+  def enqueue(x: T) = new SlowAppendQueue(elems ::: List(x))
+}
+```
+
+`enqueue` 연산은 큐에 들어있는 원소의 개수에 비례한다.
+
+상수 시간 추가를 바란다면 아래와 같이 리스트의 원소를 뒤집을 수도 있다.
+
+```scala
+class SlowHeadQueue[T](smele: List[T]) {
+  def head = smele.last
+  def tail = new SlowHeadQueue(smele.init)
+  def enqueue(x: T) = new SlowHeadQueue(x :: smele)
+}
+```
+
+`enqueue` 는 상수 시간이지만 `head`, `tail` 은 그렇지 않다. 이들은 원소 개수에 비례하는 시간을 소비한다.
+
+원소를 추가하기 위해서는 `::` 연산자를 사용해 `trailing` 리스트에 넣으면 되며 이는 상수 시간이 걸린다.
+
+위 두가지 방법을 혼용하여 다음과 같이 구현한다.
+
+```scala
+class Queue[T](
+  private val leading: List[T],
+  private val trailing: List[T]
+) {
+  private def mirror = if (leading.isEmpty)
+    new Queue(trailing.reverse, Nil)
+  else 
+    this
+
+  def head = mirror.leading.head
+
+  def tail = {
+    val q = mirror
+    new Queue(q.leading.tail, q.trailing)
+  }
+
+  def enqueue(x: T) = 
+    new Queue(leading, x :: trailing)
+}
+```
+
+* `mirror` 연산은 큐의 원소 개수에 비례하는 시간이 걸림
+* `head` 를 많이 호출하면 매번 `head` 를 실행할 때 마다 비싼 비용을 들여 리스트를 정리하기 위해 `mirror` 를 호출
+
+### 19.2 정보 은닉
+
+클라이언트에게 내부 구조를 감추는 방법
+
+#### 비공개 생성자와 팩토리 메서드
+
+클래스 파라미터 목록 바로 앞에 private 수식자를 붙여 주 생성자를 감출 수 있다.
+
+```scala
+class Queue[T] private (
+  private val leading: List[T],
+  private val trailing: List[T]
+)
+```
+
+이 생성자는 오직 클래스 자신과 동반 객체에 대해서만 접근 가능하다.
+
+이는 클라이언트가주 생성자를 더이상 호출할 수 없기 때문에 보조 생성자를 추가해줘야 한다.
+
+```scala
+def this() = this(Nil, Nil)
+```
+
+위 보조 생성자는 빈 큐를 만든다.
+
+아래와 같이 보조 확장자가 큐를 초기화할 원소를 받게 만들수 있다.
+
+```scala
+def this(elem: T*) = this(elems.toList, Nil)
+```
+
+> `T*` 는 반복 파라미터 이다. (8.8 절)
+
+다른 방법은 보조 생성자 처럼 초기 원소의 목록으로부터 큐를 만드는 팩토리 메서드를 추가하는 것이다.
+
+```scala
+object Queue {
+  def apply[T](xs: T*) = new Queue[T](xs.toList, Nil)
+}
+```
+
+`xs` 의 원소를 큐로 만든다.
+
+```scala
+Queue(1, 2, 3)
+
+// or
+
+Queue.apply(1, 2, 3)
+```
+
+#### 대안: 비공개 클래스
+
+클래스 자체를 감추가 클래스에 대한 공개 인터페이스만을 제공하는 트레이트를 외부로 노출한다.
+
+```scala
+trait Queue[T] {   
+  def head: T 
+  def tail: Queue[T] 
+  def enqueue(x: T): Queue[T] 
+} 
+
+object Queue { 
+  def apply[T](xs: T*): Queue[T] =  
+    new QueueImpl[T](xs.toList, Nil) 
+
+  private class QueueImpl[T](
+    private val leading: List[T], 
+    private val trailing: List[T] 
+  ) extends Queue[T] { 
+    def mirror =  
+      if (leading.isEmpty) 
+        new QueueImpl(trailing.reverse, Nil) 
+      else  
+        this 
+
+    def head: T = mirror.leading.head 
+
+    def tail: QueueImpl[T] = { 
+      val q = mirror 
+      new QueueImpl(q.leading.tail, q.trailing) 
+    } 
+
+    def enqueue(x: T) =  
+      new QueueImpl(leading, x :: trailing) 
+  } 
+}
+```
+
+위와 같이 구현 클래스인 `QueueImpl` 클래스 전체를 감춘다.
+
+### 19.3 변성 표기
+
+위에 정의한 `Queue` 는 트레이트이며 타입이 아니다.
+
+`Queue` 가 타입이 아닌 이유는 타입 파라미터를 받기 때문이다.
+
+때문에 `Queue` 라는 타입의 변수를 만들수 없다.
+
+```scala
+def doesNotCompile(q: Queue) = {}
+//                    ^
+//  error: class Queue takes type parameters
+```
+
+대신 `Queue` 트레이트는 `Queue[String]`, `Queue[Int]`, `Queue[AnyRef]` 처럼 파라미터화된 타입을 지정하도록 허용한다.
+
+따라서 `Queue` 는 타입 생성자라고도 할 수 있다.
+
+스칼라에서 제네릭 타입은 기본적으로 무공변 (non-variant) 이다.
+
+어떤 타입 파라미터의 공변, 반공변, 무공변 여부를 파라미터의 변성 (variance) 라고 한다.
+
+`+`, `-` 기호는 변성 표기 (variance annotation) 라고 부른다.
+
+```scala
+val c1 = new Cell[String]("abc") 
+val c2: Cell[Any] = c1 
+c2.set(1)
+val s: String = c1.get 
+```
+
+위 코드는 컴파일 오류를 발생 시킨다.
+
+```scala
+Cell.scala:7: error: covariant type T occurs in 
+contravariant position in type T of value x 
+   def set(x: T) = current = x 
+              ^
+```
+
+#### 변성과 배열
+
+```scala {4}
+String[] a1 = { "abc" }; 
+Object[] a2 = a1; 
+a2[0] = new Integer(17);
+String s = a1[0];
+```
+
+자바는 실행 시점에 타입의 정보를 저장한다. 이는 안전하지 않는 방법이나 설계당시 배열을 제네릭하게 다룰 간단한 방법이 필요했기 때문이다.
+
+```scala
+val a1 = Array("abc") 
+val a2: Array[Any] = a1
+```
+
+스칼라는 배열을 무공변으로 다루기 때문에 위와 같이 `Array[String]` 을 `Array[Any]` 로 대체할 수 없다.
+
+### 19.4 변성 표기 검사
+
+* 스칼라 컴파일러는 클래스나 트레이트 본문의 모든 위치를 **긍정적**, **부정적**, **중립적**으로 구분한다.
+* `+` 로 표시한 타입 파라미터는 긍정적인 위치에서만 사용 가능
+* `-` 로 표시한 파라미터는 부정적 위치에서만 사용 가능
+* 아무 변성 표기가 없는 타입 파라미터는 아무 곳에서나 사용 가능
+* 가장 바깥 스코프부터 내부 스코프로 긍정적/부정적/중립적인지 구분한다.
+
+### 19.5 하위 바운드
+
+`Queue[T]` 정의에서 `T` 를 공변적으로 만들 수 없다.
+
+`T` 는 `enqueue` 메소드의 파라미터 타입인데 그 위치는 부정적이기 때문이다 (?)
+
+`enqueue` 를 다형성 (즉 enqueue에 타입 파라미터를 지정) 으로 더 일반화하고, 타입 파라미터에 하위 바운드 (lower bound) 를 사용하는 것 이다.
+
+```scala
+class Queue[+T](
+  private val leading: List[T], 
+  private val trailing: List[T] 
+) { 
+  def enqueue[U >: T](x: U) =  
+    new Queue[U](leading, x :: trailing) // ... 
+}
+```
+
+위 코드에서는 `enqueue` 에 타입 파라미터 `U` 를 추가하면서 `U >: T` 를 사용하여 `T` 를 `U` 의 하위 바운드로 지정하였다. (`U` 는 `T` 의 슈퍼타입)
+
+따라서 메서드의 반환값으로 `Queue[T]` 에서 `Queue[U]` 로 바뀐다.
+
+위 코드는 변성 표기와 하위 바운드가 함께 잘 작동할 수 있음을 보여준다.
+
+이들은 타입 위주 설계 (type-driven design) 의 좋은 예이다.
+
+스칼라가 자바의 와일드카드 (wildcard) 에서 볼 수 있는 사용 위치 변성 (use-site variance) 보다 선언 위치 변성 (declaration-site variance) 를 선호하는 주된 이유이다.
+
+### 19.6 반공변성
+
+```scala
+trait OutputChannel[-T] { 
+  def write(x: T) 
+}
+```
+
+`U` 타입의 값이 필요한 모든 경우를 `T` 타입의 값으로 대치할 수 있다면 `T` 타입을 `U` 타입의 서브타입으로 가정해도 안전하다는 것이다. (리스코프 치환원칙)
+
+한 타입 안에서 공변성과 반공변성이 함께 섞여있는 경우도 있다.
+
+```scala
+trait Function1[-S, +T] { 
+  def apply(x: S): T 
+}
+```
+
+`Function1` 트레이트는 인자 타입 S 에 대해서는 반공변이고, 결과 타입 T 에 대해서는 공변이다.
+
+인자는 함수가 요구하는것이고 결과는 함수가 제공하는것이기 때문이다.
+
+> [PECS](/backend/language/java/essential/generic/pecs) 와 유사해 보인다.
+
+![함수 타입 파라미터의 공변셩과 반공변성](/img/A120.png)
+
+### 19.7 객체의 비공개 데이터
+
+```scala
+  class Queue[+T] private ( 
+    private[this] var leading: List[T],
+    private[this] var trailing: List[T]
+  ) {  
+  private def mirror() =  
+    if (leading.isEmpty) { 
+      while (!trailing.isEmpty) { 
+        leading = trailing.head :: leading
+        trailing = trailing.tail
+      } 
+    } 
+
+  def head: T = {  
+    mirror() 
+    leading.head  
+  } 
+
+  def tail: Queue[T] = {  
+    mirror() 
+    new Queue(leading.tail, trailing)  
+  } 
+
+  def enqueue[U >: T](x: U) =  
+    new Queue[U](leading, x :: trailing) 
+}
+```
+
+### 19.8 상위 바운드
+
+`T <: Ordered[T]` 라는 문법을 사용하여 타입 파라미터 T 의 상위 바운드가 Order[T] 라는 사실을 명시할 수 있다.
+
+```scala {1}
+def orderedMergeSort[T <: Ordered[T]](xs: List[T]): List[T] = { 
+  def merge(xs: List[T], ys: List[T]): List[T] = 
+    (xs, ys) match { 
+      case (Nil, _) => ys 
+      case (_, Nil) => xs 
+      case (x :: xs1, y :: ys1) => 
+        if (x < y) x :: merge(xs1, ys) 
+        else y :: merge(xs, ys1) 
+    } 
+  val n = xs.length / 2 
+  if (n == 0) xs 
+  else { 
+    val (ys, zs) = xs splitAt n 
+    merge(orderedMergeSort(ys), orderedMergeSort(zs)) 
+  } 
+}
+```
+
+### 19.9 결론
+
+정보 은닉을 위한 여러 기법을 살펴보았다. (비공개 생성자, 팩토리 메섣, 객체 비공개 멤버)
+
+또한 타입 변성을 지정하는 법, 변성 표기를 위한 기법들도 살펴보았다.
+
+## Chapter 20 추상 멤버
