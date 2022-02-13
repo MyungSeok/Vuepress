@@ -67,7 +67,7 @@ module.exports = {
             text: 'Language', 
             items: [
               { text: 'Java', link: '/backend/language/java/basic/' },
-              { text: 'Kotlin', link: '/backend/language/kotlin/basic/nested_classes' },
+              { text: 'Kotlin', link: '/backend/language/kotlin/' },
               { text: 'PHP', link: '/backend/language/php/' },
             ]
           }, 
@@ -401,7 +401,13 @@ module.exports = {
           children: [
             '/backend/language/kotlin/basic/nested_classes'
           ]
-        }
+        }, 
+        {
+          title: 'Reactor3',
+          children: [
+            '/backend/language/kotlin/reactor3/reactive_programming_with_reactor_3'
+          ]
+        },
       ],
       '/backend/server/linux/': [
         '', 
