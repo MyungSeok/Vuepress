@@ -19,7 +19,6 @@ Reactor 3 는 Reactive Streams 를 스팩을 기반으로 구축된 라이브러
 이것은 리소스를 보다 효율적으로 사용하기 위해 low-level 의 동시적 처리 혹은 병렬 코드를 작성하는데 큰 어려움 없이<br/>
 어플리케이션의 수용 가능한 처리 범위를 증가시키는 효과를 가져옵니다.
 
-
 리액티브 프로그래밍은 완전한 비동기 혹은 논 블로킹을 중심으로 JDK 에서 비동기 코드를 수행 가능하게 하며,<br/>
 기존 Callback 기반의 API 설계나 Future 사용에 대한 대안으로 사용 가능하다.
 
@@ -29,7 +28,7 @@ Reactor 3 는 Reactive Streams 를 스팩을 기반으로 구축된 라이브러
 
 더 중요하게는 상호 운영 가능하도록 자동하는 방식을 지정한다.
 
-리액티브 스트림은 다음 4개의 인터페이스로 정의되어 있다. 
+리액티브 스트림은 다음 4개의 인터페이스로 정의되어 있다.
 
 * Subscriber
 * Publisher
@@ -46,9 +45,9 @@ Reactor 3 는 Reactive Streams 를 스팩을 기반으로 구축된 라이브러
 
 ### 상호작용
 
-리액티브 스트림은 `Publisher` 와 데이터가 시작되고, 
+리액티브 스트림은 `Publisher` 와 데이터가 시작되고,
 
-기본적으로는 `Subscriber` 가 `subscribe` 를 호출하는 순간 
+기본적으로는 `Subscriber` 가 `subscribe` 를 호출하는 순간
 
 Publisher 에서 `Subscriber` 로 데이터 전달이 시작됩니다.
 
@@ -57,8 +56,8 @@ Publisher 에서 `Subscriber` 로 데이터 전달이 시작됩니다.
 위 다이어그램에서 `request(n)` 은 backpressure 을 조절하는 부분입니다.
 
 :::tip 참고자료
-[Tech.io](https://tech.io/playgrounds/929/reactive-programming-with-reactor-3/Intro)
-[What is Reactive Programming](https://medium.com/@kevalpatel2106/what-is-reactive-programming-da37c1611382)
+[Tech.io](https://tech.io/playgrounds/929/reactive-programming-with-reactor-3/Intro)<br/>
+[What is Reactive Programming](https://medium.com/@kevalpatel2106/what-is-reactive-programming-da37c1611382)<br/>
 [Reactive Manifesto](https://www.reactivemanifesto.org/)
 :::
 
@@ -66,9 +65,9 @@ Publisher 에서 `Subscriber` 로 데이터 전달이 시작됩니다.
 
 Flux 는 다음과 같은 연산이 추가로 정의되어 있다.
 
- * 생성 (Generate)
- * 변환 (Transform)
- * 조율 (Orchestrate)
+* 생성 (Generate)
+* 변환 (Transform)
+* 조율 (Orchestrate)
 
 0 에서 n개까지의 `<T>` 의 요소를 보낸 뒤(`onNext` 이벤트) 성공(`onComplete` 메서드) 하거나 에러를 발생 (`onError` 종료 메서드)
 
@@ -94,3 +93,31 @@ Flux.fromIterable(getSomeLongList())
 [Reactor 언제 어떤 Operator을 써야 할까?](https://luvstudy.tistory.com/100)
 :::
 
+## Mono
+
+최대 1개의 요소를 반환할 수 있습니다.
+
+![mono diagram](/img/A125.png)
+
+코드 예시
+
+```kotlin
+Mono.just(1)
+    .map(integer -> "foo" + integer)
+    .or(Mono.delay(Duration.ofMillis(100)))
+    .subscribe(System.out::println);
+```
+
+## StepVerifier
+
+Publisher 를 구독하면서 예상값과 순서를 검증할 수 있음
+
+`create` 메서드로 인스턴스를 생성
+
+반드시 `verify()` 메서드를 호출해야 함
+
+```kotlin
+StepVerifier.create(T<Publisher>)
+    .{ expectation... }
+    .verify()
+```
