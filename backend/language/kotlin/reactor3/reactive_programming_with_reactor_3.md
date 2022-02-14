@@ -1,6 +1,6 @@
 # Reactive Programming with Reactor 3
 
-## Reactor 3
+## 01.Reactor 3
 
 Reactor 3 는 Reactive Streams 를 스팩을 기반으로 구축된 라이브러리로 JVM에서 리엑티브 프로그래밍 패러다임을 승계합니다.
 
@@ -64,7 +64,7 @@ __Publisher 에서 `Subscriber` 로 데이터 전달이 시작__ 됩니다.
 [Reactive Manifesto](https://www.reactivemanifesto.org/)
 :::
 
-## Flux
+## 02.Flux
 
 Flux 는 다음과 같은 연산이 추가로 정의되어 있다.
 
@@ -113,7 +113,7 @@ Flux<Long> counter() {
 [Reactor 언제 어떤 Operator을 써야 할까?](https://luvstudy.tistory.com/100)
 :::
 
-## Mono
+## 03.Mono
 
 최대 1개의 요소를 반환할 수 있습니다.
 
@@ -143,7 +143,7 @@ Mono<String> errorMono() {
 }
 ```
 
-## StepVerifier
+## 04.StepVerifier
 
 Publisher 를 구독하면서 예상값과 순서를 검증할 수 있음
 
@@ -201,4 +201,72 @@ void expect3600Elements(Supplier<Flux<Long>> supplier) {
 }
 ```
 
-##
+:::tip 참고자료
+<https://godekdls.github.io/Reactor%20Core/testing/>
+:::
+
+## 05.Transform
+
+Reactor 에서는 데이터를 변형 / 변환 가능한 다양한 연산자가 있다.
+
+![Flux Map](/img/A126.png)
+
+만약 다음 사항을 정의 해본다.
+
+1. 데이터 시퀀스가 (1..5)까지 있다.
+2. `map` 에서는 각 데이터에 100을 더해주는 작업을 처리한다.
+3. 이 작업은 각 10초씩 걸린다. (latency)
+
+이러한 경우라면 map 을 사용할때는 동기적으로 처리하기 때문에 총 소요시간은 **500초**가 걸린다.
+
+이를 위해 비동기적으로 처리 가능한 방법을 고려해야 할것이다.
+
+![Flux Flatmap](/img/A127.png)
+
+`Flux` 또는 `Mono` 를 이용하고 `flatMap` 연산을 이용하면 비동기 처리가 가능하다.
+
+`flatMap` 은 `Publisher` 를 반환하는 메서드가 내부적으로 사용된다.
+
+> map : `T` -> `U`
+> flatMap: `T` -> `Publisher<U>`
+
+`Publisher<U>` 의 응답값에 따라 결과 순서가 바뀔수 있다. (대부분 바뀜)
+
+이를 해결하기 위해 순서를 보장하는 여러 방법이 있다. ([flatMapSequential](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html#flatMapSequential-java.util.function.Function-))
+
+## 06.Merge
+
+여러 시퀀스를 병합하여 하나의 Flux 로 전달하는 방법이다.
+
+![merge.png](/img/A128.png)
+
+`Publisher` 의 순서와 상관 없이 데이터가 발생할때마다 `Flux` 로 전달
+
+```java
+// TODO Merge flux1 and flux2 values with no interleave (flux1 values and then flux2 values) 
+Flux<User> mergeFluxWithNoInterleave(Flux<User> flux1, Flux<User> flux2) {
+    return Flux.concat(flux1, flux2); 
+}
+```
+
+![concat.png](/img/A129.png)
+
+`Publisher` 의 발행이 종료될 때까지 데이터를 적재한 후, 다음 인자의 `Publisher` 의 인자를 전달함
+
+```java
+Flux<User> createFluxFromMultipleMono(Mono<User> mono1, Mono<User> mono2) {
+    return Flux.concat(mono1, mono2); 
+}
+```
+
+## 07.Request
+
+## 08.Error
+
+## 09.Adapt
+
+## 10.Other Operations
+
+## 11.Reactive to Blocking
+
+## 12.Blocking to Reactive
