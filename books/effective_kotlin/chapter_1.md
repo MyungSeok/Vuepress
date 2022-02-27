@@ -648,3 +648,63 @@ print(primes.take(10).toList())
 여러가지 이유로 변수의 스코프는 좁게 만들어서 활용하는 것이 좋다.
 
 람다를 사용하는 경우 변수를 캡쳐한다는 것을 기억해야 한다.
+
+## Item 3 최대한 플랫폼 타입을 사용하지 말라
+
+자바에서 `String` 은 nullable 타입 (`null` 을 허용하는 타입) 이기 때문에
+
+코틀린에서의 자바 코드를 사용할 경우에는 플래폼 타입 (platform type) 으로 변환하는 과정을 거친다.
+
+> **플랫폼 타입 (platform type)** <br/>
+> 다른 프로그래밍 언어에서 전달되어 `nullable` 인지 아닌지 알 수 없는 타입
+
+때문에 `null` 이 아니라고 생각 되는것이 `null` 일 가능성이 있기 때문에 위험하다는 것이다.
+
+설계자가 명시적으로 어노테이션으로 표시하거나, 주석으로 달아놓지 않으면, 언제든지 동작이 변경될 가능성이 있다.
+
+자바를 코틀린과 같이 사용할 때, 자바 코드를 직접 조작할 수 있다면, 가능한 `@Nullable` 과 `@NotNull` 어노테이션을 붙여서 사용하도록 하자
+
+```java
+import org.jetbrains.annotations.NotNull;
+
+public class UserRepo {
+  public @NotNull User getUser() {
+    // codes...
+  }
+}
+```
+
+각 플랫폼 별로 지원되는 관련 어노테이션은 다음과 같다.
+
+|Platform|Library|Annotation|
+|:-:|:-:|:-:|
+|JetBrains|org.jetbraions.annotations|`@Nullable` `@NotNull`|
+|Android|androidx.annotation<br/>com.android.annotations<br/>android.support.annotations|`@Nullable` `@NonNull`|
+|JSR-305|javax.annotation|`@Nullable` `@CheckForNull` `@Nonnull`|
+|JavaX|javax.annotation|`@Nullable` `@CheckForNull` `@Nonnull`|
+|FindBugs|edu.umd.cs.findbugs.annotations|`@Nullable` `@CheckForNull` `@PossiblyNull` `@Nonnull`|
+|ReactiveX|io.reactivex.annotations|`@Nullable` `@CheckForNull` `@Nonnull`|
+|Eclipse|org.eclipse.jdt.annotation|`@Nullable` `@Nonnull`|
+|Lombock|lombock.NonNull|`@NonNull`|
+
+또한 플랫폼 타입을 사용할 경우, 이를 사용하는 다른 코드까지 전파위험성이 있기 때문에 문제가 될 수 있다.
+
+```kotlin {9}
+class RepoImpl: UserRepo {
+  overrid fun getUserName(): String? {
+    return null
+  }
+}
+
+fun main() {
+  val repo: UserRepo = RepoImpl()
+  val text: String = repo.getUserName() 
+  println("User name length is ${text.length}")
+}
+```
+
+위 코드에서는 **9번째 라인**에서 Runtime 시에 NPE 에러가 발생 한다.
+
+### 정리
+
+플랫폼 타입을 사용하는 코드는 해당 부분만 위험할 뿐 아니라, 이를 사용하는 곳까지 영향을 줄 수 있는 위험한 코드이다.
