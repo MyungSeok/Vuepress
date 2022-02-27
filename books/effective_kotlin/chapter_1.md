@@ -498,4 +498,153 @@ immutable 객체와 mutable 객체를 구분하는 기준은 가변성이다.
 
 ## Item 2 변수의 스코프를 최소화 하라
 
-@TODO
+상태를 정의할 때는 변수와 프로퍼티의 스코프를 최소화 하는것이 좋다.
+
+* 프로퍼티 보다는 지역변수를 사용하는것이 좋다.
+* 최대한 좁은 스코프를 갖게 변수를 사용한다.
+
+예를 들면 반복문 같은 경우 변수를 내부에서만 사용가능하게 작성하는것이 좋다.
+
+```kotlin
+val a = 1
+
+fun fizz() {
+  val b = 2
+  println(a + b)
+}
+
+fun buzz() {
+  val c = 3
+  println(a + c)
+}
+```
+
+위의 예제인 경우 `fizz` 와 `buzz` 함수의 스코프에서 외부 스코프에 있는 변수에 접근 가능하지만 외부에서 내부의 스코프에는 접근이 불가능하다.
+
+```kotlin
+/** 
+ * BAD
+ **/
+var user: User
+for (i in users.indices) {
+  user = users[i]
+  println("User at $i is $user")
+}
+
+/** 
+ * Good
+ **/
+for (i in user.indices) {
+  val user = users[i]
+  println("User at $i is $user")
+}
+
+/** 
+ * BEST
+ **/
+for ((i, user) in users.withIndex()) {
+  println("User at $i is $user")
+}
+```
+
+스코프를 좁게 만드는 것이 좋은 이유는 프로그램을 추적하고 관리하기 쉽기 때문이다.
+
+변수는 읽기 전용 또는 읽고 쓰기 전용 여부와 상관없이, **변수를 정의할 때 초기화되는 것이 좋습니다.**
+
+```kotlin
+/** 
+ * BAD
+ **/
+val user: User
+if (hasValue) {
+  user = getValue()
+} else {
+  user = User()
+}
+
+/** 
+ * Good
+ **/
+val user: User = if (hasValue) {
+  getValue()
+} else {
+  User()
+}
+```
+
+여러 프로퍼티를 한꺼번에 설정해야 하는 경우에는 구조분해 선언 (destructuring declaration) 을 활용하는것이 좋다.
+
+```kotlin
+/** 
+ * BAD
+ **/
+fun updateWeather(degrees: Int) {
+  val description: String
+  val color: Int
+  if (degrees < 5) {
+    description = "cold"
+    color = Color.BLUE
+  } else if (degrees < 23) {
+    description = "mild"
+    color = Color.YELLOW
+  } else {
+    description = "hot"
+    color = Color.RED
+  }
+  // other codes...
+}
+
+/** 
+ * Good
+ **/
+fun updateWeather(degrees: Int) {
+  val (description, color) = when {
+    degrees < 5 -> "cold" to Color.BLUE
+    degrees < 23 -> "mild" to Color.YELLOW
+    else -> "hot" to Color.RED
+  }
+  // other codes...
+}
+
+```
+
+결론적으로 변수의 스코프가 넓으면 매우 위험하다.
+
+### 캡처링
+
+만약 변경 가능한 변수의 유효범위가 넓으면 이를 참조하는 외부 로직에서 해당 변수의 상태값을 캡처하여 변경하기 때문에 의도하지 않은 결과가 나오게 되버린다.
+
+다음은 소수를 구하는 알고리즘의 구현예제이다.
+
+```kotlin {4}
+val primes: Sequence<Int> = sequence {
+  var numbers = generateSequence(2) { it + 1 }
+
+  var prime: Int
+  while (true) {
+    prime = number.first()
+    yield(prime)
+    numbers = numbers.drop(1)
+      .filter { it % prime != 0 }
+  }
+}
+```
+
+위 코드를 실행하면 다음 결과가 나온다.
+
+```kotlin
+print(primes.take(10).toList())
+// [2, 3, 5, 6, 7, 8, 10, 11, 12]
+```
+
+이러한 잘못된 결과는 **4번째 라인**의 `prime` 이라는 변수를 캡처했기 때문이다.
+
+때문에 변수의 유효범위가 넓으면 항상 잠재적인 캡처문제를 주의해야 한다.
+
+가변성을 최대한 피하고 스코프 범위를 좁게 만들면 이러한 문제를 간단히 피할 수 있다.
+
+### 정리
+
+여러가지 이유로 변수의 스코프는 좁게 만들어서 활용하는 것이 좋다.
+
+람다를 사용하는 경우 변수를 캡쳐한다는 것을 기억해야 한다.
