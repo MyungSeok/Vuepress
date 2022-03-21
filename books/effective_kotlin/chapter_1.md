@@ -1006,7 +1006,7 @@ fun sendEmail(person: Person, text: String) {
 }
 ```
 
-Elvis 연산자는 nullable 을 확인할 때 굉장히 많이 사용되는 관용적인 방법이다.
+Elvis 연산자는 `nullable` 을 확인할 때 굉장히 많이 사용되는 관용적인 방법이다.
 
 ### 정리
 
@@ -1025,3 +1025,332 @@ Elvis 연산자는 nullable 을 확인할 때 굉장히 많이 사용되는 관�
 * 그 외 : `return` 혹은 `throw` 와 함께 `Elvis` 연산자와 사용하기
 
 이외에도 다른 오류들을 발생 시킬때 `throw` 를 활용할 수 있다.
+
+## Item 6 사용자 정의 요류보다는 표준 오류를 사용하라
+
+**Item 5** 에서 알아보았던 (require, check, assert) 를 사용하더라도 예상치 못한 오류를 만날수 있다.
+
+예를 들면 아래와 같이 JSON 을 파싱하다 문제가 발생했다면 `JsonParsingException` 을 발생시키는것이 좋다.
+
+```kotlin
+inline fun <reified T> String.readObject(): T {
+  //...
+  if (incorrectSign) {
+    throw JsonParsingException()
+  }
+  //...
+}
+```
+
+직적 오류를 정의 하는것 보다는 최대한 표준 라이브러리의 오류를 사용하는것이 좋다.
+
+표준 라이브러리의 오류는 많은 개발자가 알고 있으므로, 이를 재사용하는 것이 좋다.
+
+일반적으로 사용되는 예외를 몇가지 정리해보면 다음과 같다.
+
+|예외 종류|설명|
+|:-:|-|
+|IllegalArgumentException<br/>IllegalStateException|require 와 check를 사용하여 throw 할 수 있는 예외|
+|IndexOutOfBoundsException|인덱스 파라미터의 값의 범위를 벗어났다는것을 알려줌|
+|ConcurrentModificationException|동시 수정(concurrent modification) 을 금지하였으나, 발생함|
+|UnsupportedOperationException|사용자가 사용하려고 했던 메서드가 현재 객체에서는 사용할 수 없다는 것을 알려줌<br/>기본적으로 사용할 수 없는 메서드는 클래스에 없는 것이 좋다.|
+|NoSuchElementException|존재하지 않는 메서드를 호출|
+
+## Item 7 결과 부족이 발생할 경우 null 과 Failure 를 사용하라
+
+함수가 원하는 결과를 내놓을 수 없을때
+
+* 서버로부터 데이터를 읽어 들이려고 했는데, 네트워크 문제로 이슈가 생긴경우
+* 조건에 맞는 첫번째 요소를 찾으려 했는데, 요소가 없는 경우
+* 텍스트를 파싱해서 객체를 만드려고 했는데, 형식이 맞지 않는 경우
+
+이러한 오류 상황을 처리 가능한 메커니즘은 다음 두가지가 있다.
+
+1. `null` 또는 실패를 나타내는 `sealed` 클래스를 리턴
+2. 예외를 `throw` 한다.
+
+위 두가지는 중요한 차이점이 있다.
+
+예외는 정보를 전달하는 방법으로 사용해서는 안된다.
+예외는 잘못된 특정한 상황을 나타내야 하며, 이를 처리할 수 있어야 한다.
+
+예외는 예외적인 상황이 발생했을 때 사용하는 것이 좋다.
+
+이러한 이유를 정리하면 다음과 같다.
+
+* 많은 개발자들은 예외가 전파되는 과정을 제대로 추적하지 못한다.
+* 코틀린의 모든 예외는 unchecked 예외이다.
+* 예외와 관련된 사항을 단순하게 메서드등으로 사용하면서 파악하기 힘들다
+* 예외는 예외적인 상황을 처리하기 위해 만들어졌으며, 명시적인 테스트만큼 빠르게 동작하지 않는다.
+* `try-catch` 블럭 내부에 코드를 배치하면, 컴파일러가 할 수 있는 최적화가 제한된다.
+
+위 1번 에서 `null` 과 `Failure` 은 예상되는 오류를 표현할 때 굉장히 좋다.
+
+충분히 예측가능한 범위의 오류는 `null` 과 `Failure` 를 사용하고, 예측하기 어려운 예외적인 범위의 오류는 예외를 throw 해서 처리하는것이 좋다.
+
+```kotlin
+inline fun <reified T> String.readObjectOrNull(): T? {
+  //...
+  if (incorrectSign) {
+    return null
+  }
+  //...
+  return result
+}
+
+inline fun <reified T> String.readObject(): Result<T> {
+  //...
+  if (incorrectSign) {
+    return Failure(JsonParsingException())
+  }
+  //...
+  return Success(result)
+}
+
+sealed class Result<out T>
+class Success<out T>(val result: T): Result<T>()
+class Failure(val throwable: Throwable): Result<Noting>()
+
+class JsonParsingException: Exception()
+```
+
+이렇게 표시되는 오류는 다루기 쉬우며 놓치기 어렵다.
+`null` 을 처리해야 한다면, 사용자는 안전한 호출(safety-call) 또는 Elvis 연산자를 이용한 널 안정성(null-safety) 기능을 활용한다.
+
+```kotlin
+val age = userText.readObjectOrNull<Person>()?.age ?: -1
+```
+
+`Result` 와 같은 공용체 (union type) 을 리턴하기로 했다면, `when` 표현식을 사용해서 처리하자
+
+```kotlin
+val person = userText.readObjectOrNull<Person>()
+val age = when(person) {
+  is Success -> person.age
+  is Failure -> -1
+}
+```
+
+이러한 오류 처리 방식은 `try-catch` 블록보다 효율적이며, 더 쉽고 명확합니다.
+
+> **Sealed Class (봉인 클래스)**<br/>
+> 값이 제한된 집합의 유형중 하나를 가질수 있는 제한된 클래스 계층 구조를 나타내는데 사용한다.<br/>
+> 추상 클래스의 일종이지만 직접적으로 인스턴스화 할 수 없고, 추상 멤버를 가질 수 있다.<br/>
+> `Sealed` 클래스의 이점은 enum 클래스와 유사하게 `when` 절 사용시 `else` 절이 필요가 없다.
+
+**개발자는 항상 자신이 요소를 안전하게 추출할 거라 생각하기 때문에 `nullable` 를 리턴하면 안된다.**
+
+개발자에게 `null` 이 발생할 수 있다는 경고를 주려면 `getOrNull` 을 사용해서 반환되는 값의 범위를 명시적으로 알려주는 것이 좋다.
+
+## Item 8 적절하게 null을 처리하라
+
+`null` 은 '값이 부족하다(lack of value)'라는 것을 나타낸다.
+
+`null` 을 반환한다는 것은 여러 의미를 가질 수 있다.
+
+* `String.toIntOrNull()` 은 `String` 을 `Int` 로 적절하게 변환할 수 없는 경우 `null` 을 리턴한다.
+* `Iterable<T>.firstOrNull(() -> Boolean)` 은 주어진 조건에 맞는 요소가 없는 경우 `null` 을 리턴한다.
+
+이처럼 `null` 은 최대한 명확한 의미를 갖는 것이 좋다.
+
+### null을 안전하게 처리하기
+
+null 은 안전하게 처리하는 방법 중 널리 사용되는 방법으로는 안전 호출 (safety-call) 스마트 캐스팅 (smart casting) 이 있습니다.
+
+```kotlin
+printer?.print()        // 안전 호출
+if (printer != null) 
+  printer.print()       // 스마트 캐스팅
+```
+
+위 두가지 모두 `printer` 가 `null` 이 아닐때 `print` 함수를 호출한다.
+
+nullable 변수를 처리하는 대표적인 방법으로는 Elvis 연산자를 이용하여 처리하는 방법이다.
+
+Elvis 연산자는 오른쪽에 `return` 또는 `throw` 를 포함한 모든 표현식이 허용된다.
+
+```kotlin
+val printerName1 = printer?.name ?: "Unnamed"
+val printerName2 = printer?.name ?: return
+val printerName3 = printer?.name ?: 
+  throw Error("Printer must be named")
+```
+
+> `return` 과 `throw` 모두 `Noting`(모든 타입의 서브타입) 을 리턴하게 설계되어 가능하다. ([link](https://blog.kotlin-academy.com/the-beauty-of-kotlin-typing-system-7a2804fe6cf0))
+
+null 을 적절하게 처리하기 위하여 처리하기 위한 방법들은 다음과 같다.
+
+#### 방어적 프로그래밍 (defensive programming)
+
+* 모든 가능성을 올바른 방식으로 처리하도록 방어하는 방식
+
+#### 공격적 프로그래밍 (offensive programming)
+
+* 예상치 못한 상황이 발생했을 때 개발자가 수정하게 유도하는 방식
+
+### 오류 throw 하기
+
+개발자는 작성한 코드는 예상 가능한 형태로 동작되길 원하며, 다른 개발자가 그 코드를 보고 선입견처럼 '당연히 그럴것이다' 라고 생각하는 부분이 있다.
+
+그 부분에서 문제가 발생할 경우 개발자에게 오류를 강제로 발생시켜 주는 것이 좋다.
+
+오류를 강제로 발생시킬 때는 `throw`, `!!`, `requireNotNull`, `checkNotNull` 등을 활용해서 처리하는 것이 좋다.
+
+### not-null assertion(!!) 과 관련된 문제
+
+nullable 을 처리할 때 가장 간단한 방법은 not-null assertion(!!) 을 사용하는 것 이다.
+
+만약 이 값이 null 아니라고 생각하고 다루면, NPE(Null pointer exception) 이 발생한다.
+
+`!!` 은 사용하기 쉽지만 좋은 해결방법은 아니며, 예외가 발생할 때, 어떠한 설명도 없는 제네릭 예외 (generic excpetion) 가 발생한다.
+
+```kotlin
+fun largestOf(vararg nums: Int): Int = 
+  nums.max()!!
+```
+
+```kotlin
+largestOf() // NPE
+```
+
+때문에 이런 잠재적인 위험을 피하기 위해 `!!` 연산자의 사용은 지양해야 한다.
+
+### 의미 없는 nullability 피하기
+
+nullability 는 적절하게 처리하기 위해 추가비용이 발생한다.
+
+따라서 필요한 경우가 아니라면, nullability 자체를 피하는 것이 좋다.
+
+null 값 자체의 어떠한 의미를 부여해서 처리할 수 있으며 의미가 없을 경우에는 null 을 사용하지 않는것이 좋다.
+
+### lateinit 프로퍼티와 notNull 델리게이트
+
+lateinit 한정자는 프로퍼티가 이후에 설정될 것임을 명시하는 한정자이다.
+
+lateinit 사용에는 비용이 발생하며, 초기화 전에 사용할 경우 예외가 발생한다.
+
+lateinit 과 nullable 을 비교하면 다음과 같은 차이점이 있다.
+
+* `!!` 연산자로 언팩(unpack)하지 않아도 된다.
+* 어떠한 의미를 갖는 null 을 사용하고 싶을때 nullable 로 만들 수 있다.
+* 프로퍼티가 초기화된 이후에는 초기화되지 않는 상태로 돌아갈 수 없다.
+
+lateinit 사용시에는 반드시 초기화 될거라고 예상한 경우의 상황에서 사용한다.
+
+JVM 의 `Int`, `Long`, `Double`, `Boolean` 같이 기본타입과 연결된 타입은 lateinit 을 사용할 수 없다.
+
+이러한 경우에는 lateinit 보다 느리지만 Delegates.notNull 을 사용한다.
+
+```kotlin
+class DoctorActivity: Activity() {
+  private var doctorId: Int by arg(DOCTOR_ID_ARG)
+  private var fromNotification: Boolean by arg(FROM_NOTIFICATION_ARG)
+}
+```
+
+## Item 9 use 를 사용하여 리소스를 닫아라
+
+더 이상 리소스가 필요하지 않을때 `close` 메서드를 사용해서 명시적으로 닫아야 하는 리소스에 사용
+
+Kotlin/JVM 에서 사용하는 자바 표준 라이브러리에서 해당하는 리소스는 다음과 같다.
+
+* InputStream, OutputStream
+* java.sql.Connection
+* java.io.Reader(FileReader, BufferedReader, CSSParser)
+* java.new.Socket, java.util.Scanner
+
+위 리소스들은 `AutoCloseable` 을 상속받는 `Closeable` 인터페이스를 구현 (implement) 하고 있다.
+
+모든 리소스들은 최종적으로 리소스에 대한 레퍼런스가 없어질 때, GC가 처리한다.
+
+하지만 처리가 완료될 때까지의 매우 많은 리소스의 비용과 긴 처리시간을 요한다.
+
+따라서 명시적으로 `close` 메서드를 호출해주는 것이 좋다.
+
+Java 에서는 전통적으로 `try-finally` 블럭을 사용하여 처리
+
+```kotlin
+fun countCharactersInFile(path: String): Int {
+  val reader = BufferedReader(FileReader(path))
+  try {
+    return reader.lineSequence().sumBy { it.length }
+  } finally {
+    reader.close()
+  }
+}
+```
+
+JDK7 부터는 try-with-resource 지원
+
+```java
+int countCharactersInFile(String path) throws IOException {
+  try (
+    BufferedReader reader = BufferedReader(FileReader(path))
+  ) {
+    return reader.lineSequence().sumBy { it.length }
+  }
+}
+```
+
+`Closeable` 객체에 `use` 함수를 사용할 수 있다.
+
+```kotlin
+fun countCharactersInFile(path: String): Int {
+  val reader = BufferedReader(FileReader(path))
+  render.use {
+    return render.lineSequence().sumBy { it.length }
+  }
+}
+```
+
+람다 매개변수로 리시버가 전달되는 형태도 있으므로 다음과 같이 줄여서 사용도 가능하다.
+
+```kotlin
+fun countCharactersInFile(path: String): Int {
+  BufferedReader(FileReader(path)).use { reader ->
+    return render.lineSequence().sumBy { it.length }
+  }
+}
+```
+
+파일 리소스를 한줄씩 읽어서 처리하는 경우에는 useLine 함수를 이용하자
+
+```kotlin
+fun countCharactersInFile(path: String): Int {
+  File(path).useLines { lines ->
+    lines.sumBy { it.length }
+  }
+}
+```
+
+위와 같이 처리하면 메모리에 파일의 내용을 한줄씩만 유지하므로, 대용량 파일도 적절하게 처리할 수 있다.
+
+### 정리
+
+`use` 함수를 사용하면 `Closeable`, `AutoCloseable` 을 구현한 객체를 쉽고 안전하게 처리 가능하다.
+
+## Item 10 단위 테스트를 만들어라
+
+단위 테스트는 개발자가 만들고 있는 요소가 제대로 동작하는지 빠르게 피드백 가능하므로 개발하는동안 큰 도움이 된다.
+
+* 장점
+  * 테스트가 잘 된 요소는 신뢰 가능하다.
+  * 테스트가 잘 만들어져 있으면 리펙토링 하기 쉽다.
+  * 수동으로 테스트하는 것 보다 단위 테스트로 확인하는 것이 빠르다.
+* 단점
+  * 테스트 작성시 시간이 걸린다.
+  * 테스트 활용이 용이하게 코드를 조정해야 한다.
+  * 좋은 테스트를 만들기 위해 많은 노력을 기울여야 한다.
+
+단위 테스트가 필요한 코드의 종료
+
+* 복잡한 코드 뭉치
+* 수정이 빈번하고 리펙토링이 빈번하게 일어날 수 있는 부분
+* 비지니스 로직
+* 공용 API 를 호출하는 접합부
+* 많은 문제를 잠재적으로 내포하고 있는 코드
+* 수정이 필요한 프로덕션 버그
+
+### 정리
+
+비지니스 애플리케이션에서는 최소한 몇개의 단위 테스트가 꼭 필요하다.
