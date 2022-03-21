@@ -266,7 +266,7 @@ if (list is MutableList) {
 
 하지만 위 코드의 실행 결과는 플랫폼에 따라 다른 결과를 보여준다.
 
-만약 읽기 전용에서 mutable 로 변경해야 한다면, **복제(copy)**를 통해서 새로운 mutable 컬렉션으로 만드는 `list.toMutableList` 를 활용해야 한다.
+만약 읽기 전용에서 mutable 로 변경해야 한다면, **복제(copy)** 를 통해서 새로운 mutable 컬렉션으로 만드는 `list.toMutableList` 를 활용해야 한다.
 
 ```kotlin
 val list = listOf(1, 2, 3)
@@ -729,7 +729,7 @@ fun main() {
 
 `animal` 객체는 `Zebra` 타입으로 제한 (bounded) 되기 때문에 부모 타입의 객체를 수용할 수 없다.
 
-```kotlin {}
+```kotlin {5}
 open class Animal
 class Zebra: Animal()
 
@@ -769,8 +769,259 @@ fun pop(num: Int = 1): List<T> {
   require(num <= size) {
     "Can't remove more elements than current size"
   }
-
-
+  check(isOpen) { 
+    "Can't pop from close stack"
+  }
+  val ret = collection.take(num)
+  collection = collection.drop(num)
+  assert(ret.size == num)
+  return ret
 }
-
 ```
+
+위와 같이 코드상에서 제한을 걸어주면 다음과 같은 장점있다.
+
+1. 제한을 걸면 문서를 읽지 않는 개발자도 문제를 확인할 수 있다.
+2. 문제가 있는 경우 함수가 예상하지 못한 동작을 하지 않고 예외를 `throw` 한다.
+3. 코드가 어느정도 자체적으로 검사가 된다.
+4. 스마트 케스트를 활용할 수 있고, 캐스팅 (타입변환) 을 적게 할 수 있다.
+
+### 아규먼트
+
+함수를 정의할 때 타입 시스템을 이용해서 Arguments 에 제한을 거는 코드를 많이 사용
+
+```kotlin
+/**
+ * 숫자를 아규먼트로 받아 팩토리얼을 계산
+ * @param n 숫자(양의 정수)
+ **/
+fun factorial(n: Int): Long {
+  require(n >= 0)
+  return if (n <= 1) 1
+    else factorial(n - 1) * n
+}
+```
+
+```kotlin
+/**
+ * 좌표 목록을 구한다.
+ * @param points 좌표 목록(빈 값이 아님)
+ **/
+fun findClusters(points: List<Point>): List<Cluster> {
+  require(points.isNotEmpty())
+  /**
+   * Other codes...
+   **/
+}
+```
+
+```kotlin
+/**
+ * 메일 보내기
+ * @param user 사용자 정보 (이메일 정보가 포함되어야 함)
+ * @param message 메세지
+ **/
+fun sendEmail(user: User, message: String) {
+  requireNotNull(user.email)
+  require(isValidEmail(user.email))
+  /**
+   * Other codes...
+   **/
+}
+```
+
+위와 같이 유효성 코드는 맨 앞에 배치되어야 한다.
+
+`require` 함수는 조건을 만족하지 못할 때, 무조건적으로 `IllegalArgumentException` 을 발생
+
+다음과 같이 람다 형태로 메세지를 정의할 수 있다.
+
+```kotlin
+fun factorial(n: Int): Long {
+  require(n >= 0) {
+    "Can't calculate factorial of $n because it is smaller than 0"
+  }
+  
+  return if (n <= 1) 1 else factorial(n - 1) * n
+}
+```
+
+### 상태
+
+어떤 **구체적인 조건을 만족**할 때만 함수를 사용할 수 있게 해야 할때가 있다.
+
+예를 들면 다음과 같은 경우
+
+위와 같은 특정 상태를 만족했을때에는 `check` 함수를 사용합니다.
+
+```kotlin
+/**
+ * 객체를 미리 초기화되어 있는 상태에만 실행하고 싶은 함수 
+ **/
+fun speak(text: String) {
+  check(isInitialized)
+  /**
+   * Other codes...
+   **/
+}
+```
+
+```kotlin
+/**
+ * 사용자가 로그인되어 있을때에만 처리하고 싶은 함수
+ **/
+fun getUserInfo(text: String) {
+  checkNotNull(token)
+  /**
+   * Other codes...
+   **/
+}
+```
+
+```kotlin
+/**
+ * 객체의 사용 준비가 완료되어 있을때만 사용하고 싶은 함수
+ **/
+fun next(): T {
+  check(isOpen)
+  /**
+   * Other codes...
+   **/
+}
+```
+
+`check` 함수는 require 와 비슷하지만, 조건을 만족하지 못할 때 `IllegalStateException` 을 발생시킨다.
+
+일반적으로 `require` 블럭을 뒤에 배치 시킨다.
+
+### Assert 계열의 함수 사용
+
+함수의 올바른 구현 확인을 위해 검증하는 함수
+
+구현문제로 발생할 수 있는 추가적인 문제를 예방하려면, 단위테스트를 사용하는 것이 좋다.
+
+```kotlin
+@Test
+fun `Stack pops correct number of elements`() {
+  val stack = Stack(20) { it }
+  val ret = stack.pop(10)
+  assertEquals(10, ret.size)
+}
+```
+
+테스트 코드가 아닌 실행 코드에서 `assert` 를 사용할수도 있으며 다음과 같은 장점이 있다.
+
+* Assert 계열의 함수는 코드 자체를 점검하며, 더 효율적으로 테스트할 수 있다.
+* 특정 상황이 아닌 모든 상황에 대해 테스트 할 수 있다.
+* 실행 시점에 정확하게 확인할 수 있다.
+* 실제 코드가 더 빠른 시점에 실패하기 만들며, 언제 어디서 실행했는지 쉽게 찾을수 있다.
+
+실행시점에 `assert` 는 예외를 `throw` 하지 않는다는 것을 명심
+
+### nullability와 스마트 캐스팅
+
+코틀린에서는 `require` 와 `check` 블럭으로 특정 조건을 확인해서 `true` 가 나왔다면, 해당 조건은 이후로도 `true` 일꺼라고 가정한다.
+
+```kotlin
+@kotlin.internal.InlineOnly
+public inlin fun require(value: Boolean): Unit {
+  contract {
+    returns() implies value
+  }
+  require(value) { "Failed requirement." }
+}
+```
+
+이를 활용해서 타입 비교를 했다면, **스마트 캐스트** 가 작동된다.
+
+```kotlin {3}
+fun changeDress(person: Person) {
+  require(person.outfit is Dress)
+  val dress: Dress = person.outfit
+}
+```
+
+이러한 특징은 대상이 `null` 인지 확인할 때 매우 유용하다.
+
+```kotlin
+class Person(val email: String?)
+
+fun sendEmail(person: Person, message: String) {
+  require(person.email != null)
+  val email: String = person.email
+  /**
+   * Other codes...
+   **/
+}
+```
+
+이렇게 null 인지 아닌지 확인하는 케이스는 `requireNotNull`, `checkNotNull` 이라는 특수한 함수를 사용하도 괜찮다.
+
+둘다 스마트 캐스트를 지원하므로, 변수를 언팩 (unpack) 하는 용도로 사용할 수 있다.
+
+```kotlin
+class Person(val email: String?)
+fun validateEmail(email: String) { /*...*/ }
+```
+
+```kotlin
+fun sendEmail(person: Person, text: String) {
+  val email = requireNotNull(person.email)
+  validateEmail(email)
+  /**
+   * Other codes...
+   **/
+}
+```
+
+```kotlin
+fun sendEmail(person: Person, text: String) {
+  requireNotNull(person.email)
+  validateEmail(person.email)
+  /**
+   * Other codes...
+   **/
+}
+```
+
+`nullability` 를 목적으로 throw 또는 return 을 두고 Elvis 연산자 (?:) 를 활용하는 경우가 많다.
+
+```kotlin
+fun sendEmail(person: Person, text: String) {
+  val email: String = person.email ?: return
+}
+```
+
+위와 같이 오류를 발생시키지 않고 단순하게 함수를 중지 시키거나
+
+아래와 같이 로그를 노출 시킨후에 종료시킨다.
+
+```kotlin
+fun sendEmail(person: Person, text: String) {
+  val email: String = person.email ?: run {
+    log("Email not sent, no email address")
+
+    return
+  }
+}
+```
+
+Elvis 연산자는 nullable 을 확인할 때 굉장히 많이 사용되는 관용적인 방법이다.
+
+### 정리
+
+예외를 사용하여 코드에 제한을 거는 방법은 다음과 같은 이득을 얻을수 있다.
+
+* 제한을 더 쉽게 걸 수 있다.
+* 애플리케이션을 더 안정적으로 지킬 수 있다.
+* 코드를 잘못 쓰는 상황을 막을 수 있다.
+* 스마트 캐스팅을 활용할 수 있다.
+
+또한 이를 위한 활용방안의 매커니즘은 다음과 같다.
+
+* `require` 블럭 : 아규먼트와 관련된 예측을 정의할 때 사용하는 범용적인 방법
+* `check` 블럭 : 상태와 관련된 예측을 정의할 때 사용하는 범용적인 방법
+* `assert` 블럭 : 테스트 모드에서 테스트할 때 사용하는 범용적인 방법
+* 그 외 : `return` 혹은 `throw` 와 함께 `Elvis` 연산자와 사용하기
+
+이외에도 다른 오류들을 발생 시킬때 `throw` 를 활용할 수 있다.
