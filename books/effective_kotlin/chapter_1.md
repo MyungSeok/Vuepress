@@ -708,3 +708,69 @@ fun main() {
 ### 정리
 
 플랫폼 타입을 사용하는 코드는 해당 부분만 위험할 뿐 아니라, 이를 사용하는 곳까지 영향을 줄 수 있는 위험한 코드이다.
+
+## Item 4 inferred 타입으로 리턴하지 말라
+
+코틀린의 타입 추론 (type inference)은 JVM 세계에서 가장 널리 알려진 코틀린의 특징이다.
+
+타입을 할당할때 inferred 타입은 오른쪽에 있는 피 연산자에 맞게 설정해야 한다.
+
+```kotlin {6}
+open class Animal
+class Zebra: Animal()
+
+fun main() {
+  var animal = Zebra()
+  animal = Animal() // 오류: Type mismatch 
+}
+```
+
+이럴 경우 타입을 명시적으로 지정하여 문제 해결이 가능하다.
+
+`animal` 객체는 `Zebra` 타입으로 제한 (bounded) 되기 때문에 부모 타입의 객체를 수용할 수 없다.
+
+```kotlin {}
+open class Animal
+class Zebra: Animal()
+
+fun main() {
+  var animal: Animal = Zebra()
+  animal = Animal()
+}
+```
+
+모듈 (혹은 라이브러리) 를 직접적으로 조작할 수 없는 경우 문제 해결이 불가능하다.
+
+리턴 타입은 외부에서 확인할 수 있게 명시적으로 지정해 주는 것이 좋다.
+
+### 정리
+
+타입을 확실하게 지정해야 하는 경우에는 명시적으로 타입을 지정해야 한다는 원칙만 갖고 있으면 된다.
+
+때문에 이는 중요한 정보로써 숨기지 않아도 된다.
+
+외부에서 참조하는 API 를 만들 경우 반드시 타입을 지정하라.
+
+inferred 타입은 프로젝트 진행 시, 제한이 너무 많아지거나 예측하지 못한 결과를 낼 수 없다는 것을 명심하라.
+
+## Item 5 예외를 활용하여 코드에 제한을 걸어라
+
+코틀린에서는 동작에 제한을 걸 때 다음과 같은 방법을 사용할 수 있다.
+
+* require 블럭 : Arguments 를 제한할 수 있다.
+* check 블럭 : 상태와 관련된 동작을 제한할 수 있다.
+* assert 블럭 : 테스트 모드에서만 작동하며, 값의 진위여부 판단을 할 수 있다.
+* return 또는 throw 와 함께하는 Elvis 연산자
+
+사용예시는 다음과 같다.
+
+```kotlin
+fun pop(num: Int = 1): List<T> {
+  require(num <= size) {
+    "Can't remove more elements than current size"
+  }
+
+
+}
+
+```
