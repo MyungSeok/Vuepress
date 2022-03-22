@@ -1176,7 +1176,9 @@ val printerName3 = printer?.name ?:
   throw Error("Printer must be named")
 ```
 
-> `return` 과 `throw` 모두 `Noting`(모든 타입의 서브타입) 을 리턴하게 설계되어 가능하다. ([link](https://blog.kotlin-academy.com/the-beauty-of-kotlin-typing-system-7a2804fe6cf0))
+> `return` 과 `throw` 모두 `Noting`(모든 타입의 서브타입) 을 리턴하게 설계되어 가능하다. ([link](https://blog.kotlin-academy.com/the-beauty-of-kotlin-typing-system-7a2804fe6cf0))<br/>
+> ![Subtype of all types:Noting](/img/A131.png)
+> ![return type is Noting](/img/A132.png)
 
 null 을 적절하게 처리하기 위하여 처리하기 위한 방법들은 다음과 같다.
 
@@ -1214,6 +1216,11 @@ largestOf() // NPE
 ```
 
 때문에 이런 잠재적인 위험을 피하기 위해 `!!` 연산자의 사용은 지양해야 한다.
+
+:::tip
+`max` 함수는 kotlin 1.4 부터 **deprecate** 되며, kotlin 1.5 이상부터는 error로 표기된다.<br/>
+이를 대신할 `maxOrNull` 을 지원한다 ([link](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/max-or-null.html))
+:::
 
 ### 의미 없는 nullability 피하기
 
@@ -1254,10 +1261,12 @@ class DoctorActivity: Activity() {
 
 Kotlin/JVM 에서 사용하는 자바 표준 라이브러리에서 해당하는 리소스는 다음과 같다.
 
-* InputStream, OutputStream
-* java.sql.Connection
-* java.io.Reader(FileReader, BufferedReader, CSSParser)
-* java.new.Socket, java.util.Scanner
+* [InputStream](https://docs.oracle.com/javase/7/docs/api/java/io/InputStream.html)
+* [OutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/OutputStream.html)
+* [java.sql.Connection](https://docs.oracle.com/javase/7/docs/api/java/sql/Connection.html)
+* java.io.Reader([FileReader](https://docs.oracle.com/javase/7/docs/api/java/io/FileReader.html), [BufferedReader](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html), [CSSParser](https://docs.oracle.com/javase/9/docs/api/javafx/css/CssParser.html))
+* [java.net.Socket](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
+* [java.util.Scanner](https://docs.oracle.com/javase/7/docs/api/java/util/Scanner.html)
 
 위 리소스들은 `AutoCloseable` 을 상속받는 `Closeable` 인터페이스를 구현 (implement) 하고 있다.
 
