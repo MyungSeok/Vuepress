@@ -496,7 +496,8 @@ module.exports = {
         '/books/effective_java_3rd/chapter_12'
       ], 
       '/books/effective_kotlin': [
-        '/books/effective_kotlin/chapter_1'
+        '/books/effective_kotlin/chapter_1',
+        '/books/effective_kotlin/chapter_2'
       ],
       '/books/elastic_search_guide/': [
         '/books/elastic_search_guide/chapter_1',
