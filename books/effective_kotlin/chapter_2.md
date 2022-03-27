@@ -75,25 +75,23 @@ students.filter{}.joinToString{}.let{::print}
 
 ### 컨벤션
 
-> **invoke 함수**<br/>
-> 이름 없이 간편하게 호출될 수 있는 함수
->
-> ```kotlin
-> class Test {
->   operator fun invoke(str: String) {
->     print(str)
->   }
-> }
-> 
-> fun main() {
->   val test = Test()
->   test("wow")
-> }
-> ```
->
-> 위와 같이 `test.invoke(str)` 로 사용해야 할 것 같지만,<br/>이를 무시하고 `test(str)` 로 사용 가능하듯이 이름을 생략할 수 있다.
+:::tip invoke 함수
+이름 없이 간편하게 호출될 수 있는 함수
 
-위와 같이 `test.invoke(str)` 로 사용해야 할 것 같지만, 이를 무시하고 `test(str)` 로 사용 가능하듯이 이름을 생략할 수 있다.
+```kotlin
+class Test {
+  operator fun invoke(str: String) {
+    print(str)
+  }
+}
+
+fun main() {
+  val test = Test()
+  test("wow")
+}
+```
+
+위와 같이 `test.invoke(str)` 로 사용해야 할 것 같지만,<br/>이를 무시하고 `test(str)` 로 사용 가능하듯이 이름을 생략할 수 있다.
 :::
 
 * 연산자는 의미에 맞게 사용해야 한다.
@@ -132,19 +130,21 @@ students.filter{}.joinToString{}.let{::print}
 
 의미가 명확하지 않다면 `infix` 를 활용한 확장함수를 사용하는 것이 좋다.
 
-> **중위(infix) 함수**<br/>
-> 두개의 변수 가운데 오는 함수
->
-> ```kotlin
-> infix fun String.add(other:String): String {
->   return this + other
-> }
-> ```
->
-> ```kotlin
-> val string = "Hello" add "World"
-> System.out.println(string)        // HelloWorld
-> ```
+:::tip 중위(infix) 함수
+두개의 변수 가운데 오는 함수
+
+```kotlin
+infix fun String.add(other:String): String {
+  return this + other
+}
+```
+
+```kotlin
+val string = "Hello" add "World"
+System.out.println(string)        // HelloWorld
+```
+
+:::
 
 ```kotlin
 operator fun Int.times(operation: () -> Unit): () -> Unit = {
@@ -348,9 +348,6 @@ sleep(Millis(100))
 
 ```kotlin
 sleep(100.ms)
-```
-
-```kotlin
 ```
 
 이름있는 아규먼트를 사용하는 경우
