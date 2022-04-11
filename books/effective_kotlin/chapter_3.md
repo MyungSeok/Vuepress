@@ -287,3 +287,175 @@ fun main() {
 :::tip 참고자료
 <https://jinn-blog.tistory.com/27>
 :::
+
+## Item 22 일반적인 알고리즘을 구현할 때 제네릭을 사용하라
+
+### 제네릭 제한
+
+타입 파라미터의 중요한 기능 중 하나는 구체적인 타입의 서브타입만 사용하게 타입을 제한하는 기능이다.
+
+```kotlin
+fun <T: Compareable<T>> Iterable<T>.sorted(): List<T> {
+  /*...*/
+}
+
+fun <T, C: MutableCollection<in T>> Iterable<T>.toCollection(destination: C): C {
+  /*...*/
+}
+
+class ListAdapter<T: ItemAdapter>(/*...*/) { /*...*/ }
+```
+
+타입에 제한이 걸리므로, 내부에서 해당 타입이 제공하는 메서드를 사용할 수 있다.
+
+### 정리
+
+코틀린 자료형 시스템에서 타입 파라미터는 굉장히 중요한 부분이다.
+
+일반적으로 이를 사용해서 type-safe 제네릭 알고리즘과 제네릭 객체를 구현한다.
+
+또한 타입 파라미터는 구체 자료형(concrete type)의 서브타입을 제한할 수 있다.
+
+## Item 23 타입 파라미터의 섀도잉을 피하라
+
+아래 코드 처럼 프로퍼티와 파라미터가 같은 이름을 가질 수 있다.
+
+```kotlin
+class Forest(val name: String) {
+  fun addTree(name: String) {
+    // ...
+  }
+}
+```
+
+위와 같은 코드에서 외부에 있는 프로퍼티가 지역 파라미터에 의해 가려지게 되는데 이를 섀도잉(shadowing) 이라 부른다.
+
+### 정리
+
+타입 파라미터의 섀도잉은 이해하기도 어렵기 때문에 반드시 피해야 한다.
+
+## Item 24 제네릭 타입과 variance 한정자를 활용하라.
+
+다음과 같은 코드가 있다.
+
+```kotlin
+class Cup<T>
+```
+
+여기서 타입 파라미터 `T` 는 `variance` 한정자(in 혹은 out)가 없으므로 invariant(불공변) 타입이다.
+
+invariant 타입은 제네릭 타입으로 만들어지는 타입들이 서로 관련이 없다.
+
+만약 어떠한 관련성을 원한다면 variance 한정자를 붙이며 `out` 은 타입 파라미터를 covariant(공변성) 타입으로 만든다.
+
+`in` 은 타입 파라미터를 contravariant(반공변)으로 만든다.
+
+[PECS](/backend/language/java/essential/generic/pecs) 가 이 성격을 따른다.
+
+### 함수 타입
+
+파라미터 유형과 리턴타입에 따라 서로 어떠한 관계를 갖는다.
+
+![코틀린의 계층구조](/img/A135.png)
+
+위 그림에서 계층 구조의 아래로 가면, 타이핑 시스템 계층에서 파라미터 타입이 더 높은 타입으로 이동하고, 리턴 타입은 계층 구조의 더 낮은 타입으로 이동한다.
+
+![코틀린의 타입계층](/img/A134.png)
+
+코틀린의 함수 타입의 모든 파라미터 타입은 contravariant 이다.
+
+모든 리턴 타입은 covariant 이다.
+
+![코틀린의 in/out](/img/A133.png)
+
+### variance 한정자의 안정성
+
+자바의 배열은 covariant 이다.
+
+다음 코드는 컴파일은 되나 런타임때 에러가 난다.
+
+```java
+Integer[] numbers = {1, 4, 2, 1};
+Object[] objects = numbers;
+objects[2] = "B"            // Runtime Exception
+```
+
+코틀린에서는 위와 같은 코드 결함을 해소하기 위해 Array(IntArray, CharArray 등)를 invariant 로 만들었다.
+
+파라미터 타입을 예측할 수 있다면, 어떤 서브타입이라도 전달할 수 있다.
+
+아래와 같이 아규먼트를 전달할 때, 암묵적으로 업캐스팅 할 수 있다.
+
+```kotlin
+open class Dog
+class Puppy: Dog()
+class Hound: Dog()
+
+fun takeDog(dog: Dog) {}
+
+takeDog(Dog())
+takeDog(Puppy())
+takeDog(Hound())
+```
+
+아래와 같은 상황은 안전하지 않다.
+
+캐스팅 후 실질적인 객체가 그대로 유지되고, 타이핑 시스템에서만 다르게 처리되기 때문이다.
+
+```kotlin
+class Box<out T> {
+  private var value: T? = null
+
+  // 코틀린에서 불가능한 코드
+  fun set(value: T) {
+    this.value = value
+  }
+
+  fun get(): T = value ?: error("Value not set")
+}
+
+val puppyBox = Box<Puppy>()
+val dogBox: Box<Dog> = puppyBox
+dogBox.set(Hound())                 // Puppy 만 가능
+
+val dogHouse = Box<Dog>()
+val box: Box<Any> = dogHouse
+box.set("Some string")              // Dog 만 가능
+box.set(42)                         // Dog 만 가능
+```
+
+### variance 한정자 위치
+
+varinace 한정자는 크게 두 위치에 사용할 수 있다.
+
+첫번째는 선언부로 일반적으로 이 위치에 사용된다.
+
+이는 클래스와 인터페이스가 사용되는 모든곳에 영향을 준다.
+
+```kotlin
+class Box<out T>(val value: T)
+val boxStr: Box<String> = Box("Str")
+val boxAny: Box<Any> = boxStr
+```
+
+두번째는 클래스와 이터페이스를 활용하는 위치이다.
+
+이 위치에 variance 한정자를 사용하면 특정한 변수에만 variance 한정자가 적용된다.
+
+```kotlin
+class Box<T>(val value: T)
+val boxStr: Box<String> = Box("Str")
+val boxAny: Box<out Any> = boxStr
+```
+
+### 정리
+
+* 타입 파라미터의 기본적인 동작은 invariant 타입이다.
+* in 한정자는 타입 파라미터를 covariant 하게 만든다.
+* out 한정자는 타입 파라미터를 contravariant 하게 만든다.
+* `List`와 `Set`의 타입 파라미터는 covariant(out 한정자)이고, `Array`, `MutableList`, `MutableSet`, `MutableMap` 타입 파라미터는 invariant(무공변) 이다.
+* 함수 타입의 파라미터 타입은 contravariant(in 한정자) 타입이고 리턴 타입은 covariant(out 한정자)타입이다.
+
+## Item 25 공통 모듈을 추출해서 여러 플랫폼에서 재사용하라
+
+TL;DR - 공통 모듈을 재사용하자
