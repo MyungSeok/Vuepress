@@ -499,7 +499,8 @@ module.exports = {
         '/books/effective_kotlin/chapter_1',
         '/books/effective_kotlin/chapter_2',
         '/books/effective_kotlin/chapter_3',
-        '/books/effective_kotlin/chapter_4'
+        '/books/effective_kotlin/chapter_4',
+        '/books/effective_kotlin/chapter_5'
       ],
       '/books/elastic_search_guide/': [
         '/books/elastic_search_guide/chapter_1',
