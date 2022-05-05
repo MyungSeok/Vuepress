@@ -374,8 +374,207 @@ val player = Player(0, "Blue", 3)
 
 `data` 한정자를 붙이면, 다음 몇가지 함수가 자동으로 생성된다.
 
-* toString
-* equals
-* hashCode
-* copy
-* componentN(component1, component2, ...)
+#### toString
+
+클래스의 이름과 기본 생성자 형태로 모든 프로퍼티와 값을 출력해준다.
+
+```kotlin
+print(player) // Player(id = 0, name=Blue, point=3)
+```
+
+#### equals
+
+기본 생성자의 프로퍼티가 같은지 확인해준다.
+
+hashCode 는 equals 와 같은 결과를 낸다.
+
+```kotlin
+player == Player(0, "Blue", 3)  // true
+player == Player(0, "Berry", 5) // false
+```
+
+#### copy
+
+immutable 데이터 클래스를 만들 때 편리하다
+
+copy는 기본 생성자 프로퍼티가 같은 새로운 객체를 복제한다.
+
+새로 만들어진 객체의 값은 이름있는 아규먼트를 활용해서 변경할 수 있다.
+
+```kotlin
+val newObj = player.copy(name = "Thor")
+print(newObj) // Player(id=0, name=Thor, points=3)
+```
+
+이러한 copy 메서드는 data 한정자만 붙이면 자동으로 만들어져서 내부구현을 자세히 알 필요는 없지만 대충(?) 다음과 같이 구현되어 있을것이다.
+
+```kotlin
+fun copy(
+  id: Int = this.id,
+  name: String = this.name,
+  points: Int = this.points
+) = Player(id, name, points)
+```
+
+componentN 함수(component1, component2 등)는 위치를 기반으로 객체를 해제할 수 있게 해준다.
+
+```kotlin
+val (id, name, points) = player
+```
+
+위와 같이 객체를 해제하는 코드를 작성하면, 코틀린은 내부적으로 componentN 함수를 사용하는 다음과 같은 코드로 변환한다.
+
+```kotlin
+// 컴파일 후
+val id: Int = player.component1()
+val name: String = player.component2()
+val points: Int = player.component3()
+```
+
+componentN 함수만 있다면 `List` 와 `Map.Entity` 등 원하는 형태로도 객체를 해제할 수 있다.
+
+```kotlin
+val visited = listOf("China", "Russia", "India")
+val (first, second, third) = visited
+
+println("$first $second $third")
+// China Russia India
+```
+
+```kotlin
+val trip = mapOf(
+  "China" to "Tianjin",
+  "Russia" to "Petersburg",
+  "India" to "Rishikesh"
+)
+
+for ((country, city) in trip) {
+  println("We loved $city in $country")
+  // We loved Tianjin in China
+  // We loved Petersburg in Russia
+  // We loved Rishikesh in India
+}
+```
+
+위치를 잘못 지정한다면 다양한 문제가 발생할 수 있다.
+
+때문에 객체를 해제할 때는 데이터 클래스의 기본 성성자에 프로퍼티 이름과 같은 이름을 사용하는것이 좋다.
+
+### 튜플 대신 데이터 클래스 사용하기
+
+데이터 클래스는 튜플보다 많은 것을 제공한다.
+
+코틀린의 튜플은 `Serializable` 기반으로 만들어지며, `toString` 을 사용할 수 있는 제네릭 데이터 클래스이다.
+
+```kotlin
+public data class Pair<out A, out B> (
+  public val first: A,
+  public val second: B
+): Serializable {
+  public override fun toString(): String =
+    "($first, $second)"
+}
+
+public data class Triple<out A, out B, out C>(
+  public val first: A,
+  public val second: B,
+  public val third: C
+): Serializable {
+  public override fun toString(): String =
+    "($first, $second, $third)"
+}
+```
+
+튜플은 데이터 클래스와 같은 역할을 하지만 훨씬 가독성이 나쁘며, 튜플만 보고는 어떤 타입을 나타내는지 예측할 수 없다.
+
+대부분의 경우 데이터 클래스가 더 좋기는 하지만 Pair와 Triple 은 몇 가지 지역적인 목적으로 존재한다.
+
+* 값에 간단하게 이름을 붙일 때
+  
+  ```kotlin
+    val (description, color) = when {
+      degrees < 5 -> "cold" to Color.BLUE
+      degrees < 23 -> "mild" to Color.YELLOW
+      else -> "hot" to Color.RED
+    }
+  ```
+
+* 표준 라이브러리에서 볼 수 있는 것처럼 미리 알 수 없는 집합(aggregation)을 표현할 때
+  
+  ```kotlin
+    val (odd, even) = numbers.partition { it % 2 == 1 }
+    val map = mapOf(1 to "San Francisco", 2 to "Amsterdam")
+  ```
+
+위 두 경우를 제외하면 무조건 데이터 클래스를 사용하는것이 좋다.
+
+데이터 클래스를 사용하면 다음과 같은 효과가 있다.
+
+* 함수의 리턴타입이 더 명확해진다.
+* 리턴 타입이 더 짧아지며, 전달하기 쉽다.
+* 사용자가 데이터 클래스에 적혀 있는 것과 다른 이름을 활용해 변수를 해제하면, 경고가 출력된다.
+
+데이터 클래스는 좋은 도구이다.
+
+## Item 38 연산 또는 액션을 전달할 때는 인터페이스 대신 함수 타입을 사용하라
+
+연산 또는 액션을 전달할 때 메서드가 하나만 있는 인터페이스를 활용한다.
+
+이러한 인터페이스를 SAM(Single-Abstract Method) 이라고 한다.
+
+```kotlin
+interface OnClick {
+  fun clicked(view: View)
+}
+```
+
+함수가 SAM을 받는다면, 이러한 인터페이스를 구현한 객체를 전달받는다는 의미이다.
+
+```kotlin
+fun setOnclickListener(listener: Onclick) {
+  // ...
+}
+
+setOnClickListener(object: Onclick {
+  override fun clicked(view: View) {
+    // ...
+  }
+})
+```
+
+이런 코드를 함수 타입을 사용하는 코드로 변경하면, 더 많은 자유를 얻을 수 있다.
+
+```kotlin
+fun setOnClickListener(listener: (View) -> Unit) {
+  // ...
+}
+```
+
+### 언제 SAM을 사용해야 할까?
+
+코틀린이 아닌 다른 언어에서 사용할 클래스를 설계할 때이다.
+
+자바에서는 인터페이스가 더 명확하다. 함수 타입을 만들어진 클래스는 자바에서 타입 별칭과 IDE의 도움을 제대로 받을 수 없다.
+
+다른 언어에서 코틀린의 함수 타입을 사용하려면, Unit을 명시적으로 리턴하는 함수가 필요하다.
+
+```kotlin
+class CalendarView() {
+  var onDateClicked: ((date: Date) -> Unit?) = null
+  var onPageChanged: onDateClicked = null
+}
+
+interface ONDateClicked {
+  fun onClick(date: Date)
+}
+```
+
+```java
+CalendarView c = new CalendarView();
+c.setOnDateClicked(date -> Unit.INSTANCE);
+c.setOnPageChanged(date -> {});
+```
+
+자바에서 사용하는 API 설계할 때는 함수타입보다 SAM을 사용하는것이 합리적이다.
+
+하지만 이외의 경우에는 함수타입을 사용하는것이 좋다.
