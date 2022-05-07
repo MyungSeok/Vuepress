@@ -577,4 +577,110 @@ c.setOnPageChanged(date -> {});
 
 자바에서 사용하는 API 설계할 때는 함수타입보다 SAM을 사용하는것이 합리적이다.
 
-하지만 이외의 경우에는 함수타입을 사용하는것이 좋다.
+하지만 이외의 경우에는 **함수타입을 사용하는것이 좋다.**
+
+## Item 39 태그 클래스보다는 클래스 계층을 사용하라
+
+상수 모드를 태그(tag)라고 부르며, 태그를 포함한 클래스를 태그클래스(tagged class)라고 부른다.
+
+태그 클래스는 다양한 문제를 내포하고 있다.
+
+서로 다른 책임을 한 클래스에 태그로 구분해서 넣는다는 것이다.
+
+```kotlin
+class ValueMatcher<T> private constructor(
+  private val value: T? = null,
+  private val matcher: Matcher
+) {
+  fun match(value: T?) = when(matcher) {
+    Matcher.EQUAL -> value == this.value
+    Matcher.NOT_EQUAL -> value != this.value
+    Matcher.LIST_EMPTY -> value is List<*> && value.isEmpty()
+    Matcher.LIST_NOT_EMPTY -> value is List<*> && value.isNotEmpty()
+  }
+
+  empty class Matcher {
+    EQUAL,
+    NOT_EQUAL,
+    LIST_EMTPY,
+    LIST_NOT_EMPTY
+  }
+
+  companion object {
+    fun <T> equal(value: T) =
+      ValueMatcher<T>(value = value, mather = Matcher.EQUAL)
+
+    fun <T> notEqual(value: T) = 
+      ValueMatcher<T>(value = value, mather = Matcher.NOT_EQUAL)
+
+    fun <T> emptyList() =
+      ValueMatcher<T>(mather = Matcher.LIST_EMPTY)
+
+    fun <T> notEmptyList() =
+      ValueMatcher<T>(mather = Matcher.LIST_NOT_EMPTY)
+  }
+}
+```
+
+위와 같은 접근 방법은 많은 단점이 있다.
+
+* 한 클래스에 여러 모드를 처리하기 위한 상용구(boilerplate)가 추가된다.
+* 여러 목적으로 사용해야 하므로 프로퍼티가 일관적이지 않게 사용될 수 있으며, 더 많은 프로퍼티가 추가될 수 있다.
+* 상태의 일관성과 정확성을 지키기 어렵다.
+* 객체가 제대로 생성되었는지 확인하는게 어렵기 때문에 팩토리 메서드를 사용해야 하는 경우가 많다.
+
+이러한 이유로 코틀린에서는 `sealed` 한정자를 붙여서 서브클래스 정의를 제한한다.
+
+```kotlin
+sealed class ValueMatcher<T> {
+    abstract fun match(value: T): Boolean
+    
+    class Equal<T>(val value: T): ValueMatcher<T>() {
+        override fun match(value: T): Boolean =
+            value == this.value
+    }
+    
+    class NotEqual<T>(val value: T): ValueMatcher<T>() {
+        override fun match(value: T): Boolean =
+            value != this.value
+    }
+    
+    class EmptyList<T>(): ValueMatcher<T>() {
+        override fun match(value: T): Boolean =
+            value is List<*> && value.isEmpty()
+    }
+    
+    class NotEmptyList<T>(): ValueMatcher<T>() {
+        override fun match(value: T): Boolean =
+            value is List<*> && value.isNotEmpty()
+    }
+}
+```
+
+위와 같이 구현하면 책임이 분산되므로 깔끔하다. 각각의 객체들은 자신에게 필요한 데이터만 있으며, 적절한 파라미터를 갖는다.
+
+### sealed 한정자
+
+`sealed` 한정자는 외부 파일에서 서브클래스를 만드는 행위 자체를 모두 제한한다.
+
+외부에서 추가적인 서브 클래스를 만들 수 없으므로, 타입이 추가되지 않을 거라는게 보장된다.
+
+이러한 이유로 `when` 을 사용할 때 `else` 브랜치를 만들 필요가 없으며, 이를 활용하여 새로운 기능을 쉽게 추가도 가능하다.
+
+### 태그 클래스와 상태 패턴의 차이
+
+태그 클래스와 상태 패턴(state pattern)을 혼동하면 안된다.
+
+> 상태 패턴 (state pattern)<br/>
+> 객체 지향 디자인 패턴중 행동 패턴중의 일종<br/>
+> 객체가 특정 상태에 따라 행위를 달리하는 상황에서 **직접 상태를 체크하지 않고 상태를 객체화하여 행동을 위임**할 수 있는 패턴을 말한다.
+
+### 정리
+
+코틀린에서는 태그 클래스보다 타입 계층을 사용하는 것이 좋다.
+
+일반적으로 이런 타입 계층을 만들 때는 sealed 클래스를 사용한다.
+
+하나의 뷰를 가지는 경우 보다는, 여러 상태로 구분할 수 있는 뷰를 가질때 활용도가 높다.
+
+## Item 40 equals의 규약을 지켜라
