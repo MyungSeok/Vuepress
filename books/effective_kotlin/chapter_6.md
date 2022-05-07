@@ -416,6 +416,8 @@ fun copy(
 ) = Player(id, name, points)
 ```
 
+copy 메서드는 객체를 얕은복사를 하지만 이는 immutable 이라면 상관이 없다. immutable 객체는 깊은 복사한 객체가 필요없기 때문이다.
+
 componentN 함수(component1, component2 등)는 위치를 기반으로 객체를 해제할 수 있게 해준다.
 
 ```kotlin
@@ -684,3 +686,133 @@ sealed class ValueMatcher<T> {
 하나의 뷰를 가지는 경우 보다는, 여러 상태로 구분할 수 있는 뷰를 가질때 활용도가 높다.
 
 ## Item 40 equals의 규약을 지켜라
+
+코틀린의 `Any` 에는 다음과 같이 잘 설정된 규약들을 가진 메서드들이 있다.
+
+* equals
+* hashCode
+* toString
+
+`Any` 클래스를 상속받는 모든 메서드는 이러한 규약을 잘 지켜주는 것이 좋다.
+
+규약을 위반하면 일부 객체 또는 기능들이 제대로 동작하지 않을 수 있다.
+
+### 동등성
+
+코틀린에는 두 가지 종류의 동등성(equality)가 있다.
+
+#### 구조적 동등성(structural equality)
+
+`equals` 메서드와 이를 기반으로 만들어진 == 연산자(!= 포함)로 확인한다.
+
+`a` 가 nullable 이 아니라면 a == b 는 a.equals(b) 로 변환되고 `a` 가 nullable 이라면 a?.equals(b) ?: (b === null) 로 변환된다.
+
+#### 레퍼런스적 동등성(referential equality)
+
+=== 연산자(!== vhgka)로 확인한다.
+
+두 피 연산자가 같은 객체를 가르키면, `true` 를 리턴한다.
+
+`equals`는 모든 클래스의 슈퍼클래스인 `Any` 에 구현되어 있으니, 모든 객체에서 사용할 수 있다.
+
+### equals가 필요한 이유
+
+Any 클래스에 구현되어 있는 equals 메서드는 디폴트로 === 처럼 두 인스턴스가 완전히 같은 객체인지 비교한다.
+
+```kotlin
+class Name(val name: String)
+
+val name1 = Name("Marcin")
+val name2 = Name("Marcin")
+val name1Ref = name1
+
+name1 == name1    // true
+name1 == name2    // false
+name1 == name1Ref // true
+
+name1 === name1     // true
+name1 === name2     // false
+name1 === name1Ref  // true
+```
+
+이러한 동작은 DB Connection, Repository, Thread 등의 활동요소(active element)를 활용할 때 굉장히 유용하다.
+
+하지만 일부 동등성을 약간 다른 형태로 표현해야 하는 객체가 있다.
+
+예를 들면 두 객체가 기본 생성자의 프로퍼티가 같다면, 같은 객체로 보는 경우가 있다. `data` 한정자를 사용하여 데이터 클래스로 정의하면 자동으로 이와 같은 동등성으로 동작한다.
+
+```kotlin
+data class FullName(val name: String, val surname: String)
+
+val name1 = FullName("Blue", "Berry")
+val name2 = FullName("Blue", "Berry")
+val name3 = FullName("Blue", "Verry")
+
+name1 == name1  // true
+name1 == name2  // true - 데이터가 같기 때문
+name1 == name3  // false
+
+name1 === name1 // true
+name1 === name2 // false
+name1 === name3 // false
+```
+
+데이터 클래스는 내부에 어떤 값을 가지고 있는지 중요하므로, 이와 같은 동작을 하는것이 좋다.
+
+```kotlin
+data class DateTime(
+  private var millis: Long = 0L
+  private var timeZone: TimeZone? = null
+) {
+  private var asStringCache = ""
+  private var changed = false
+
+  //...
+}
+```
+
+위와 같은 코드에서 `copy` 메서드를 이용하여 객체 복사를 사용했을 경우 기본 생성자에 선언되지 않는 프로퍼티는 복사되지 않는다. (Item 37)
+
+`data` 한정자를 이용한 클래스에서 동등성을 조작할 수 있으므로, 일반적으로는 코틀린에서 `equals` 를 직접 구현할 필요가 없다.
+
+단 예외적으로 `equals` 를 직접 구현해야 하는 경우를 정리해보면 다음과 같다.
+
+* 기본적으로 제공되는 동작과 다른 동작을 해야 하는 경우
+* 일부 프로퍼티만으로 비교해야 하는 경우
+* data 한정자를 붙이는 것을 원하지 않거나, 비교해야 하는 프로퍼티가 기본 생성자에 없는 경우
+
+### equals의 규약
+
+코틀린 1.4.31 기준으로 `equals` 에는 다음과 같은 주석이 달려 있다.
+
+어떤 다른 객체가 이 객체와 '같은지(equal to)' 확인할 때 사용한다. 구현은 반드시 다음과 같은 요구 사항을 충족해야 한다.
+
+#### 반사적 동작
+
+`x`가 `null` 이 아닌 값이라면 `x.equals(x)` 는 `true` 를 반환해야 한다.
+
+#### 대칭적
+
+동작 `x` 와 `y` 가 `null` 이 아닌 값이라면, `x.equals(y)` 는 `y.equals(x)` 와 같은 결과를 출력해야 한다.
+
+#### 연속적
+
+`x`, `y`, `z` 가 `null` 이 아닌 값이고 `x.equals(y)` 와 `y.equals(x)` 이 `true` 이면 `x.equals(z)` 도 `true` 여야 한다.
+
+#### 널과 관련된 동작
+
+`x` 가 `null` 이 아닌 값이라면, `x.equals(null)` 은 항상 `false` 를 반환해야 한다.
+
+추가적으로 `equals`, `toString`, `hashCode` 의 동작은 매우 빠를것으로 기대하므로, 빠르게 동작되어야 한다.
+
+### URL과 관련된 equals 문제
+
+`equals` 를 잘못 설계한 예가 `java.net.URL` 이다.
+
+`java.net.URL` 객체 2개를 비교하면 동일한 IP 주소로 해석될 때는 `true` 아니면 `false` 결과를 나타내지만, 네트워크 상황에 따라 결과가 달라지는 일관성이 무시된다.
+
+### equals 구현하기
+
+특별한 이유가 없는 이상 직접 equals 를 구혀하는 것은 좋지 않다.
+
+완벽한 사용자 `equals` 함수를 만드는 것은 거의 불가능에 가깝다.
