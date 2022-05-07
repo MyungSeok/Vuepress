@@ -816,3 +816,289 @@ data class DateTime(
 특별한 이유가 없는 이상 직접 equals 를 구혀하는 것은 좋지 않다.
 
 완벽한 사용자 `equals` 함수를 만드는 것은 거의 불가능에 가깝다.
+
+## Item 41 hashCode의 규약을 지켜라
+
+`hashCode` 함수는 수많은 컬렉션과 알고리즘에 사용되는 자료구조인 해시 테이블(hash table)을 구축할 때 사용된다.
+
+### 해시 테이블
+
+컬렉션의 셋과 맵은 중복을 허용하지 않아서 요소를 추가할 때 동일한 요소가 이미 들어있는지 확인해야 한다.
+
+컬렉션내에 추가하려는 요소가 포함되어어 있는지 모든 요소를 비교해봐야 하며, 이를 비교하는 과정에서 많은 비용이 들 것이다.
+
+이 비용(성능)을 효과적으로 해결하는 방법이 해시테이블이다.
+
+해시테이블은 각 요소에 숫자를 할당하는 함수를 해시 함수이며, 해시 함수는 다음 특성을 갖고 있으면 좋다.
+
+* 빠르다
+* 충돌이 적다
+
+### 해시함수
+
+해시값을 이용한 자료형은 해시 함수를 통해서 나오는 인덱스 값으로 관리되는데 이 해시 함수는 해시 키값을 입력을 받아 해시 테이블상의 주소를 리턴해줘야 한다.
+
+이는 해시함수를 작성시에는 다음 두가지의 조건을 만족하는것이 제일 좋다.
+
+1. 입력되는 원소가 해시 테이블 전체에 고루 저장되어야 한다. (해시 분포)
+2. 계산이 간단해야 한다 (성능)
+
+첫번째 조건을 잘 만족해야만 **서로 다른 두 원소가 하나의 해시 주소를 가지고 충돌날 확률이 적어지기 때문**이다. (해시충돌)
+
+대부분 아래와 같은 해시 함수를 사용한다.
+
+```java
+int hashIndex = X.hashCode() % M;
+```
+
+이 코드와 같은 방식을 사용하면 서로 다른 객체가 1/M 의 확률로 같은 버킷을 가지게 된다.
+
+해시를 이용한 인덱싱 사용으로 관리되는 이 Key 는 기본적으로 각 객체의 `hashCode()` 가 반환하는 값을 사용하는데 이 자료형은 int 다
+
+> 32 bit 자료형으로는 완전한 자료의 해시 함수를 만들 수 없다.<br/>
+> 논리적으로 2^32 보다 많을수도 있기 때문이며 해시를 이용한 Map 객체에서 랜덤 접근이 가능하게 하려면<br/>
+> 원소가 2^32 인 배열을 모든 Map 이 가지고 있어야 하기 때문이다.
+
+### 해시 충돌 (Hash Colision)
+
+해시 충돌 (Hash Colision) 을 잘 회피하도록 구현해 놓았더라도 해시 충돌이 발행할 경우 회피할 수 있는 방법이 다음 대표적으로 두가지 방법이 사용된다.
+
+> 다른 해시 회피방법이 있지만 이 두가지를 응용한 방법이다.
+
+#### 개방 주소법 (Open Address)
+
+해시충돌이 발생하면 다른 버킷 (데이터 주소 공간) 을 찾아 자료를 삽입하는 방식이다.
+
+비어있는 버킷을 탐색하거나 혹은 2차 해시함수를 이용하여 새로운 주소를 할당하는데
+이 과정에서 새로운 해시 버킷을 찾는 방법을 Linear Probing, Quadratic Probing 등의 방법이 사용된다.
+
+* 장점
+  * 데이터 크기가 적다면 성능이 뛰어나다.
+* 단점
+  * 연속된 공간에 데이터를 저장하기 때문에 캐시 효율이 높다.
+  * 크키가 커질수록 적중률 (hit ratio) 이 낮아지기 때문에 캐시 효율이 현저히 낮아진다.
+  * 분리 연결법 (Seperate Chaining)
+
+Java HashMap 에서 사용중인 대표적인 방식으로 일반적으로 개방주소법보다는 성능상에 이점이 있다.
+
+#### 보조 해시 함수
+
+저장하려는 두 개가 같은 인덱스로 해싱 (hashing : hash 함수를 통해 계산됨을 의미) 하게 되면 같은곳에 저장할 수 없게 된다.
+때문에 해싱된 인덱스에 이미 다른 값들이 들어있다면 데이터를 저장할 다른 위치를 찾은뒤에야 저장할 수 있다.
+
+이 외에도 **해시 버킷의 동적 확장** 등과 같은 방법도 있다.
+
+### 해시 버킷의 동적 확장
+
+해시 버킷의 개수가 작다면 메모리 사용을 아낄수 있지만 해시 충돌로 인한 성능상의 비용이 더 발생할 수 있다.
+
+때문에 HashMap 은 Key & Value 의 쌍 데이터가 일정 개수 이상 되면 해시 버킷의 개수를 두배로 늘린다.
+
+이 일정 개수는 기본 약 75% 정도로 load factor 로 HashMap 의 생성자에서 지정가능하다.
+
+```java
+/**
+ * The load factor used when none specified in constructor.
+ */
+static final float DEFAULT_LOAD_FACTOR = 0.75f;
+```
+
+### hashCode의 규약
+
+코틀린 `1.3.11` 을 기준으로 공식적인 규약을 정리해보면 다음과 같다.
+
+* 어떤 객체를 변경하지 않았다면, `hashCode`는 여러번 호출해도 그 결과가 항상 같아야 한다.
+* equals 메서드의 실행 결과로 두 객체가 같다고 나온다면, hashCode 메서드의 호출 결과도 같다고 나와야 한다.
+
+코틀린은 equals 구현을 오버라이드할 때, hashCode도 함께 오버라이드 하는것을 추천한다.
+
+### hashCode 구현하기
+
+일반적으로 `data` 한정자를 붙이면, 코틀린이 알아서 적당한 `equals`, `hashCode` 를 정의해주므로 직접 정의할 일은 거의 없다.
+
+`hashCode` 는 기본적으로 `equals` 에서 비교에 사용되는 프로퍼티를 기반으로 해시코드를 만들어야 한다.
+
+일반적으로 모든 해시코드의 값을 더하며, 더하는 과정에서 결과에 `31` 을 곱한뒤 더해준다.
+
+```kotlin
+class DateTime(
+  private val millis: Long = 0L,
+  private val timeZone: TimeZone? = null
+) {
+
+  //...
+
+  override fun hashCode(): Int {
+    var result = millis.hashCode()
+    result = result * 31 + timeZone.hashCode()
+    return result
+  }
+}
+```
+
+위 코드에서 곱하는 숫자를 31 로 정하는 기준은 31은 홀수(odd) 이면서 소수(prime) 이기 때문이며, 관례적으로 31을 많이 사용한다.
+
+해시 충돌이 우려된다면 구아바(Guava) 의 `com.google.com.hash.Hashing` 을 참고하도록 하자.
+
+`hashCode` 를 구현할 때 가장 중요한 규칙은 언제나 `equals`와 일관된 결과가 나와야 하기 때문에, 같은 객체라면 언제나 같은 값을 반환하게 만들어줘야 한다.
+
+## Item 42 compareTo 규약을 지켜라
+
+`compareTo` 메서드는 `Comparable<T>` 인터페이스에도 들어있다.
+
+`compareTo` 는 다음과 같이 동작되어야 한다.
+
+* 비 대칭적 동작
+  * `a >= b` 이고, `b <= a` 이면, `a == b` 여야 한다.
+* 연속적 동작
+  * `a >= b` 이고 `b >= c` 이면, `a >= c` 여야 한다.
+  * 이 동작을 만족하지 못하면 무한 루프에 빠질수 있다.
+* 코넥스적 동작
+  * `a >= b` 또는 `b >= a` 중에 적어도 하나는 항상 `true` 여야 한다.
+
+> **코넥스 관계**<br/>
+> 수학적으로 이항관계(순서쌍으로 이어지는 집합)에서 뽑은 쌍 사이의 관계를 연관짓는 경우를 말한다.
+
+### compareTo 를 따로 정의해야 할까?
+
+일반적으로 어떤 프로퍼티 하나를 기반으로 순서를 지정하는 것으로 충분하기 때문에 따로 정의해야 하는 상황은 거의 없다.
+
+`sortedBy` 를 통해 원하는 프로퍼티로 컬렉션 정렬을 할 수 있다.
+
+프로퍼티 기반으로 정렬해야 한다면 아래와 같이 `sortedWith` 함수를 사용할 수 있다.
+
+```kotlin
+val sorted = names
+  .sortedWith(compareBy({ it.surname }, { it.name }))
+```
+
+### compareTo 구현하기
+
+`compareValues` 톱레벨 함수를 활용하여 `compareTo` 를 구현할 때 유용하게 활용할 수 있다.
+
+```kotlin
+class User {
+  val name: String,
+  val surname: String
+} : Comparable<User> {
+  override fun compareTo(other: User): Int =
+    compareValues(surname, other.surname)
+}
+```
+
+선택기(selector)를 활용해서 비교하고 싶다면 `compareValuesBy` 를 사용하라
+
+```kotlin
+class User {
+  val name: String,
+  val surname: String
+} : Comparable<User> {
+  override fun compareTo(other: User): Int =
+    compareValuesBy(this, other { it.surname }, { it.name })
+}
+```
+
+특별한 논리를 구현해야 하는 경우에는 이 함수가 다음값을 리턴해야 한다는 것을 기억하라.
+
+* 0: 리시버와 other가 같은 경우
+* 양수: 리시버가 other보다 큰 경우
+* 음수: 리시버가 other보다 작은 경우
+
+`compareTo` 를 구현한 뒤에는 반드시 비대칭적 동작, 연속적 동작, 코넥스적 동작을 확인하라.
+
+## Item 43 API의 필수적이지 않는 부분을 확장 함수로 추출하라
+
+확장 함수는 가상 멤버 함수와 다르게 동작한다.
+
+상속을 목적으로 설계된 요소는 확장 함수로 만들면 안된다
+
+### 멤버 함수와 확장 함수의 차이
+
+1. 확장 함수는 읽어들어야 한다.
+2. 확장 함수는 virtual 이 아니다.
+3. 멤버는 높은 우선순위를 갖는다
+4. 확장 함수는 클래스 위가 아니라 타입 위에 만들어진다.
+5. 확장 함수는 클래스 레퍼런스에 나오지 않는다.
+
+확장 함수는 더 높은 자유도와 유연함을 준다.
+
+확장 함수는 상속, 어노테이션 처리 등을 지원하지 않고, 클래스 내부에 없으므로 혼동을 줄 수 있다는것을 명심하라.
+
+API 에 필수적이지 않은 부분은 확장함수로 만드는것이 여러가지로 좋다.
+
+## Item 44 멤버 확장 함수의 사용을 피하라
+
+아규먼트로 리시버를 받는 단순한 일반 함수로 컴파일 된다.
+
+```kotlin
+fun String.isPhoneNumber(): Boolean = 
+  length == 7 && all { it.isDigit() }
+```
+
+위 코드가 컴파일 되면 아래와 같이 변한다.
+
+```kotlin
+fun String.isPhoneNumber(): Boolean = 
+  '$this'.length == 7 && '$this'.all { it.isDigit() }
+```
+
+DSL 을 만들때를 제외하면 사용하지 않는것을 권장한다.
+
+### 멤버 확장 함수를 피해야 하는 이유
+
+* 가시성 제한을 할 수 없으며 사용성이 떨어진다.
+
+  ```kotlin
+  PhoneBookIncorrect().apply { "1234567890".test() }
+  ```
+
+* 레퍼런스를 지원하지 않는다.
+
+  ```kotlin
+  val ref = String::isPhoneNumber
+  val str = "1234567890"
+  val boundedRef = str::isPhoneNumber
+
+  val refX = PhoneBookIncorrect::isPhoneNumber // 오류
+  val book = PhoneBookIncorrect() 
+  val bookRefX = book::isPhoneNumber // 오류
+  ```
+
+* 암묵적 접근시 어떠한 리시버가 선택될 지 불명확함
+
+  ```kotlin
+  class A {
+    val a = 10
+  }
+
+  class B {
+    val a = 20
+    val b = 30
+
+    fun A.test() = a + b // 40? or 50?
+  }
+
+  fun main() {    
+    B().apply { println(A().test()) }
+  }
+  ```
+
+* 확장 함수가 외부에 있는 다른 클래스를 리시버로 받을 때, 해당 함수가 어떠한 동작을 하는지 명확하지 않음
+
+  ```kotlin
+  class A {
+    //...
+  }
+
+  class B {
+    //...
+
+    fun A.update() = ...
+  }
+  ```
+
+* 경험이 적거나, 익숙하지 않는 개발자가 코드에 참여했을때 직관적이지 않으며 가독성이 떨어질수 있다.
+
+멤버 확장 함수를 사용하는 것이 의미있는 경우는사용해도 되지만, 단점을 인지하고 사용하지 않는 것이 좋다.
+
+가시성을 제한하려면 멤버로 만들지 말고 가시성과 관련된 한정자를 사용하자.
