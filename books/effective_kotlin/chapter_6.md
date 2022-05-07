@@ -709,7 +709,7 @@ sealed class ValueMatcher<T> {
 
 #### 레퍼런스적 동등성(referential equality)
 
-=== 연산자(!== vhgka)로 확인한다.
+=== 연산자(!== 포함)로 확인한다.
 
 두 피 연산자가 같은 객체를 가르키면, `true` 를 리턴한다.
 
