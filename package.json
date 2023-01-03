@@ -6,6 +6,6 @@
   "dependencies": {
     "@vuepress/plugin-back-to-top": "^1.0.0-alpha.44",
     "vuepress-plugin-flowchart": "^1.4.3",
-    "vuepress": "^1.0.0-alpha.44"
+    "vuepress": "^1.9.7"
   }
 }
